@@ -1,7 +1,58 @@
 \documentclass[sigconf]{acmart}
 
-\usepackage{booktabs} % For formal tables
+\usepackage{hyperref}
 
+\usepackage{booktabs} % For formal tables
+\usepackage{multirow}
+\newcommand\Tstrut{\rule{0pt}{2.6ex}}         % = `top' strut
+\newcommand\Bstrut{\rule[-0.9ex]{0pt}{0pt}}   % = `bottom' strut
+
+\usepackage{makecell}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\usepackage{bm}
+
+% Chèn và định dạng mã nguồn
+\usepackage{listings}
+\usepackage{color}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Tikz
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{process} = [rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black ]
+\tikzstyle{io} = [rectangle, minimum width=0.5cm, minimum height=0.1cm, text centered, draw=white]
+\tikzstyle{up} = [yshift=0.2cm]
+\tikzstyle{arrow} = [thick,->]
+
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
 
 % Copyright
 %\setcopyright{none}
@@ -33,10 +84,6 @@
 \title{SIG Proceedings Paper in LaTeX Format}
 \titlenote{Produces the permission block, and
   copyright information}
-\subtitle{Extended Abstract}
-\subtitlenote{The full version of the author's guide is available as
-  \texttt{acmart.pdf} document}
-
 
 \author{Ben Trovato}
 \authornote{Dr.~Trovato insisted his name be first.}
@@ -115,9 +162,27 @@
 
 
 \begin{abstract}
-This paper provides a sample of a \LaTeX\ document which conforms,
-somewhat loosely, to the formatting guidelines for
-ACM SIG Proceedings.\footnote{This is an abstract footnote}
+
+A large proportion of our perceptions of the world around us is made up of opinions.
+In large scale, opinions run our economy, shape our government and drive our history.
+The ability to comprehend and control opinions brings great power.
+Since the last decade, opinions have been expressed in the highest speed, volume, and complexity ever recorded in history.
+As a result, the task of tracking the flow of opinions on the Internet become impossible without automation.
+To fill the niche, Sentiment Analysis is the field of study that investigates the computational method for analyzing opinions.
+In this field, one significant problem is to classify the sentiment expressed by a sentence.
+This problem is named Sentence-level Sentiment Analysis.
+
+The purpose of this thesis is to increase the classification accuracy on the task of sentence-level Sentiment Analysis.
+For this purpose, three approaches were explored.
+In the first approach, we tried to improve Recursive Neural Networks by parameterizing their composition functions with respect to local syntactic information at each node in the parse tree.
+For our second approach, we recognized that one major obstacle of this task is the lack of context and knowledge in the small training set.
+To tackle this problem, we utilized Glove method to do Transfer Learning on a large amount of document-level labeled sentiment data.
+In the third approach, we combined Convolution Neural Networks with Recursive Neural Networks, which result in new sophisticated networks architect.
+To mitigate the risk posed by training large networks on small training dataset, we experimented with several unsupervised pre-training methods which also types of Transfer Learning.
+
+We evaluated our models on the public Stanford Sentiment Treebank dataset with binary setting.
+We were able to outperform the state-of-the-art model by a good margin in terms average accuracy of 5 runs.
+
 \end{abstract}
 
 %
