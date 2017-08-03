@@ -1,4 +1,19 @@
 \section{Introduction}
+In a nutshell, sentiment analysis is to determine whether the opinion about a specific product, event, organization is positive or negative. It is also known as opinion mining due to the sentiment was derived from opinions of the speaker.
+
+Formally, given document $d$, The main objective of sentiment analysis is define as quintuples~\cite{liu2012sentiment}:
+\[ ( e_{i}, a_{ij}, s_{ijkl}, h_{k}, t_{l} ) \]
+Where:
+\begin{itemize}
+	\item $e_{i}$: entity i (entity extraction and categorization)
+	\item $a_{ij}$: aspect j of entity i (entity extraction and categorization)
+	\item $h_{k}$: holder k (opinion holder extraction and categorization)
+	\item $t_{l}$: time l (time extraction and standardization)
+	\item $s_{ijkl}$: opinion of holder k about aspect j of entity i at time l (aspect sentiment classification)
+\end{itemize}
+Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. 
+A sentence is assumed only contain opinion toward one entity (a single movie) ~\cite{liu2012sentiment}.
+
 Before a customer buys any product, the decision of whether or not he will buy it depends largely on his prior opinions about that product.
 These opinions, in turn, have been built based on his opinions on relating companies or products and other customers' opinions about that product.
 After having been experiencing the product, his posterior opinions on the product not only tell us about which features he likes or not.
@@ -8,97 +23,26 @@ As a result, customers' opinions are the controllers behind every companies' goo
 They shape companies' marketing strategies, policies, and designs of products.
 They judge which company is more competent than another.
 
-\paragraph{Convolution Neural Networks and Recusive Neural Networks}
-Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN}.
-Although being a simple Convolution Neural Network architect on top of pre-trained word embedding channels, CNN-multichannel~\cite{KimCNN} was able to archive state-of-the-art performance\footnote{2014} on Stanford Sentiment Treebank with binary setting.
-Despite its success, for dealing with the problem composing fixed size presentation vectors given variable-length input sentences, CNN-multichannel utilized max-over-time pooling layer~\cite{nlp-scratch}.
-\textbf{Although max-over-time pooling largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback: the vector presentation of a sentence only tell if a feature appears in the sentence or not, the information about position of the feature is ignored}.
-The structure of CNN-multichannel is demonstrated in Fig.\ref{fig:CNN-multichannel}~\cite{KimCNN}.
+A long time ago, when companies needed to know opinions of their customers, they conducted surveys, opinion polls and focus groups~\cite{liu2012sentiment}.
+In recent years, thanks to the dramatic growth of social media, customers' opinions are expressed in the highest speed and volume ever recorded in history.
+With this amount of data, it is inefficient to read and analyze or even collect them manually. Sentiment analysis offers a way to collect and process public opinion automatically.
 
-\begin{figure*}[]
-	\centering
-	\includegraphics[scale=0.36]{figure/sentencecnn}
-	\caption[CNN-multichannel]{Structure of CNN-multichannel. 
-		At the convolution layer, each filter produces a feature map of the input sentence. 
-		In turn, each feature map through the max-over-time pooling layer produces a feature in the vector presentation of the sentence}
-	\label{fig:CNN-multichannel}
-\end{figure*}
-
-For dealing with the problem composing fixed size presentation vectors given variable-length input sentences, one intuitive solutions would be to apply Recurrent Neural Networks~\cite{cnn-rnn}.
-Another more complicated solution is utilizing Recursive Neural Networks.
-\textbf{Recursive Neural Networks have several advantages over Recurrent Neural Networks}~\cite{need-tree}~\cite{bowman-treevslstm}: 
+In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
+\textbf{Hypotheses that supported by our experiment results including}:
 \begin{itemize}
-	\item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize compare to sequential ones.
-	But when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
-	\item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
-	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+	\item For sentence-level sentiment analysis on movie reviews, there exist useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
+	On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+	
+	\item By adding a convolution layer before the leaf-module of Tree-LSTM, the convolution layer will help Tree-LSTM to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
+	Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer.
+	
+	\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. 
 \end{itemize}
 
-\textbf{Tree-LSTMs also have some drawbacks}, these drawbacks including:
-\begin{itemize}
-	\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
-	The performance of the system depends on the parser being used.
-	\item At their leaf-module, Tree-LSTMs have only a simple logistic regression layer on top of the vector presentation of a single word at that position. 
-\end{itemize}
-\section{Related Work}
-In recent years, the advancements of deep learning have led to dramatic improvements in the field of Sentiment Analysis:
-\begin{description}
-	\item [2013] Based on the theory that learning appropriate intermediate representations can lead to better generalisation~\cite{knowledge-matter}~\cite{tran-auto-encoder}, Socher and the co-authors augmented Rotten Tomatoes Movie Review  (RT-MR) dataset~\cite{Rotten-Tomato} with phrase-level sentiment labels (the new dataset was named Stanford Sentiment Treebank), in this way, any network can learn to correctly classify phrase-level sentiment, before it learns to classify sentence-level sentiment~\cite{socher2013recursive}. Along with the dataset, the authors also introduced three Recursive Neural Network, which inspired by the recursive structure of language ~\cite{socher2013recursive}.
-	They were able to archive state of the art performance on SST test set (which is similar to RT-MR test set).
-	Since then, this dataset has become the most popular dataset for the task of sentence-level sentiment analysis.
-	
-	In the same year, two other studies which have a large impact on the whole NLP community appeared.
-	Mikolov and his partners introduced word2vec which has the ability to learn a certain level of syntactic and semantic relationships among words~\cite{word2vec}.
-	Pre-learned word presentations have been used widely and become the “secret sauce” for the success of recent NLP systems~\cite{Luong_betterword}.
-	
-	Another research~\cite{GravesLSTM} popularized Long Short Term Memory Network (LSTM) and its "staked" variations (e.g. multilayer LSTM , Bidirectional LSTM).
-	By mitigating the problem of gradient vanishing of RNNs, LSTMs and its variations become so popular that, we can find them in most NLP publications from 2014 to 2017.
-	LSTMs is one of the first successful variation of RNNs which leads the way to many other more advanced RNNs variation~\cite{olah2016attention}.
-	
-	\item [2014] Applying only one layer CNN on multi-channel word embeddings, Yoon Kim successfully archived state of the art performance on SST (binary setting) as well as other datasets of different tasks~\cite{KimCNN}.
-	This success attracted many future researches applying CNN on sentiment analysis~\cite{2-layer-cnn}~\cite{cnn-rnn}.
-	
-	Another research which we applied in our thesis is Glove method for training word embeddings~\cite{glove}.
-	Different from word2vec, Glove vectors captures word co-occurrences globally in the corpus, whereas word2vec only captures local word co-occurrences in each window of its training examples~\cite{glove}.
-	
-	\item [2015] Combining recursive structure of Recursive Neural Networks~\cite{socher2013recursive} and LSTM~\cite{originLSTM}, Kai Sheng Tai, Socher and Christopher Manning introduced tree-structured LSTM  (TreeLSTM)~\cite{treeLSTM}.
-	Their models archived state of the art performance on SST (fine-grained setting) and task of semantic relatedness (SemEval~2014, Task~1~\cite{SemeEvalTask1}).
-	This success lead to multiple researches~\cite{need-tree}~\cite{bowman-treevslstm}~\cite{Graves_Nature2016} which aim to comparing tree-structured and sequential LSTM.
-	The question is whether tree-structured networks are necessary or at least have some advantages over sequential architects when processing recursive-structured languages~\cite{need-tree}~\cite{bowman-treevslstm}.
-	
-	In the same year, there are two researches~\cite{ParagraphVec}~\cite{semisup-seq2seq} of Quoc V. Le which introduced several methods for unsupervised pre-training neural network models for NLP tasks.
-	These methods help network models to mitigate over-fitting (which lead to better generalization) by allowing them to be pre-trained on large unlabeled datasets.
-	We will apply several unsupervised pre-train methods in this thesis.
-	
-	\item [2016] Xingyou Wang and his partners combined convolutional and recurrent neural networks to archive staggering improvement on SST (both binary and fine-grained setting).
-	Until now\footnote{July, 2017}, their models are state of the art on SST and also RT-MR~\cite{cnn-rnn}.
-\end{description}
-
-
-\section{Model Description}
-\subsection{Word Embeddings and Matrix Representations of Phrases}
-Embedding layer is a lookup table that converts input data (such as text) into its vector representation. Word embedding layer parameters are its embedding matrix $M  \in \mathbb{R}^{n \times d}$, where $n$ and $d$ are vocabulary size and embedding vector dimension, respectively. In practical, an embedding layer also comes with a vocabulary-index lookup table, which maps words with indexes, which has vector representation corresponding to the row in word embedding matrix.
-
-The following steps are required once for each experiment:
-\begin{itemize}
-	\item Build vocabulary-index lookup table
-	\item Init/Load word embedding matrix corresponding to vocabulary-index table
-	\item Convert every sentence in dataset into indices using vocabulary-index table
-\end{itemize}
-Usually, indices are kept as dataset. Raw dataset (such as readable words) are discarded to free up memory. For each mini-batch, we use indices to look up word representation vector from embedding matrix. Embedding matrix represents of each sentence in dataset are not saved and needed look-up every mini-batch for the following reason.
-\begin{itemize}
-	\item Saved embedding matrix for each data sentences cost more memory than saving only indices and look-up in embedding layer.
-	\item Embedding matrix contains trainable parameters and being updated every iteration.
-\end{itemize}
-
-Fig.\ref{fig:embeddinglayer} illustrates embedding layer component and describes the process of convert raw data sentence into its word representation.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.9\linewidth]{figure/embeddinglayer.pdf}
-	\caption[Overview of embedding layer]{Overview of Embedding Layer}
-	\label{fig:embeddinglayer}
-\end{figure}
+\section{Background}
+\subsection{Word Embeddings}
+Mikolov et al. introduced word2vec which has the ability to learn a certain level of syntactic and semantic relationships among words~\cite{word2vec}.
+Pre-learned word presentations have been used widely and become the “secret sauce” for the success of recent NLP systems~\cite{Luong_betterword}.
 \paragraph{Matrix presentation of sequences of words}
 Given any sentence \(s\) of length \(n\), we denote \(x_i \in \mathbb{R}^d\) as a vector presentation of word-\(i\)th in the sentence.
 Note that the first word in a sentence is word-\(0\)th, if the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
@@ -107,8 +51,108 @@ Any sequence of words in the sentence which start at word-\(i\)th and end at wor
 X_{i:j} &= x_i \oplus x_{i+1} \oplus ... \oplus x_{j} &\label{concat}
 \end{align}
 In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
+\subsection{Convolution and Pooling}
+Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN}.
+Although being a simple Convolution Neural Network architect on top of pre-trained word embedding channels, CNN-multichannel~\cite{KimCNN} was able to archive state-of-the-art performance\footnote{2014} on Stanford Sentiment Treebank with binary setting.
+Despite its success, for dealing with the problem composing fixed size presentation vectors given variable-length input sentences, CNN-multichannel utilized max-over-time pooling layer~\cite{nlp-scratch}.
+\subsection{Recurrent Neural Network}
+By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection~\cite{rnn-def}.
+\subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
+Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula~\cite{treeLSTM}:
+\begin{align}
+h_t &= tanh(Wi_t + Uh_{t-1} + b)&\label{eq:rnn}
+\end{align}
+In Eq.\ref{eq:rnn}, \(h_t\) is called state of the system~\cite{deeplearning-book}, but we can also treat \(h_t\) as an output of the unit.
+
+In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but  hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
+In layman's terms, the longer the dependencies between an output and an input the (exponentially ) harder it is for the training process to capture those dependencies.
+To mitigate the problem of vanishing gradient, Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented.
+\subsubsection{Long Short Term Memory unit}\label{sec:lstm}
+Given a input sequence \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Long Short Term Memory unit can be expressed as the following recursive formula~\cite{treeLSTM}:
+\begin{align}
+w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}) \label{eq:lstm-input-gate}&\\
+f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}) \label{eq:lstm-forget-gate}&\\
+o_t &= \sigma(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}) \label{eq:lstm-output-gate}&\\
+u_t &= tanh(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}) \label{eq:lstm-update-gate}&\\
+c_t &= r_t \otimes u_t + f_t \otimes c_{t-1} \label{eq:longterm-mem}&\\
+h_t &= o_t \otimes tanh(c_t) \label{eq:temperal-mem}&
+\end{align}
+In the formula above, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.
+The role of \(h_t\) in LSTM unit is similar to its role in Vanilla Recurrent unit.
+Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively.
+In addition, \(c_t\) is called memory cell.
+
+Consistently, LSTM outperform Vanilla RNN in most tasks.
+Intuitively, LSTM mitigates the problem of vanishing gradient by updating their memory through adding~\cite{evaluate-GRU}, although gradients still decrease through time, it is not exponentially~\cite{Graves-thesis}.
+\subsection{Recursive Neural Network}
+In most cases, to understand a sentence, we have to understand the phrases composing it.
+Analogously, to understand a phrase, we have to understand the phrases and words composing it.
+Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
+Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
+For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{figure/example-parse}
+	\caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.}
+	\label{fig:example-parse}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.36]{figure/example-compose}
+	\caption[Applying Recursive Neural Network on the phrase ``is very interesting'']{Applying Recursive Neural Network on the Constituency parse tree of the phrase ``is very interesting''.
+		The composition function of this network is denoted as \textbf{g}.}
+	\label{fig:example-compose}
+\end{figure}
+
+The core idea behind the design of Tree-LSTMs is to generalize the LSTMs for tree-structured inputs.
+Tree-LSTMs were able to archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
+
+\section{Gaps}
+\subsection{Convolution and Pooling}
+Although max-over-time pooling largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback: the vector presentation of a sentence only tell if a feature appears in the sentence or not, the information about position of the feature is ignored.
+
+\subsection{Recursive Neural Network}
+\textbf{Tree-LSTMs also have some drawbacks}, these drawbacks including:
+\begin{itemize}
+	\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
+	The performance of the system depends on the parser being used.
+	\item At their leaf-module, Tree-LSTMs have only a simple logistic regression layer on top of the vector presentation of a single word at that position.
+	The simple leaf-module of Tree-LSTMs might its weakness when dealing with the problem of words ambiguity.
+	This weakness becomes even more severe when the sentence is wrongly parsed. 
+\end{itemize}
+
+\subsection{Word Embeddings}
+There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
+Additionally, the ways people use words in movie reviews might be different from their usage in general documents.
+For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.
+
+Noticeably, many experiments~\cite{treeLSTM}~\cite{KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
+Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and not related words which only appear in test set.
+
+\section{Method}
+For dealing with the problem composing fixed size presentation vectors given variable-length input sentences, one intuitive solution would be to apply Recurrent Neural Networks~\cite{cnn-rnn}.
+Another more complicated solution is utilizing Recursive Neural Networks.
+\textbf{Recursive Neural Networks have several advantages over Recurrent Neural Networks}~\cite{need-tree}~\cite{bowman-treevslstm}: 
+\begin{itemize}
+	\item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
+	However, when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+	\item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
+	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+\end{itemize}
+
+Different from Tree-LSTMs, CNN-multichannel's~\cite{KimCNN} first convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
+Filters with large context window help CNN-multichannel to mitigate the problem of words ambiguity and to capture phrase-level feature.
+We think this is the reason why CNN-multichannel  can outperform TreeLSTMs, even when it have no respect for the positions of features. 
+
+We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
+We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
+Additionally, using Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max-over-time pooling layer.
+
+We inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
+The rest of TreeLSTM implementation was kept unchanged.
 \subsection{Convolution Layer}
 Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}
@@ -197,15 +241,13 @@ Given \({h_j}\) is the \({h}\) ouput of node \({j}\), the prediction at node \({
 
 In this module, for any \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
 For loss function, negative log-likelihood with \(L2\) regularization was used.
-\section{Model Enhancements}
 \subsection{Training Glove Vectors on Large Sentiment Dataset}
-\subsection{Multichannel Input}
-This method was introduced by Yoon Kim~\cite{KimCNN}.
-Although in his paper, in the training process of his 2-channel-CNN, Kim updated one channel and kept the other unchanged, we are not restricted ourselves to this rule.
-The type of word embeddings used in each channel, the number of channels and the method for updating each channel are treated as hyper-parameters.
+We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
+Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
 
-This method allows multiple parallel embedding layers in our model.
-In other words, each word is presented by multiple vector representations.
+We utilized Glove method to do transfer learning.
+We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
+This might help our models archiving better generalisation when training on small sentence-level sentiment dataset like Stanford Sentiment Treebank~\cite{socher2013recursive}.
 
 \section{Experiments}
 \subsection{Datasets}
@@ -232,58 +274,8 @@ Each review contains product review (rating, text, helpfulness vote) and metadat
 In this thesis, we only used a small part of Amazon Reviews.
 These parts include Amazon Movies and TV reviews (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and the new Movies and TV reviews (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
 
-Listing \ref{lst:amzreview} is a sample of book reviews.
-Amazon Book reviews and new Movies and TV dataset have the same format. Listing \ref{lst:oldamzreview} is a sample of Amazon Movies and TV reviews old dataset (7,850,072 reviews).
-
-\begin{lstlisting}[caption={Amazon reviews sample},label={lst:amzreview}]
-{
-"reviewerID": "AH2L9G3DQHHAJ",
-"asin": "0000000116",
-"reviewerName": "chris",
-"helpful": [5, 5],
-"reviewText": "Interesting Grisham tale of a lawyer that takes millions of dollars from his firm after faking his own death. Grisham usually is able to hook his readers early and ,in this case, doesn't play his hand to soon. The usually reliable Frank Mueller makes this story even an even better bet on Audiobook.",
-"overall": 4.0,
-"summary": "Show me the money!",
-"unixReviewTime": 1019865600,
-"reviewTime": "04 27, 2002"
-}
-\end{lstlisting}
-
-\begin{lstlisting}[caption={Old Amazon reviews sample},label={lst:oldamzreview}]
-{
-"reviewerID": "AH2L9G3DQHHAJ",
-"asin": "0000000116",
-"reviewerName": "chris",
-"helpful": [5, 5],
-"reviewText": "Interesting Grisham tale of a lawyer that takes millions of dollars from his firm after faking his own death. Grisham usually is able to hook his readers early and ,in this case, doesn't play his hand to soon. The usually reliable Frank Mueller makes this story even an even better bet on Audiobook.",
-"overall": 4.0,
-"summary": "Show me the money!",
-"unixReviewTime": 1019865600,
-"reviewTime": "04 27, 2002"
-}
-\end{lstlisting}
-
-The differences between the old Amazon reviews dataset\footnote{\url{https://snap.stanford.edu/data/web-Amazon.html}} and new Amazon reviews dataset\footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}} is that:
-They were gathered using different crawling methods, the author also solved the duplication problem in new the dataset~\cite{amazon-reviews}.
-Table \ref{table:moviereview} shows number of reviews by overall.
-
-\begin{table}[H]
-	\centering
-	\caption{New Movies and TV dataset}
-	\label{table:moviereview}
-	\begin{tabular}{@{}lllc@{}}
-		\toprule
-		& \multicolumn{3}{l}{Number of reviews}                         \\ \midrule
-		5-Star & 2761408 & \multirow{2}{*}{3618913} & \multirow{5}{*}{4607047} \\ \cmidrule(r){1-2}
-		4-Star & 857505  &                          &                          \\ \cmidrule(r){1-3}
-		3-Star & \multicolumn{2}{l}{415369}         &                          \\ \cmidrule(r){1-3}
-		2-Star & 233221  & \multirow{2}{*}{572765}  &                          \\ \cmidrule(r){1-2}
-		1-Star & 339544  &                          &                          \\ \bottomrule
-	\end{tabular}
-\end{table}
-
 \subsection{Experiment Setups}
-\subsubsection{Hyper-parameters and training}
+\subsubsection{Hyper-parameters and Training}
 For the models with only single input channel, we initialized word representation with Glove vectors~\cite{glove}.
 With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon.
 
@@ -303,13 +295,29 @@ w = w - \alpha\delta J(\theta)
 
 We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yielded observable better result than 20 epochs.
 \subsubsection{Glove Hyper-parameters and training}
+Steps for preprocessing Amazon dataset for training word vectors on Glove:
+\begin{enumerate}
+	\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+	\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
+	\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+	\item All the reviews were dumped into a plain text file.
+	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
+\end{enumerate}
+
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data. Step 2 and 3 help us to mitigate this problem.
+
+We named this word embeddings Glove Amazon.
+
 We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
 The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input.
 In total, the size of the corpus is 4.7 billions tokens.
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
 We named this word embeddings Glove Amazon.
-Apart from using Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM, the whole training process and hyper-parameters are kept unchanged.
+
+For evaluating, we used Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM.
+Apart from that, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
+
 \subsection{Results and Discussion}
 
 \begin{table*}[]
@@ -343,30 +351,15 @@ Apart from using Glove Amazon to replace Glove Common Crawl for initializing wor
 		& Dependency Tree-LSTM  ~\cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
 		& Constituency Tree-LSTM ~\cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
 		\hline
-		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 \\
-		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 \\
-		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)*
-		\\
-		\hline
 		\multirow{2}{*}{E}  & CNN GRU ~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
 		& CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)*\Bstrut    \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
-		\multirow{2}{*}{F} & Constituency TE Tree-GRU                 & 87.65 (0.34) & 88.25\Tstrut \\
-		& Dependency TE Tree-GRU                   & 87.13 (0.70)  & 88.00\Bstrut \\
-		\hline
-		\hline
-		\multirow{1}{*}{G} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\Bstrut \\
-		\hline
-		\hline
-		\multirow{3}{*}{H} & CNN LSTM                                 & 89.10 (0.39)  & 89.40 \Tstrut  \\
+		 & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\\
 		& 2 Channel CNN LSTM                        & 89.54    (0.22) & 89.79    \\
-		& Multichannel CNN LSTM (pretrained) & - & - \\
-		\hline
-		\multirow{4}{*}{I} & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
+		 & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
 		& CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 \\
 		& 2 Channel CNN Tree-LSTM  &\textbf{89.69 (0.36)} & \textbf{90.12}    \\
-		& Multichannel CNN Tree-LSTM (pretrained)        & - & -        \\
 	\end{tabular}
 \end{table*}
 
@@ -392,12 +385,6 @@ The second part is from Block F to I, which contains all models which were propo
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
 	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM which have been described in Sec.\ref{sec:treelstm}.
-	
-	\item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
-	GICF~\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) from training dataset which contains only document-level sentiment labels.
-	Paragraph-Vec~\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
-	LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} is a LSTM models with word embeddings layer initialized by PARAGRAM-SL999, word vectors trained on a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}) % which was trained using a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}).
-	In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word vectors which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
 	
 	\item[Block E] contains models which combine Convolution Neural Networks and Recurrent Neural Networks.
 	CNN GRU and CNN LSTM~\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}.
@@ -431,38 +418,7 @@ The result proves that there are some features only appearing in Glove Common Cr
 Otherwise, there would not be any improvement.
 
 \section{Conclusion}
-\subsection{Contributions}
-In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
-\textbf{Hypotheses that supported by our experiment results including}:
-\begin{itemize}
-	
-	\item For sentence-level sentiment analysis on movie reviews, there exist useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
-	On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
-	
-	\item By adding a convolution layer before the leaf-module of Tree-LSTM, the convolution layer will help Tree-LSTM to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
-	Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer.
-	
-	\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. 
-\end{itemize}
-
 \subsection{Future works}
-\label{unproved-hypo}
-\textbf{Hypotheses that we have not had efficient data to support or oppose}:
-
-\begin{itemize}
-	\item Unsupervised pre-training methods (on Amazon Reviews) can help improving Multichannel CNN LSTM and Multichannel CNN Tree-LSTM. (Sec.\ref{sec:unsupervised-pretrain})
-	
-	\item In many cases, words or phrases have different meaning depend on their contexts.
-	By pre-training Multichannel CNN LSTM as Language Model, these information about how to compose words can be embedded in word embeddings or parameters of the model.
-	
-	\item By training as Language Model on part of Amazon Reviews dataset, Multichannel CNN LSTM can learn more specific dependencies: The reviewer cries when watching a good romantic movie, or the viewer praises the novel and then criticizes the movie based on how good the novel is, or how sentiments being affected by sentence structures. 
-	
-	\item CNN Tree-LSTM performed worst than CNN LSTM, the reason might be because of over-fitting. (Sec.\ref{unproved:cnn-treelstm-overfit})
-\end{itemize}
-
-We will do experiments to have efficient data to support or oppose the unproved hypotheses above.
-We will also re-evaluate our models and methods on Stanford Sentiment Treebank with fine-grained setting.
-
 In many cases, the sentiment class of a sentence can only be revealed through multiple steps of induction and deduction on a knowledge base.
 We suspected that most of the networks we have done experiments with (e.g. Tree-LSTMs, CNN-multichannel and our model) do the sentiment classification task based on detecting features and do not rely on induction or deduction.
 We thinks that most of the knowledge these models have is embedded in their word embeddings (which have 6,255,600 parameters or double that number in case of two input channels compared to 722,153 parameters at most in these neural networks).
