@@ -258,7 +258,7 @@ In total, Standford Sentiment Treebank contains 11,855 sentences.
 The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences respectively.
 
 
-In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fine-grained sentiment label (see \textbf{Figure \ref{fig:sst}}).
+In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fine-grained sentiment label.
 Fine-grained sentiment is a setting which partition all sentiments into 5 classes: "Positive", "Somewhat Positive", "Neutral", "Somewhat Negative" and "Negative"~\cite{socher2013recursive} (a.k.a. \textbf{Fine-grained setting}).
 There are total 215,154 phrases in the whole dataset.
 
@@ -275,6 +275,26 @@ In this thesis, we only used a small part of Amazon Reviews.
 These parts include Amazon Movies and TV reviews (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and the new Movies and TV reviews (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
 
 \subsection{Experiment Setups}
+We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
+
+\begin{table}[H]
+	\centering
+	\caption{Number of trainable parameters of experimented models}
+	\label{table:paramtable}
+	\begin{tabular}{lll}
+		~ & Memory Cell & Parameters count \\ \hline
+		LSTM                     & 168         & 315,840          \\
+		BiLSTM                   & 168         & 315,840          \\
+		Constituency Tree-LSTM   & 150         & 316,800          \\
+		Dependency Tree-LSTM     & 168         & 315.840          \\
+		Constituency TE-Tree-GRU & 150         & 476,103          \\
+		Dependency TE-Tree-GRU   & 150         & 316,353          \\
+		CNN LSTM                 & 168         & 489,347          \\
+		CNN Tree-LSTM            & 150         & 482,153          \\
+		2 channel CNN LSTM       & 168         & 729,347          \\
+		2 channel CNN Tree-LSTM  & 150         & 722,153
+	\end{tabular}
+\end{table}
 \subsubsection{Hyper-parameters and Training}
 For the models with only single input channel, we initialized word representation with Glove vectors~\cite{glove}.
 With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon.
@@ -306,8 +326,6 @@ Steps for preprocessing Amazon dataset for training word vectors on Glove:
 
 The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data. Step 2 and 3 help us to mitigate this problem.
 
-We named this word embeddings Glove Amazon.
-
 We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
 The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input.
@@ -316,7 +334,7 @@ After the training process, the resulting word embeddings has vocabulary size of
 We named this word embeddings Glove Amazon.
 
 For evaluating, we used Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM.
-Apart from that, the whole training process and hyper-parameters are kept unchanged (Sec.\ref{sec:treelstm}).
+Apart from that, the whole training process and hyper-parameters are kept unchanged.
 
 \subsection{Results and Discussion}
 
@@ -377,14 +395,14 @@ The second part is from Block F to I, which contains all models which were propo
 	CNN-non-static and CNN-multichannel~\cite{KimCNN} are single layer CNN.
 	DCNN~\cite{DCNN} and MVCNN~\cite{2-layer-cnn} are multilayer CNN, with MVCNN is a very large model  which has 2 layers, 5 word embeddings channels and unsupervised pre-train using the method of Sentence Encoding.
 	\item[Block B] contains sequential/recurrent models.
-	LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec.\ref{sec:RNN}.
+	LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec??.\ref{sec:RNN}.
 	DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
 	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured model).
 	RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank).
 	It was inspired by the idea that natural languages have recursive structure, to understand a sentence we must understand its phrases and, to understand a phrase, we must understand its words.
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
-	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM which have been described in Sec.\ref{sec:treelstm}.
+	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM.
 	
 	\item[Block E] contains models which combine Convolution Neural Networks and Recurrent Neural Networks.
 	CNN GRU and CNN LSTM~\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}.
@@ -392,17 +410,17 @@ The second part is from Block F to I, which contains all models which were propo
 \end{description}
 \subsubsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
 \label{fact:glove-amazon-improve-tree}
-In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens) (Sec.\ref{sec:gloveamazone}).
-This method also outperformed all the Transfer Learning methods in Block D.
+In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
+
 Compared to Glove Amazon method, originally,  Paragraph-Vec~\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
 We also used PARAGRAM-SL999 for initializing the word embeddings layer of Constituency Tree-LSTM,
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of Glove Common Crawl.
 
-These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books (Sec.\ref{movie-hypothesis}).
+These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
 
 \subsubsection{Combining Recursive Neural Networks with Convolution Neural Networks}
 \label{proved:tree-conv-benefit}
-The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM (Sec.\ref{conv-tree-benefits}).
+The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
 Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM~\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
 CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
 We will prove this hypothesis by looking at the plots of error rate on training and validation set of these two models.
