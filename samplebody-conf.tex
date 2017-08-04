@@ -110,7 +110,38 @@ For demonstration, parse tree of the phrase ``is very interesting'' and its comp
 The core idea behind the design of Tree-LSTMs is to generalize the LSTMs for tree-structured inputs.
 Tree-LSTMs were able to archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
 
-\section{Gaps}
+Let \(d\) be the size of the input vectors, \(r
+\) be the size of the memory cell and \(z\) be the number of sentiment classes. 
+
+\paragraph{Leaf module}
+Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module can be expressed as follow:
+\begin{align}
+o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
+c &= W^{(c)} x + a^{(c)} & \\
+h &= o \odot \tanh{\left(c\right)} &
+\end{align}
+
+In this module, \(W^{(o)}, W^{(c)} \in \mathbb{R}^{r \times d}\) and \(a^{\left(o\right)}, a^{(c)} \in \mathbb{R}^r\).
+
+\paragraph{Composer module}
+Given the input vectors \({h_l}\), \({c_l}\) from the left child node and \({h_r}\), \({c_r}\) from the right child node, the calculation steps inside the composer module can be expressed as follow:
+\begin{align}
+i &= \sigma{ \left(U_l^{(i)} h_{l} + U_r^{(i)} h_{r} + b^{(i)} \right) } &\\
+f_{l} &= \sigma{\left(U_{l}^{(l)} h_{l} + U_{r}^{(l)} h_{r} + b^{(f)}\right)} & \\
+f_{r} &= \sigma{\left(U_{l}^{(r)} h_{l} + U_{r}^{(r)} h_{r} + b^{(f)}\right)} & \\
+o &= \sigma{\left( U_l^{(o)} h_{l} + U_r^{(o)} h_{r} + b^{(o)}\right)} &\\
+u &= \tanh{\left( U_l^{(u)} h_{l} + U_r^{(u)} h_{r} + b^{(u)}\right)} &\\
+c &= i \odot u + f_{l} \odot c_{l} + f_{r} \odot c_{r} & \\
+h &= o \odot \tanh{\left(c\right)} &
+\end{align}
+
+In this module, for any \(j \in \{i, l, r, o, u\}\) and \(x \in \{\l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
+
+\paragraph{Composing sentence}
+Given any sentence \({s}\) of length \({n}\) and its parse tree, originally, Tree-LSTM composes the output vectors by first applying its leaf module on each word vectors then applying its composition function at each node of the parse tree in a bottom-up manner.
+
+
+\section{Challenges}
 \subsection{Convolution and Pooling}
 Although max-over-time pooling largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback: the vector presentation of a sentence only tell if a feature appears in the sentence or not, the information about position of the feature is ignored.
 
@@ -172,66 +203,19 @@ c^{(v)}_j &= \sum_{h \in Z} \hat{c}^{(v)}_{jh}&
 
 By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence \(s\).
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.25]{figure/cnn-module}
-	\caption[Convolution layer with two input channels]{Convolution layer with two input channels}
-	\label{fig:cnn-module}
-\end{figure}
-
 Until now, we have not define the length of the feature map \(c^{(v)}\). 
 To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
-We demonstrate this policy in Fig.\ref{fig:half-padding}.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.4]{figure/half-padding}
-	\caption[Half padding, unit strides policy]{A convolution filter with window size 3 applying on a sentence according to half padding, unit strides policy.
-		The length of the resulted feature map is equal to that of the sentence.}
-	\label{fig:half-padding}
-\end{figure}
 
 Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature maps.
 After that, the column vectors of \(P\) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network.
 \subsection{Recursive Neural Network}
 For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
-Let \(d\) be the size of the input vectors, \(r
-\) be the size of the memory cell and \(z\) be the number of sentiment classes. 
 
-\paragraph{Leaf module}
-Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module can be expressed as follow:
-\begin{align}
-o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
-c &= W^{(c)} x + a^{(c)} & \\
-h &= o \odot \tanh{\left(c\right)} &
-\end{align}
 
-In this module, \(W^{(o)}, W^{(c)} \in \mathbb{R}^{r \times d}\) and \(a^{\left(o\right)}, a^{(c)} \in \mathbb{R}^r\).
-
-\paragraph{Composer module}
-Given the input vectors \({h_l}\), \({c_l}\) from the left child node and \({h_r}\), \({c_r}\) from the right child node, the calculation steps inside the composer module can be expressed as follow:
-\begin{align}
-i &= \sigma{ \left(U_l^{(i)} h_{l} + U_r^{(i)} h_{r} + b^{(i)} \right) } &\\
-f_{l} &= \sigma{\left(U_{l}^{(l)} h_{l} + U_{r}^{(l)} h_{r} + b^{(f)}\right)} & \\
-f_{r} &= \sigma{\left(U_{l}^{(r)} h_{l} + U_{r}^{(r)} h_{r} + b^{(f)}\right)} & \\
-o &= \sigma{\left( U_l^{(o)} h_{l} + U_r^{(o)} h_{r} + b^{(o)}\right)} &\\
-u &= \tanh{\left( U_l^{(u)} h_{l} + U_r^{(u)} h_{r} + b^{(u)}\right)} &\\
-c &= i \odot u + f_{l} \odot c_{l} + f_{r} \odot c_{r} & \\
-h &= o \odot \tanh{\left(c\right)} &
-\end{align}
-
-In this module, for any \(j \in \{i, l, r, o, u\}\) and \(x \in \{\l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
-
-\paragraph{Composing sentence}
-Given any sentence \({s}\) of length \({n}\) and its parse tree, originally, Tree-LSTM composes the output vectors by first applying its leaf module on each word vectors then applying its composition function at each node of the parse tree in a bottom-up manner.
-The output module is applied at the output \({h}\) of each node which has a sentiment label.
-
-In case convolution layer was added, the only different is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\({i}\)th is replaced with the \({i}\)th-column of the matrix \({P}\) produced by the convolution layer.
-This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
-
-\subsection{Output Module and Loss Function}
+\subsubsection{Output Module and Loss Function}
  Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
 Given \({h_j}\) is the \({h}\) ouput of node \({j}\), the prediction at node \({j}\) can be computed by the output module as follow:
 \begin{align}
@@ -241,6 +225,11 @@ Given \({h_j}\) is the \({h}\) ouput of node \({j}\), the prediction at node \({
 
 In this module, for any \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
 For loss function, negative log-likelihood with \(L2\) regularization was used.
+
+\subsubsection{Composing sentence}
+In a case which convolution layer was added, the only difference is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\(i\)th is replaced with the \(i\)th-column of the matrix \(P\) produced by the convolution layer.
+This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
+
 \subsection{Training Glove Vectors on Large Sentiment Dataset}
 We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
 Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
@@ -318,7 +307,7 @@ We found that 100 filters of size 3 words and 100 filters of size 5 words yield 
 Steps for preprocessing Amazon dataset for training word vectors on Glove:
 \begin{enumerate}
 	\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
-	\item All the reviews were grouped by product-ID ("asin" keyword in the \hyperref[sec:amazon]{JSON schema of the dataset}).
+	\item All the reviews were grouped by product-ID ("asin" keyword in the JSON schema of the dataset).
 	\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
 	\item All the reviews were dumped into a plain text file.
 	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
@@ -328,7 +317,7 @@ The reason for doing step 2 and step 3 is because there is no definition of end-
 
 We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
-The training process took the plain text file produced by the \hyperref[sec:preprocessamazonglove]{preprocessing steps} as its input.
+The training process took the plain text file produced by the preprocessing steps as its input.
 In total, the size of the corpus is 4.7 billions tokens.
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
 We named this word embeddings Glove Amazon.
