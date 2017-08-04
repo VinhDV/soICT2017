@@ -92,16 +92,46 @@ Given a sentence and its parse tree, a Recursive Neural Network composes the vec
 For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 
 
-\begin{figure}[H]
+\begin{figure}% [H] meow note: H cause weird bug
 	\centering
-	\includegraphics[scale=0.4]{figure/example-parse}
+	% \includegraphics[scale=0.4]{figure/example-parse}
+	%\resizebox{.4\textwidth}{!}{%
+		\begin{tikzpicture}
+		\node [sq] (v1) at (1,-1) {root};
+		\node [sq] (v2) at (1,-2) {S};
+		\node [sq] (v3) at (-1.5,-3) {NP};
+		\node [sq] (v6) at (-1.5,-4) {PRP};
+		\node [cir] (v7) at (-1.5,-5.5) {I};
+		\node [sq] (v4) at (1,-3) {VP};
+		\node [sq] (v8) at (0,-4) {VBP};
+		\node [cir] (v10) at (0,-5.5) {feed};
+		\node [cir] (v11) at (1.5,-5.5) {the};
+		\node [cir] (v12) at (3,-5.5) {cat};
+		\node [cir] (v13) at (4.5,-5.5) {.};
+		\node [sq] (v9) at (2,-4) {NP};
+		\node [sq] (v5) at (4.5,-3) {.};
+		\draw [->] (v1) edge (v2);
+		\draw [->] (v2) edge (v3);
+		\draw [->] (v2) edge (v4);
+		\draw [->] (v2) edge (v5);
+		\draw [->] (v3) edge (v6);
+		\draw [->] (v6) edge (v7);
+		\draw [->] (v4) edge (v8);
+		\draw [->] (v4) edge (v9);
+		\draw [->] (v8) edge (v10);
+		\draw [->] (v9) edge (v11);
+		\draw [->] (v9) edge (v12);
+		\draw [->] (v5) edge (v13);
+		\end{tikzpicture}
+	%}
 	\caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.}
 	\label{fig:example-parse}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure} % [H] meow note: H cause weird bug
 	\centering
-	\includegraphics[scale=0.36]{figure/example-compose}
+	% \includegraphics[scale=0.3]{figure/example-compose}
+	\input{figure/applyrnn.tikz}
 	\caption[Applying Recursive Neural Network on the phrase ``is very interesting'']{Applying Recursive Neural Network on the Constituency parse tree of the phrase ``is very interesting''.
 		The composition function of this network is denoted as \textbf{g}.}
 	\label{fig:example-compose}
