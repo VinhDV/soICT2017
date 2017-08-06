@@ -26,6 +26,8 @@
 
 % Tikz
 \usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{patterns}
 \usetikzlibrary{shapes.geometric, arrows}
 \tikzstyle{process} = [rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black ]
 \tikzstyle{io} = [rectangle, minimum width=0.5cm, minimum height=0.1cm, text centered, draw=white]
@@ -35,6 +37,14 @@
 \tikzstyle{cir} = [circle, minimum width=0.7cm, minimum height=0.7cm, text centered, draw=black ]
 \tikzstyle{sqvec} = [matrix,draw=black,thick] 
 \tikzstyle{cirsmall} = [circle, minimum width=0.3cm, minimum height=0.3cm, draw=black ]
+
+\tikzset{
+	sq1/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black},
+	sq1p/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black, pattern=north west lines},
+	circ/.style={circle, minimum width=0.4cm, minimum height=0.4cm, text centered, draw=black},
+	arrow/.style={thick,->},
+	sqvec/.style={matrix,matrix of nodes,nodes in empty cells},
+}
 
 \lstdefinestyle{mystyle}{
 	backgroundcolor=\color{backcolour},   
