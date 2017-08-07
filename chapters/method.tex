@@ -2,47 +2,29 @@
 For composing fixed size presentation vectors of a sentence given a set of variable-length feature maps, one intuitive solution would be to apply Recurrent Neural Networks which have been done by Wang et al.~\cite{cnn-rnn}.
 Another solution would be to utilize Recursive Neural Networks.
 
-Different from Tree-LSTMs, CNNs~\cite{KimCNN,DCNN,2-layer-cnn} first convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
+Different from the leaf module of Constituency Tree-LSTM, CNNs~\cite{KimCNN,DCNN,2-layer-cnn} fisrst convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
 Filters with large context window might help CNNs to mitigate the problem of words ambiguity and to capture phrase-level feature.
-We think this is the reason why CNNs  can outperform TreeLSTMs~\cite{KimCNN,2-layer-cnn}, even when it have no respect for the positions of features. 
+We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it have no respect for the positions of features. 
 
-We combined Convolution Neural Networks with Constituency Tree-LSTM by inserting a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
+We combined Convolution Neural Networks with Constituency Tree-LSTM.
 We hypothesized that the convolution layer will help Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
 Additionally, using Constituency Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max pooling layers.
-\subsection{Convolution Layer}
-For the case of multichannel input, given that the sentence is presented by any set of input channels \(Z\).
-We will modify Eq.\eqref{filter} as follow:
-\begin{align}
-\forall h \in Z, \; \; \hat{c}^{(v)}_{jh} &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)})& \\
-c^{(v)}_j &= \sum_{h \in Z} \hat{c}^{(v)}_{jh}&
-\end{align}
-Until now, we have not define the length of the feature map \(c^{(v)}\). 
-To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
-For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
+\subsection{Model}
+Our model has three modules: word embeddings, convolution layer and Constituency Tree-LSTM.
+\subsubsection{Convolution Layer}
+We reuse the definition of convolution layer which is described in Sec.~\ref{conv-layer}.
+For working with Constituency Tree-LSTM, after going though the convolution layer, the parse tree structure of sentence \(s\) must be applicable on the output of the convolution layer. 
+For archiving this purpose, we constrained all the feature maps produced by the convolution layer to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
+Additionally, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
 
 Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature maps.
-After that, the column vectors of \(P\) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network.
-\subsection{Recursive Neural Network}
-For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
-
-
-\subsubsection{Output Module and Loss Function}
- Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
-Given \({h_j}\) is the \({h}\) ouput of node \({j}\), the prediction at node \({j}\) can be computed by the output module as follow:
-\begin{align}
-\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
-\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
-\end{align}
-
-In this module, for any \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
-For loss function, negative log-likelihood with \(L2\) regularization was used.
-
-\subsubsection{Composing sentence}
-In a case which convolution layer was added, the only difference is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\(i\)th is replaced with the \(i\)th-column of the matrix \(P\) produced by the convolution layer.
-This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
-
-\subsection{Training Glove Vectors on Large Sentiment Dataset}
+After that, the column vectors of \(P\) are treated as input vectors for the Constituency Tree-LSTM.
+\subsubsection{Constituency Tree-LSTM}
+The definition of Constituency Tree-LSTM which is described in Sec.~\ref{treelstm} is reused.
+The only difference is that for any word-\(i\)th in the sentence, the vector representation of it is the \(i\)th-column of the matrix \(P\) produced by the convolution layer.
+This mean the size of any input vector for the Constituency Tree-LSTM is equal to the number of filters \(m\).
+\subsection{Model Enhancement}
 We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
 Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
 
