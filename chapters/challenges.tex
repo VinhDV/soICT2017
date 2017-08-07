@@ -1,21 +1,22 @@
 \section{Challenges}
 \subsection{Convolution and Pooling}
-Although max-over-time pooling largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback: the vector presentation of a sentence only tell if a feature appears in the sentence or not, the information about position of the feature is ignored.
-
+Although max pooling layer largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback.
+By down-sampling a feature map, although the resulted vector still contain information about the existence of a feature, it is likely that the information about position of the feature is ignored, especially for the case of max-over-time pooling.
 \subsection{Recursive Neural Network}
-\textbf{Tree-LSTMs also have some drawbacks}, these drawbacks including:
+Tree-LSTMs also have some drawbacks, these drawbacks including:
 \begin{itemize}
 	\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
 	The performance of the system depends on the parser being used.
 	\item At their leaf-module, Tree-LSTMs have only a simple logistic regression layer on top of the vector presentation of a single word at that position.
-	The simple leaf-module of Tree-LSTMs might its weakness when dealing with the problem of words ambiguity.
+	The simple leaf-module of Tree-LSTMs might be its weakness when dealing with the problem of words ambiguity.
 	This weakness becomes even more severe when the sentence is wrongly parsed. 
 \end{itemize}
-
 \subsection{Word Embeddings}
 There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
+These words might not appear or not have good vector representations in the pre-trained Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}.
+
 Additionally, the ways people use words in movie reviews might be different from their usage in general documents.
-For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.
+For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.
 
 Noticeably, many experiments~\cite{treeLSTM}~\cite{KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
 Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and not related words which only appear in test set.
