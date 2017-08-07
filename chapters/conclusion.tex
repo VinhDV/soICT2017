@@ -1,0 +1,9 @@
+\section{Conclusion}
+\subsection{Future works}
+In many cases, the sentiment class of a sentence can only be revealed through multiple steps of induction and deduction on a knowledge base.
+We suspected that most of the networks we have done experiments with (e.g. Tree-LSTMs, CNN-multichannel and our model) do the sentiment classification task based on detecting features and do not rely on induction or deduction.
+We thinks that most of the knowledge these models have is embedded in their word embeddings (which have 6,255,600 parameters or double that number in case of two input channels compared to 722,153 parameters at most in these neural networks).
+
+In recent years, Recurrent Neural Networks with external memory~\cite{Graves_Nature2016}~\cite{neural-turing-machine} have come into sight.
+DNC~\cite{Graves_Nature2016} was proved to have certain level of reasoning on the bAbI dataset~\cite{bAbi}.
+We hope that we can apply this reasoning ability on sentence-level sentiment analysis.

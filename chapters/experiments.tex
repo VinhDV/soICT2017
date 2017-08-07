@@ -1,0 +1,188 @@
+
+
+
+\section{Experiments}
+\subsection{Datasets}
+\subsubsection{Stanford Sentiment Treebank} \label{sec:sst}
+In this thesis, we used Standford Sentiment Treebank (SST) dataset~\cite{socher2013recursive} to evaluate our models sentence-level sentiment analysis task.
+Originally, the dataset was built based on Rotten Tomatoes Movie Review dataset~\cite{Rotten-Tomato}~\cite{socher2013recursive}.
+In total, Standford Sentiment Treebank contains 11,855 sentences.
+The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences respectively.
+
+
+In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}\footnote{Open source tool: \url{https://stanfordnlp.github.io/CoreNLP/}}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a fine-grained sentiment label.
+Fine-grained sentiment is a setting which partition all sentiments into 5 classes: "Positive", "Somewhat Positive", "Neutral", "Somewhat Negative" and "Negative"~\cite{socher2013recursive} (a.k.a. \textbf{Fine-grained setting}).
+There are total 215,154 phrases in the whole dataset.
+
+For \textbf{Binary setting}, there are only to sentiment classed on the entire dataset, which means all neutral sentiment sentences are removed, "Positive" and "Somewhat Positive" are merged into one class, the same rule applied on "Somewhat Negative" and "Negative"~\cite{socher2013recursive}.
+After all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in train/dev/test set.
+
+For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training example. 
+
+\subsubsection{Amazon Reviews}\label{sec:amazon}
+Amazon Reviews is a gigantic review dataset
+which contains 142.8 million reviews from Amazon spanning May 1996 - July 2014\footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}.
+Each review contains product review (rating, text, helpfulness vote) and metadata (descriptions, category information, price, brand, and image features)~\cite{amazon-reviews}.
+In this thesis, we only used a small part of Amazon Reviews.
+These parts include Amazon Movies and TV reviews (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews (22,507,155 reviews) and the new Movies and TV reviews (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+
+\subsection{Experiment Setups}
+We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
+
+\begin{table}[H]
+	\centering
+	\caption{Number of trainable parameters of experimented models}
+	\label{table:paramtable}
+	\begin{tabular}{lll}
+		~ & Memory Cell & Parameters count \\ \hline
+		LSTM                     & 168         & 315,840          \\
+		BiLSTM                   & 168         & 315,840          \\
+		Constituency Tree-LSTM   & 150         & 316,800          \\
+		Dependency Tree-LSTM     & 168         & 315.840          \\
+		Constituency TE-Tree-GRU & 150         & 476,103          \\
+		Dependency TE-Tree-GRU   & 150         & 316,353          \\
+		CNN LSTM                 & 168         & 489,347          \\
+		CNN Tree-LSTM            & 150         & 482,153          \\
+		2 channel CNN LSTM       & 168         & 729,347          \\
+		2 channel CNN Tree-LSTM  & 150         & 722,153
+	\end{tabular}
+\end{table}
+\subsubsection{Hyper-parameters and Training}
+For the models with only single input channel, we initialized word representation with Glove vectors~\cite{glove}.
+With two word embeddings channels, we initialized one channel using Glove Common Crawl\footnote{\label{glovecommoncrawl}Common Crawl (840B tokens, 2.2M vocabularies, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} and the other using our Glove Amazon.
+
+We tried a variety of convolution filters combination.
+For single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
+For two different kernel size, we tried with $\{100, 200\}$ number of kernels for each kernel size.
+Output matrices of different kernel sizes were concatenated as if they were with same kernel size.
+
+Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25.
+We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$ following Eq.\ref{eq:manuallyupdate}.
+We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
+We applied the same hyper-parameters grid search for two channels convolution.
+\begin{equation}
+\label{eq:manuallyupdate}
+w = w - \alpha\delta J(\theta)
+\end{equation}
+
+We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yielded observable better result than 20 epochs.
+\subsubsection{Glove Hyper-parameters and training}
+Steps for preprocessing Amazon dataset for training word vectors on Glove:
+\begin{enumerate}
+	\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+	\item All the reviews were grouped by product-ID ("asin" keyword in the JSON schema of the dataset).
+	\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+	\item All the reviews were dumped into a plain text file.
+	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
+\end{enumerate}
+
+The reason for doing step 2 and step 3 is because there is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data. Step 2 and 3 help us to mitigate this problem.
+
+We use Glove implementation\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}} to train word representation.
+We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
+The training process took the plain text file produced by the preprocessing steps as its input.
+In total, the size of the corpus is 4.7 billions tokens.
+After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
+We named this word embeddings Glove Amazon.
+
+For evaluating, we used Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM.
+Apart from that, the whole training process and hyper-parameters are kept unchanged.
+
+\subsection{Results and Discussion}
+
+\begin{table*}[]
+	\centering
+	\caption[Experiment result on SST]{Experiment results of models evaluated on Stanford Sentiment Treebank with binary setting.
+		The models which have both data of mean(std) and max are models which have been evaluated by us.
+		For these models, we report mean, standard deviation and max of 5 runs.
+		If a model has data of only mean(std) or only max, the data was taken from its originated research paper.
+		If the data of both mean(std) and max is missing, the model was not evaluated yet.
+		\textit{(*): Result reported by the original paper.}}
+	\label{table:experimentresult}
+	\begin{tabular}{c|lll}
+		\textbf{Block}    & \textbf{Model}  & \textbf{Mean(std)} & \textbf{Max}   \\
+		\Xhline{3\arrayrulewidth}
+		\Xhline{3\arrayrulewidth}
+		
+		\multirow{4}{*}{A} & CNN-non-static~\cite{KimCNN} & - & 87.20\Tstrut \\
+		& CNN-multichannel~\cite{KimCNN} & - & 88.10 \\
+		& DCNN~\cite{DCNN} & - & 86.80 \\
+		& MVCNN~\cite{2-layer-cnn} & - & 89.40 \\
+		\hline
+		\multirow{5}{*}{B} & LSTM~\cite{originLSTM}    & 86.64 (0.27) & 86.93  \\
+		& BiLSTM~\cite{GravesLSTM}  & 85.80 (0.69) & 86.43   \\
+		& 2-layer LSTM~\cite{GravesLSTM} & 86.30 (0.60) & - \\
+		& 2-layer Bidirectional LSTM~\cite{GravesLSTM} & 87.20 (1.00) & - \\
+		& DMN~\cite{attention-gru} & - & 88.60 \\
+		\hline
+		\multirow{5}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40  \\
+		& DRNN~\cite{IrsoyDRNN} & - & 86.60 \\
+		& TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 \\
+		& Dependency Tree-LSTM  ~\cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
+		& Constituency Tree-LSTM ~\cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
+		\hline
+		\multirow{2}{*}{E}  & CNN GRU ~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
+		& CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)*\Bstrut    \\
+		\Xhline{3\arrayrulewidth}
+		\Xhline{3\arrayrulewidth}
+		 & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\\
+		& 2 Channel CNN LSTM                        & 89.54    (0.22) & 89.79    \\
+		 & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
+		& CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 \\
+		& 2 Channel CNN Tree-LSTM  &\textbf{89.69 (0.36)} & \textbf{90.12}    \\
+	\end{tabular}
+\end{table*}
+
+
+% \textit{(***): CNN and LSTM layer are initialize using pre-trained parameters from Section \ref{sec:CNNtree}}
+
+Experiment results are summaries in Table \ref{table:experimentresult}.
+Table \ref{table:experimentresult} is divided into two parts.
+The first part is from Block A to E, which contains all baselines model.
+The second part is from Block F to I, which contains all models which were proposed and evaluated by us.
+
+\textbf{Descriptions of each Block in the first part}:
+\begin{description}
+	\item[Block A] contains Multilayer Convolution Neural Networks models.
+	CNN-non-static and CNN-multichannel~\cite{KimCNN} are single layer CNN.
+	DCNN~\cite{DCNN} and MVCNN~\cite{2-layer-cnn} are multilayer CNN, with MVCNN is a very large model  which has 2 layers, 5 word embeddings channels and unsupervised pre-train using the method of Sentence Encoding.
+	\item[Block B] contains sequential/recurrent models.
+	LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec??.\ref{sec:RNN}.
+	DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
+	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured model).
+	RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank).
+	It was inspired by the idea that natural languages have recursive structure, to understand a sentence we must understand its phrases and, to understand a phrase, we must understand its words.
+	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
+	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
+	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM.
+	
+	\item[Block E] contains models which combine Convolution Neural Networks and Recurrent Neural Networks.
+	CNN GRU and CNN LSTM~\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}.
+	In our experiments with CNN GRU and CNN LSTM, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
+\end{description}
+\subsubsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
+\label{fact:glove-amazon-improve-tree}
+In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
+
+Compared to Glove Amazon method, originally,  Paragraph-Vec~\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
+We also used PARAGRAM-SL999 for initializing the word embeddings layer of Constituency Tree-LSTM,
+the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of Glove Common Crawl.
+
+These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
+
+\subsubsection{Combining Recursive Neural Networks with Convolution Neural Networks}
+\label{proved:tree-conv-benefit}
+The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
+Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM~\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
+CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
+We will prove this hypothesis by looking at the plots of error rate on training and validation set of these two models.
+
+\label{proved:Amazon-adv-Common}
+We have seen that Glove Amazon improved Tree-LSTM in Sec.\ref{fact:glove-amazon-improve-tree}.
+In these experiments (Block I), Glove Amazon also improved CNN Tree-LSTM.
+We can conclude that Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that does not exist or hardly be extracted in Glove Common Crawl.
+
+According to Table.\ref{table:paramtable}, the number of parameters of 2 Channel CNN Tree-LSTM (722,153) is much larger than that of CNN Tree-LSTM (482,153), which makes it more likely for 2 Channel CNN Tree-LSTM to over-fit the training data.
+However, in fact, 2 Channel CNN Tree-LSTM was able to archive much higher accuracy than both CNN Tree-LSTM (Glove Amazon) and CNN Tree-LSTM (Glove Common Crawl).\label{proved:Common-syn-Amazon}
+The result proves that there are some features only appearing in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+Otherwise, there would not be any improvement.

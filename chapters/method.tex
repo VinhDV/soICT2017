@@ -1,0 +1,74 @@
+\section{Method}
+For dealing with the problem composing fixed size presentation vectors given variable-length input sentences, one intuitive solution would be to apply Recurrent Neural Networks~\cite{cnn-rnn}.
+Another more complicated solution is utilizing Recursive Neural Networks.
+\textbf{Recursive Neural Networks have several advantages over Recurrent Neural Networks}~\cite{need-tree}~\cite{bowman-treevslstm}: 
+\begin{itemize}
+	\item In case the input sequence belongs to recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
+	However, when we increase the limited length sentences, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+	\item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
+	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+\end{itemize}
+
+Different from Tree-LSTMs, CNN-multichannel's~\cite{KimCNN} first convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
+Filters with large context window help CNN-multichannel to mitigate the problem of words ambiguity and to capture phrase-level feature.
+We think this is the reason why CNN-multichannel  can outperform TreeLSTMs, even when it have no respect for the positions of features. 
+
+We combined Convolution Neural Networks with Tree-LSTM and sequential LSTM.
+We hypothesized that the convolution layer will help Tree-LSTMs to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
+Additionally, using Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max-over-time pooling layer.
+
+We inserted a convolution layer between the word embedding layer and the Tree-LSTM's leaf-module.
+The rest of TreeLSTM implementation was kept unchanged.
+\subsection{Convolution Layer}
+Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
+\begin{align}
+c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
+\end{align}
+
+In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.  
+\(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
+For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
+If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
+For the case of multichannel input, given that the sentence is presented by any set of input channels \(Z\).
+We will modify Eq.\eqref{filter} as follow:
+\begin{align}
+\forall h \in Z, \; \; \hat{c}^{(v)}_{jh} &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)})& \\
+c^{(v)}_j &= \sum_{h \in Z} \hat{c}^{(v)}_{jh}&
+\end{align}
+
+By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence \(s\).
+
+Until now, we have not define the length of the feature map \(c^{(v)}\). 
+To be able to work with Tree-LSTM (which required tree-structured inputs), all the feature maps produced by the convolution layer need to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
+For satisfying this constraint, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
+These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
+
+
+Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), which each of its row is a feature maps.
+After that, the column vectors of \(P\) are treated as input vectors for Tree-LSTM or any Recurrent Neural Network.
+\subsection{Recursive Neural Network}
+For this module, we reused Constituency Tree-LSTM~\cite{treeLSTM}.
+
+
+\subsubsection{Output Module and Loss Function}
+ Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
+Given \({h_j}\) is the \({h}\) ouput of node \({j}\), the prediction at node \({j}\) can be computed by the output module as follow:
+\begin{align}
+\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
+\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
+\end{align}
+
+In this module, for any \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
+For loss function, negative log-likelihood with \(L2\) regularization was used.
+
+\subsubsection{Composing sentence}
+In a case which convolution layer was added, the only difference is that for all \(0 \leq i \leq n-1\), the vector presentation of the word-\(i\)th is replaced with the \(i\)th-column of the matrix \(P\) produced by the convolution layer.
+This mean the size of input vectors \(d\) is equal to the number of filters \(m\).
+
+\subsection{Training Glove Vectors on Large Sentiment Dataset}
+We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
+Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
+
+We utilized Glove method to do transfer learning.
+We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
+This might help our models archiving better generalisation when training on small sentence-level sentiment dataset like Stanford Sentiment Treebank~\cite{socher2013recursive}.

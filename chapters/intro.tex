@@ -1,0 +1,40 @@
+\section{Introduction}
+In a nutshell, sentiment analysis is to determine whether the opinion about a specific product, event, organization is positive or negative. It is also known as opinion mining due to the sentiment was derived from opinions of the speaker.
+
+Formally, given document $d$, The main objective of sentiment analysis is define as quintuples~\cite{liu2012sentiment}:
+\[ ( e_{i}, a_{ij}, s_{ijkl}, h_{k}, t_{l} ) \]
+Where:
+\begin{itemize}
+	\item $e_{i}$: entity i (entity extraction and categorization)
+	\item $a_{ij}$: aspect j of entity i (entity extraction and categorization)
+	\item $h_{k}$: holder k (opinion holder extraction and categorization)
+	\item $t_{l}$: time l (time extraction and standardization)
+	\item $s_{ijkl}$: opinion of holder k about aspect j of entity i at time l (aspect sentiment classification)
+\end{itemize}
+Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. 
+A sentence is assumed only contain opinion toward one entity (a single movie) ~\cite{liu2012sentiment}.
+
+Before a customer buys any product, the decision of whether or not he will buy it depends largely on his prior opinions about that product.
+These opinions, in turn, have been built based on his opinions on relating companies or products and other customers' opinions about that product.
+After having been experiencing the product, his posterior opinions on the product not only tell us about which features he likes or not.
+His opinion also informs the retailer about the reasons why he bought the product, his expectations, needs and even more his personal information.
+In a circle, his opinions will also affect the opinion of new customers and even the design of future products.
+As a result, customers' opinions are the controllers behind every companies' good decisions.
+They shape companies' marketing strategies, policies, and designs of products.
+They judge which company is more competent than another.
+
+A long time ago, when companies needed to know opinions of their customers, they conducted surveys, opinion polls and focus groups~\cite{liu2012sentiment}.
+In recent years, thanks to the dramatic growth of social media, customers' opinions are expressed in the highest speed and volume ever recorded in history.
+With this amount of data, it is inefficient to read and analyze or even collect them manually. Sentiment analysis offers a way to collect and process public opinion automatically.
+
+In search of new improvements on the task of sentence-level sentiment analysis, we have tried three approaches: Utilizing local syntactic information at each node of Recursive Neural Networks; Transfer Learning by retraining Glove on Amazon Reviews dataset and Combining Recursive Neural Networks with Convolution Neural Networks.
+\textbf{Hypotheses that supported by our experiment results including}:
+\begin{itemize}
+	\item For sentence-level sentiment analysis on movie reviews, there exist useful features in Glove Amazon which does not exist or hardly be extracted in Glove Common Crawl.
+	On the other hand, there also exist useful features that does not appear in Glove Amazon but only appear in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+	
+	\item By adding a convolution layer before the leaf-module of Tree-LSTM, the convolution layer will help Tree-LSTM to mitigate the problem of lacking local context and weak feature capturing at leaf nodes.
+	Mutually, using Tree-LSTM to combine the feature maps produced by convolution layer is better than max-over-time pooling layer.
+	
+	\item  Tree-LSTMs have already utilized the information in word embeddings and the local syntactic information from tag embeddings adding no more value. 
+\end{itemize}
