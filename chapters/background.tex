@@ -16,7 +16,7 @@ In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the m
 \subsection{Convolution and Pooling}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
 Convolution Neural Networks usually constructed by staking up multiple convolution, pooling and fully connected layers.
-\subsubsection{Convolution layer}
+\subsubsection{Convolution Layer}
 Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}
 c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
@@ -27,23 +27,17 @@ For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
 
 By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence~\(s\).
-The length of the feature map \(c^{(v)}\) depends on the input sentence's length.
-\subsubsection{Pooling layer}
-
-Although being a simple Convolution Neural Network architect on top of pre-trained word embedding channels, CNN-multichannel~\cite{KimCNN} was able to archive state-of-the-art performance\footnote{2014} on Stanford Sentiment Treebank with binary setting.
-Despite its success, for dealing with the problem composing fixed size presentation vectors given variable-length input sentences, CNN-multichannel utilized max-over-time pooling layer~\cite{nlp-scratch}.
+The length of the feature map \(c^{(v)}\) depends on the length of the input sentence.
+Additionally, the length of \(c^{(v)}\) also depends on the way filter \(v\) was slided through the sentence and its window size \(l\)~\cite{conv-arith}.
+In summary, each filter produces a variable-length feature map of the sentence.
+As a result, when applying a convolution layer on a sentence, we get a set of variable-length feature maps.
+\subsubsection{Max Pooling Layer}
+For dealing with the problem of variable-length feature maps, several types of max pooling layer was employed.
+In general, given a input vector \(i\), a \(k\)-max pooling layer reduces the size of vector \(i\) by extracting the largest \(k\) entries from \(i\).
+In case \(k = 1\) the pooling layer is called max-over-time pooling~\cite{nlp-scratch,KimCNN}.
+Apart from being treated as a hyper-parameter, \(k\) can also be parameterized with respect to the length of the input sentence, in which case, the pooling layer is called dynamic k-max pooling~\cite{DCNN}.
 \subsection{Recurrent Neural Network}
 By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection~\cite{rnn-def}.
-\subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
-Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula~\cite{treeLSTM}:
-\begin{align}
-h_t &= tanh(Wi_t + Uh_{t-1} + b)&\label{eq:rnn}
-\end{align}
-In Eq.\ref{eq:rnn}, \(h_t\) is called state of the system~\cite{deeplearning-book}, but we can also treat \(h_t\) as an output of the unit.
-
-In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but  hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
-In layman's terms, the longer the dependencies between an output and an input the (exponentially ) harder it is for the training process to capture those dependencies.
-To mitigate the problem of vanishing gradient, Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented.
 \subsubsection{Long Short Term Memory unit}\label{sec:lstm}
 Given a input sequence \(I = (i_0,\ldots,i_n), \forall t, i_t \in \mathbb{R}^n\), Long Short Term Memory unit can be expressed as the following recursive formula~\cite{treeLSTM}:
 \begin{align}
