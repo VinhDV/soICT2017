@@ -5,34 +5,34 @@ The purpose of this method is to encode relevant syntactic and semantic features
 Usually, word embeddings are trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.   
 Pre-learned word presentations have been applied widely and become the ``secret sauce'' for the success of recent NLP systems~\cite{Luong_betterword}.
 \paragraph{Matrix presentation of sequences of words}
-For a word embedding~\(e\), given any sentence~\(s\) of length~\(n\), we denote~\(x^{(e)}_i \in \mathbb{R}^d\) as a vector presentation of word-\(i\)th in the sentence.
-The first word in a sentence is word-\(0\)th.
+Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses an independent word embedding, any sentence~\(s\) of length~\(n\) can be represented as a matrix.
+For indexing, the first word in a sentence is word-\(0\)th.
 In case the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
+
+For any word embedding~\(e\), the vector presentation of word-\(i\)th in \(s\) is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
+The vector presentation of word-\(i\)th through the set of input channels \(Z\) can be expressed as follow:
+\begin{align}
+ x_i &= w^{(e_0)}_i \ominus w^{(e_1)}_i \ominus  \ldots \ominus w^{(e_m)}_i&\label{concat-emb}
+\end{align}
+In Eq.\eqref{concat-emb}, \(\ominus\) is concatenation operator which result in the vector \(x_i \in \mathbb{R}^{d}\) with \(d = \sum_{e \in Z} d_e\).
 Any sequence of words in the sentence which start at word-\(i\)th and end at word-\(j\)th can be presented as the following matrix:
 \begin{align}
-X^{(e)}_{i:j} &= x^{(e)}_i \oplus x^{(e)}_{i+1} \oplus ... \oplus x^{(e)}_{j} &\label{concat}
+X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 \end{align}
-In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X^{(e)}_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
+In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
 \subsection{Convolution and Pooling}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
 Convolution Neural Networks usually constructed by staking up multiple convolution, pooling and fully connected layers.
 \subsubsection{Convolution Layer}\label{conv-layer}
 Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}
-c^{(v)}_j &= f(W^{(v)} \otimes X^{(e)}_{i:i+l-1} + b^{(v)}) &\label{filter}
+c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
 \end{align}
 In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.  
 \(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
 For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
 
-For the case of multichannel input, sentence \(s\) is presented through a set of input channels \(Z\) in which each channel present the sentence using a different word embedding. 
-In this case,
-Eq.\eqref{filter} is modified as follow~\cite{KimCNN}:
-\begin{align}
-\forall h \in Z, \; \; \hat{c}^{(v)}_{jh} &= f(W^{(v)} \otimes X^{(h)}_{i:i+l-1} + b^{(v)})& \\
-c^{(v)}_j &= \sum_{h \in Z} \hat{c}^{(v)}_{jh}&
-\end{align}
 By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence~\(s\).
 The length of the feature map \(c^{(v)}\) depends on the length of the input sentence.
 Additionally, the length of \(c^{(v)}\) also depends on the way filter \(v\) was slided through the sentence and its window size \(l\)~\cite{conv-arith}.
