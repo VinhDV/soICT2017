@@ -12,17 +12,17 @@ For training a Recurrent Neural Network on this dataset, any phrase which is spa
 For the remaining sentences, "Somewhat Positive" is merged into "Positive", similarly, "Somewhat Negative" applied on "Somewhat Negative" is merged into "Negative".
 Due to all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
 \subsubsection{Amazon Reviews}\label{sec:amazon}
-Amazon Reviews is a gigantic review dataset
+Amazon Reviews~\cite{amazon-reviews} is a gigantic review dataset
 which contains 142.8 million reviews from Amazon spanning May 1996 - July 2014\footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}.
-Each review contains product review (rating, text, helpfulness vote) and metadata (descriptions, category information, price, brand, and image features)~\cite{amazon-reviews}.
+Each review contains product review (rating, text, helpfulness vote) and metadata (descriptions, category information, price, brand, and image features).
 The dataset is partitioned into 24 categories (e.g. ``Books'', ``Electronics'', ``Office Products'', ``Movies and TV'').
 \subsection{Setups}
 \subsubsection{Glove Amazon}
 Steps for preprocessing Amazon dataset for training word vectors using Glove\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}}:
 \begin{enumerate}
-	\item For retraining Glove vectors, we only used Amazon Movies and TV reviews dataset (7,850,072 reviews)~\cite{mcauley2013hidden}, Amazon Book reviews(22,507,155 reviews) and new Movies and TV dataset (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
-	\item All the reviews were grouped by product-ID ("asin" keyword in the JSON schema of the dataset).
-	\item In each product-ID group, the reviews were sorted increasingly by their rating ("overall" keyword in the JSON schema of the dataset).
+	\item For retraining Glove vectors, we only used some partitions of Amazon Reviews dataset which includes:  ``Amazon Movies and TV'' (7,850,072 reviews)~\cite{mcauley2013hidden}, ``Books'' (22,507,155 reviews) and the new ``Movies and TV'' (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+	\item All the reviews were grouped by product-ID ( "asin" keyword in the JSON schema of the dataset).
+	\item In each product-ID group, the reviews were sorted increasingly by their ratings ("overall" keyword in the JSON schema of the dataset).
 	\item All the reviews were dumped into a plain text file.
 	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
 \end{enumerate}
@@ -35,22 +35,33 @@ In total, the size of the corpus is 4.7 billions tokens.
 After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
 We named this word embeddings Glove Amazon.
 \subsubsection{Model Variations}
-For evaluating, we used Glove Amazon to replace Glove Common Crawl for initializing word embedding layer of Tree-LSTM.
-Apart from that, the whole training process and hyper-parameters are kept unchanged.
-
+We did experiment with different variations of our model.
+\begin{description}
+	\item[CNN-Tree-LSTM] Our basic model which has only one input channel. 
+	This input channel is initialized using the standard Glove vectors\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}.
+	\item[CNN-Tree-LSTM (Glove Amazon)] CNN-Tree-LSTM but its input channel is initialized using Glove Amazon.
+	\item [2-channel CNN-Tree-LSTM] A model with two input channels, one is initialized using the standard Glove vectors while Glove Amazon is used for the other.
+\end{description}
+We do several more experiment for the sake of comparison.
+\begin{description}
+	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove Amazon is used to replace the standard Glove vector for initializing word embedding layer of Constituency Tree-LSTM.
+	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM are kept unchanged.
+	\item[CNN-LSTM] Similar to CNN-Tree-LSTM but the Constituency Tree-LSTM module is replaced by a LSTM unit.
+	This model have only one input channel which is initialized using the standard Glove vectors.
+	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM but its input channel is initialized using Glove Amazon.
+	\item [2-channel CNN-LSTM] CNN-LSTM but having two input channels, one is initialized with the standard Glove vectors and the other is initialized with Glove Amazon.
+\end{description}
 We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
 \begin{table}[H]
 	\centering
-	\caption{Number of trainable parameters of experimented models}
+	\caption{Number of trainable parameters of our models}
 	\label{table:paramtable}
 	\begin{tabular}{lll}
 		~ & Memory Cell & Parameters count \\ \hline
-		Constituency Tree-LSTM   & 150         & 316,800          \\
-		Dependency Tree-LSTM     & 168         & 315.840          \\
-		CNN LSTM                 & 168         & 489,347          \\
-		CNN Tree-LSTM            & 150         & 482,153          \\
-		2 channel CNN LSTM       & 168         & 729,347          \\
-		2 channel CNN Tree-LSTM  & 150         & 722,153
+		CNN-LSTM                 & 168         & 489,347          \\
+		CNN-Tree-LSTM            & 150         & 482,153          \\
+		2-channel CNN-LSTM       & 168         & 729,347          \\
+		2-channel CNN-Tree-LSTM  & 150         & 722,153
 	\end{tabular}
 \end{table}
 \subsubsection{Hyper-parameters and Training}

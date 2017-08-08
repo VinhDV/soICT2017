@@ -13,7 +13,7 @@ Tree-LSTMs also have some drawbacks, these drawbacks including:
 \end{itemize}
 \subsection{Word Embeddings}
 There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
-These words might not appear or not have good vector representations in the pre-trained Glove Common Crawl\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}.
+These words might not appear or not have good vector representations in the pre-trained Glove Common Crawl.
 
 Additionally, the ways people use words in movie reviews might be different from their usage in general documents.
 For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.

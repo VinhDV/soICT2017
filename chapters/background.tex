@@ -9,7 +9,7 @@ Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each 
 For indexing, the first word in a sentence is word-\(0\)th.
 In case the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
 
-For any word embedding~\(e\), the vector presentation of word-\(i\)th in \(s\) is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
+For any word embedding~\(e\), the vector presentation of the word-\(i\)th is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
 The vector presentation of word-\(i\)th through the set of input channels \(Z\) can be expressed as follow:
 \begin{align}
  x_i &= w^{(e_0)}_i \ominus w^{(e_1)}_i \ominus  \ldots \ominus w^{(e_m)}_i&\label{concat-emb}
