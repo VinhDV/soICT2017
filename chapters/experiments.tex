@@ -54,10 +54,11 @@ We do several more experiment for the sake of comparison.
 We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
 \begin{table}[H]
 	\centering
-	\caption{Number of trainable parameters of our models}
+	\caption{Number of trainable parameters of experimented models}
 	\label{table:paramtable}
 	\begin{tabular}{lll}
-		~ & Memory Cell & Parameters count \\ \hline
+		Model & r & \(\left\vert{\theta}\right\vert\) \\ \hline
+		Constituency Tree-LSTM   & 150         & 316,800          \\
 		CNN-LSTM                 & 168         & 489,347          \\
 		CNN-Tree-LSTM            & 150         & 482,153          \\
 		2-channel CNN-LSTM       & 168         & 729,347          \\
@@ -65,19 +66,18 @@ We index all our experimented models along with their number of parameters in Ta
 	\end{tabular}
 \end{table}
 \subsubsection{Hyper-parameters and Training}
+Our models was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$ and batch size of 25.
+Word vectors are updated with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$.
+
 We tried a variety of convolution filters combination.
-For single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
-For two different kernel size, we tried with $\{100, 200\}$ number of kernels for each kernel size.
+For the case all the filters having only a single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
+If a convolution layer has two different kernel sizes, we tried with the number of kernels of $\{100, 200\}$ for each kernel size in $\{3, 5\}$.
+We regularized the convolution layers with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
 
-Our model was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$, batch size of 25.
-We manually update our word representation with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$.
-We regularized convolution layer with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
-We applied the same hyper-parameters grid search for two channels convolution.
-
-We found that 100 filters of size 3 words and 100 filters of size 5 words yield better results compared to single filters size or the number of filters larger than 200. 
-We trained with Adagrad of learning rate of 0.01 and word vectors (updated manually) at learning rate 0.1 give the best result. 
-We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 60 epochs on CNN LSTM did not yielded observable better result than 20 epochs.
-\subsection{Results and Discussion}
+We found that 100 filters of size 3 and 100 filters of size 5 yield better results compared to single filters size or the number of filters larger than 200. 
+Additionally, training with Adagrad's learning rate of 0.01 and word vectors' learning rate 0.1 give the best result. 
+Our models were trained for 60 epochs.
+\subsection{Results}
 \begin{table*}[]
 	\centering
 	\caption[Experiment result on SST]{Experiment results of models evaluated on Stanford Sentiment Treebank with binary setting.
@@ -109,11 +109,17 @@ We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 
 		& Dependency Tree-LSTM  ~\cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
 		& Constituency Tree-LSTM ~\cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
 		\hline
+		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 \\
+		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 \\
+		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)*
+		\\
+		\hline
 		\multirow{2}{*}{E}  & CNN GRU ~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
 		& CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)*\Bstrut    \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
-		 & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35\Tstrut\\
+		\multirow{6}{*}{F} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35 \\
+		 & CNN LSTM                                 & 89.10 (0.39)  & 89.40  \\
 		& 2 Channel CNN LSTM                        & 89.54    (0.22) & 89.79    \\
 		 & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
 		& CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 \\
@@ -123,27 +129,30 @@ We trained for 60 epochs for CNN Tree-LSTM and 20 epochs for CNN LSTM. Training 
 Experiment results are summaries in Table \ref{table:experimentresult}.
 Table \ref{table:experimentresult} is divided into two parts.
 The first part is from Block A to E, which contains all baselines model.
-The second part is from Block F to I, which contains all models which were proposed and evaluated by us.
-
-\textbf{Descriptions of each Block in the first part}:
+The second part is Block F, which contains all models which were proposed and evaluated by us.
 \begin{description}
 	\item[Block A] contains Multilayer Convolution Neural Networks models.
 	CNN-non-static and CNN-multichannel~\cite{KimCNN} are single layer CNN.
 	DCNN~\cite{DCNN} and MVCNN~\cite{2-layer-cnn} are multilayer CNN, with MVCNN is a very large model  which has 2 layers, 5 word embeddings channels and unsupervised pre-train using the method of Sentence Encoding.
 	\item[Block B] contains sequential/recurrent models.
-	LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec??.\ref{sec:RNN}.
+	LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec.\ref{sec:RNN}.
 	DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
 	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured model).
 	RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank).
 	It was inspired by the idea that natural languages have recursive structure, to understand a sentence we must understand its phrases and, to understand a phrase, we must understand its words.
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
-	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM.
-	
+	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM which have been described in Sec.\ref{sec:treelstm}.
+	\item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
+	GICF~\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) from training dataset which contains only document-level sentiment labels.
+	Paragraph-Vec~\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
+	LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} is a LSTM models with word embeddings layer initialized by PARAGRAM-SL999, word vectors trained on a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}) % which was trained using a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}).
+	In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word vectors which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
 	\item[Block E] contains models which combine Convolution Neural Networks and Recurrent Neural Networks.
 	CNN GRU and CNN LSTM~\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}.
 	In our experiments with CNN GRU and CNN LSTM, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
 \end{description}
+\subsection{Discussion}
 \subsubsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
 \label{fact:glove-amazon-improve-tree}
 In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
