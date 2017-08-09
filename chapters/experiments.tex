@@ -87,43 +87,46 @@ Our models were trained for 60 epochs.
 		If the data of both mean(std) and max is missing, the model was not evaluated yet.
 		\textit{(*): Result reported by the original paper.}}
 	\label{table:experimentresult}
-	\begin{tabular}{c|lll}
-		\textbf{Block}    & \textbf{Model}  & \textbf{Mean(std)} & \textbf{Max}   \\
+	\begin{tabular}{c|l|ll|ll}
+		   ~ & ~  & \multicolumn{2}{c|}{\textbf{Binary}} & \multicolumn{2}{c}{\textbf{Fine-grained}}  \\
+		\cline{3-6}
+		\textbf{Block}    & \textbf{Model}  & \textbf{Mean(std)} & \textbf{Max} & \textbf{Mean(std)} & \textbf{Max}  \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
 		
-		\multirow{4}{*}{A} & CNN-non-static~\cite{KimCNN} & - & 87.20\Tstrut \\
-		& CNN-multichannel~\cite{KimCNN} & - & 88.10 \\
-		& DCNN~\cite{DCNN} & - & 86.80 \\
-		& MVCNN~\cite{2-layer-cnn} & - & 89.40 \\
+		\multirow{4}{*}{A} & CNN-non-static~\cite{KimCNN} & - & 87.20 & - & 48.00 \Tstrut \\
+		& CNN-multichannel~\cite{KimCNN} & - & 88.10 & - & 47.40\\
+		& DCNN~\cite{DCNN} & - & 86.80 & - & 48.50 \\
+		& MVCNN~\cite{2-layer-cnn} & - & 89.40 & - & 49.60 \\
 		\hline
-		\multirow{5}{*}{B} & LSTM~\cite{originLSTM}    & 86.64 (0.27) & 86.93  \\
-		& BiLSTM~\cite{GravesLSTM}  & 85.80 (0.69) & 86.43   \\
-		& 2-layer LSTM~\cite{GravesLSTM} & 86.30 (0.60) & - \\
-		& 2-layer Bidirectional LSTM~\cite{GravesLSTM} & 87.20 (1.00) & - \\
-		& DMN~\cite{attention-gru} & - & 88.60 \\
+		\multirow{5}{*}{B} & LSTM~\cite{treeLSTM}   & 84.9 (0.6) & - & 46.40 (1.1)& - \\
+		& BiLSTM~\cite{treeLSTM}  & 87.50 (0.5) & - & 49.1 (1.0) & -  \\
+		& 2-layer LSTM~\cite{treeLSTM} & 86.30 (0.60) & - & 46.00 (1.30) & -\\
+		& 2-layer Bidirectional LSTM~\cite{treeLSTM} & 87.20 (1.00) & - & 48.50 (1.00) & -\\
+		& DMN~\cite{attention-gru} & - & 88.60 & - & 52.10 \\
 		\hline
-		\multirow{5}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40  \\
-		& DRNN~\cite{IrsoyDRNN} & - & 86.60 \\
-		& TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 \\
-		& Dependency Tree-LSTM  ~\cite{treeLSTM}  & 85.70 (0.30)  & 85.80 \\
-		& Constituency Tree-LSTM ~\cite{treeLSTM} & 88.00 (0.40)    &   88.19\\
+		\multirow{5}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40 & - & 45.70 \\
+		& DRNN~\cite{IrsoyDRNN} & - & 86.60 & - & 49.80  \\
+		& TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 & - & 48.90\\
+		& Dependency Tree-LSTM~\cite{treeLSTM}  & 85.70 (0.40)  & - & 48.40 (0.4) & - \\
+		& Constituency Tree-LSTM~\cite{treeLSTM} & 88.00 (0.30)    &  - & 51.0 (0.5) & - \\
 		\hline
-		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 \\
-		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 \\
-		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)*
+		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 & - & - \\
+		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 & - & 48.70 \\
+		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)* &   &  
 		\\
 		\hline
 		\multirow{2}{*}{E}  & CNN GRU ~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
-		& CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)*\Bstrut    \\
+		& CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)* & 52.03 (0.77) & 52.56 (51.50)* \Bstrut    \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
 		\multirow{6}{*}{F} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35 \\
 		 & CNN LSTM                                 & 89.10 (0.39)  & 89.40  \\
+		  & CNN LSTM (Glove Amazon)                  &   &   \\
 		& 2 Channel CNN LSTM                        & 89.54    (0.22) & 89.79    \\
-		 & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 \\
-		& CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 \\
-		& 2 Channel CNN Tree-LSTM  &\textbf{89.69 (0.36)} & \textbf{90.12}    \\
+		 & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 & 51.35 (1.45) & 52.94 \\
+		& CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 & 51.51 (0.99) & 52.8 \\
+		& 2 Channel CNN Tree-LSTM  &\textbf{89.69 (0.36)} & \textbf{90.12}  & \textbf{52.46 (0.55)} & \textbf{53.03}  \\
 	\end{tabular}
 \end{table*}
 Experiment results are summaries in Table \ref{table:experimentresult}.
@@ -153,8 +156,6 @@ The second part is Block F, which contains all models which were proposed and ev
 	In our experiments with CNN GRU and CNN LSTM, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
 \end{description}
 \subsection{Discussion}
-\subsubsection{Transfer Learning by retraining Glove on Amazon Reviews dataset}
-\label{fact:glove-amazon-improve-tree}
 In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
 
 Compared to Glove Amazon method, originally,  Paragraph-Vec~\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
@@ -163,8 +164,6 @@ the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not 
 
 These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
 
-\subsubsection{Combining Recursive Neural Networks with Convolution Neural Networks}
-\label{proved:tree-conv-benefit}
 The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
 Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM~\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
 CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
