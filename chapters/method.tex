@@ -11,6 +11,11 @@ We hypothesized that the convolution layer will help Constituency Tree-LSTM to m
 Additionally, using Constituency Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max pooling layers.
 \subsection{Model}
 Our model has three modules: word embeddings, convolution layer and Constituency Tree-LSTM.
+\begin{figure} [H]
+	\centering
+	\input{figure/cnntreelstm.tikz}
+	\caption[qwerty]{CNN-Tree-LSTM}
+\end{figure}
 \subsubsection{Convolution Layer}
 We reuse the definition of convolution layer which is described in Sec.~\ref{conv-layer}.
 For working with Constituency Tree-LSTM, after going though the convolution layer, the parse tree structure of sentence \(s\) must be applicable on the output of the convolution layer. 

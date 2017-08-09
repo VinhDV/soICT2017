@@ -32,37 +32,47 @@ The reason for doing step 2 and step 3 is because there is no definition of end-
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
 The training process took the plain text file produced by the preprocessing steps as its input.
 In total, the size of the corpus is 4.7 billions tokens.
-After the training process, the resulting word embeddings has vocabulary size of 1,734,244.
-We named this word embeddings Glove Amazon.
-\subsubsection{Model Variations}
-We did experiment with different variations of our model.
+After the training process, the resulting word embedding has vocabulary size of 1,734,244.
+We named this new word embedding Glove Amazon.
+\subsubsection{Experiment Descriptions}
+We did experiment with Glove Amazon and different variations of our model.
 \begin{description}
+	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove Amazon is used to replace the standard Glove vector for initializing word embedding layer of Constituency Tree-LSTM.
+	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM~\cite{treelstm} are kept unchanged.
 	\item[CNN-Tree-LSTM] Our basic model which has only one input channel. 
 	This input channel is initialized using the standard Glove vectors\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}}.
 	\item[CNN-Tree-LSTM (Glove Amazon)] CNN-Tree-LSTM but its input channel is initialized using Glove Amazon.
 	\item [2-channel CNN-Tree-LSTM] A model with two input channels, one is initialized using the standard Glove vectors while Glove Amazon is used for the other.
-\end{description}
-We do several more experiment for the sake of comparison.
-\begin{description}
-	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove Amazon is used to replace the standard Glove vector for initializing word embedding layer of Constituency Tree-LSTM.
-	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM are kept unchanged.
 	\item[CNN-LSTM] Similar to CNN-Tree-LSTM but the Constituency Tree-LSTM module is replaced by a LSTM unit.
 	This model have only one input channel which is initialized using the standard Glove vectors.
 	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM but its input channel is initialized using Glove Amazon.
 	\item [2-channel CNN-LSTM] CNN-LSTM but having two input channels, one is initialized with the standard Glove vectors and the other is initialized with Glove Amazon.
 \end{description}
+We also re-run several related models and methods for evaluating their performances based on 5 runs.
+\begin{description}
+	\item[LSTM (PARAGRAM-SL999)~\cite{wieting2015towards}] A LSTM model with its word embedding layer initialized by PARAGRAM-SL999 which is a word embedding trained on a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb})
+	In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word vectors which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
+	\item [CNN-LSTM-word2vec~\cite{cnn-rnn}] This model is similar to our CNN-LSTM but a max pooling layer is added after the convolution layer.  
+	The pooling layer help to reduce the size of the feature maps by a half.
+	Another different compared to our model is that the word embedding layer of this model is initialized using the pre-trained word2vec vectors\footnote{\url{https://code.google.com/archive/p/word2vec/}}.
+	\item [CNN-GRU-word2vec~\cite{cnn-rnn}] Similar to CNN-LSTM-word2vec, but in this model, GRU unit~\cite{gru} is used instead of LSTM unit.
+	In our experiments with CNN-GRU-word2vec and CNN-LSTM-word2vec, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
+\end{description}
 We index all our experimented models along with their number of parameters in Table.\ref{table:paramtable}.
 \begin{table}[H]
 	\centering
-	\caption{Number of trainable parameters of experimented models}
+	\caption{Size of memory cell \(r\) and number of trainable parameters \(\left\vert{\theta}\right\vert\) of our models. 
+	}
 	\label{table:paramtable}
-	\begin{tabular}{lll}
-		Model & r & \(\left\vert{\theta}\right\vert\) \\ \hline
-		Constituency Tree-LSTM   & 150         & 316,800          \\
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Model & \(r\) & \(\left\vert{\theta}\right\vert\) \\ \hline
 		CNN-LSTM                 & 168         & 489,347          \\
 		CNN-Tree-LSTM            & 150         & 482,153          \\
 		2-channel CNN-LSTM       & 168         & 729,347          \\
-		2-channel CNN-Tree-LSTM  & 150         & 722,153
+		2-channel CNN-Tree-LSTM  & 150         & 
+		722,153 \\
+		\hline
 	\end{tabular}
 \end{table}
 \subsubsection{Hyper-parameters and Training}
@@ -80,15 +90,15 @@ Our models were trained for 60 epochs.
 \subsection{Results}
 \begin{table*}[]
 	\centering
-	\caption[Experiment result on SST]{Experiment results of models evaluated on Stanford Sentiment Treebank with binary setting.
+	\caption[Experiment result on SST]{Experiment results of models evaluated on Stanford Sentiment Treebank.
 		The models which have both data of mean(std) and max are models which have been evaluated by us.
 		For these models, we report mean, standard deviation and max of 5 runs.
-		If a model has data of only mean(std) or only max, the data was taken from its originated research paper.
-		If the data of both mean(std) and max is missing, the model was not evaluated yet.
+		If a model has data of only mean(std) or only max, the data is taken from its originated research paper.
 		\textit{(*): Result reported by the original paper.}}
 	\label{table:experimentresult}
-	\begin{tabular}{c|l|ll|ll}
-		   ~ & ~  & \multicolumn{2}{c|}{\textbf{Binary}} & \multicolumn{2}{c}{\textbf{Fine-grained}}  \\
+	\begin{tabular}{|c|l|ll|ll|}
+		\hline
+		   ~ & ~  & \multicolumn{2}{c|}{\textbf{Binary}} & \multicolumn{2}{c|}{\textbf{Fine-grained}}  \\
 		\cline{3-6}
 		\textbf{Block}    & \textbf{Model}  & \textbf{Mean(std)} & \textbf{Max} & \textbf{Mean(std)} & \textbf{Max}  \\
 		\Xhline{3\arrayrulewidth}
@@ -113,20 +123,21 @@ Our models were trained for 60 epochs.
 		\hline
 		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 & - & - \\
 		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 & - & 48.70 \\
-		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)* &   &  
+		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)* & 00.00 (00.00)  & 00.00 (00.00)*
 		\\
 		\hline
-		\multirow{2}{*}{E}  & CNN GRU ~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)*    \\
-		& CNN LSTM ~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)* & 52.03 (0.77) & 52.56 (51.50)* \Bstrut    \\
+		\multirow{2}{*}{E}  & CNN-GRU-word2vec~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)* & 00.00 (00.00) & 00.00 (00.00)*   \\
+		& CNN-LSTM-word2vec~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)* & 52.03 (0.77) & 52.56 (51.50)* \Bstrut    \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
-		\multirow{6}{*}{F} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35 \Tstrut \\
-		 & CNN LSTM                                 & 89.10 (0.39)  & 89.40  \\
-		  & CNN LSTM (Glove Amazon)                  &   &   \\
-		& 2 Channel CNN LSTM                        & 89.54    (0.22) & 89.79    \\
-		 & CNN Tree-LSTM                            & 88.82 (0.13) & 88.92 & 51.35 (1.45) & 52.94 \\
-		& CNN Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 & 51.51 (0.99) & 52.8 \\
-		& 2 Channel CNN Tree-LSTM  &\textbf{89.69 (0.36)} & \textbf{90.12}  & \textbf{52.46 (0.55)} & \textbf{53.03}  \\
+		\multirow{6}{*}{F} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35 & 00.00 (00.00) & 00.00 \Tstrut \\
+		 & CNN-LSTM                                 & 89.10 (0.39)  & 89.40 & 00.00 (00.00) & 00.00 \\
+		  & CNN-LSTM (Glove Amazon) & 00.00 (00.00) & 00.00  & 00.00 (00.00) & 00.00 \\
+		& 2-channel CNN-LSTM                        & 89.54    (0.22) & 89.79 & 00.00 (00.00) & 00.00 \\
+		 & CNN-Tree-LSTM                            & 88.82 (0.13) & 88.92 & 51.35 (1.45) & 52.94 \\
+		& CNN-Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 & 51.51 (0.99) & 52.80 \\
+		& 2-channel CNN-Tree-LSTM  &\textbf{89.70 (0.36)} & \textbf{90.12}  & \textbf{52.46 (0.55)} & \textbf{53.03} \Bstrut  \\
+		\hline
 	\end{tabular}
 \end{table*}
 Experiment results are summaries in Table \ref{table:experimentresult}.
@@ -134,47 +145,41 @@ Table \ref{table:experimentresult} is divided into two parts.
 The first part is from Block A to E, which contains all baselines model.
 The second part is Block F, which contains all models which were proposed and evaluated by us.
 \begin{description}
-	\item[Block A] contains Multilayer Convolution Neural Networks models.
+	\item[Block A] contains convolution neural networks.
 	CNN-non-static and CNN-multichannel~\cite{KimCNN} are single layer CNN.
-	DCNN~\cite{DCNN} and MVCNN~\cite{2-layer-cnn} are multilayer CNN, with MVCNN is a very large model  which has 2 layers, 5 word embeddings channels and unsupervised pre-train using the method of Sentence Encoding.
-	\item[Block B] contains sequential/recurrent models.
-	LSTM~\cite{originLSTM}, BiLSTM~\cite{GravesLSTM}, 2-layer LSTM~\cite{GravesLSTM} and 2-layer Bidirectional LSTM~\cite{GravesLSTM} have been described in Sec.\ref{sec:RNN}.
+	DCNN~\cite{DCNN} and MVCNN~\cite{2-layer-cnn} are multilayer CNNs, with MVCNN is a large model  which has 2 layers and 5 input channels.
+	\item[Block B] contains recurrent neural network models and their variations.
+	All the models in this block process sentences sequentially.
 	DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
-	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured model).
+	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured models).
 	RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank).
-	It was inspired by the idea that natural languages have recursive structure, to understand a sentence we must understand its phrases and, to understand a phrase, we must understand its words.
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
-	Dependency and Constituency Tree-LSTM~\cite{treeLSTM} are tree-structured versions of LSTM which have been described in Sec.\ref{sec:treelstm}.
 	\item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
-	GICF~\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) from training dataset which contains only document-level sentiment labels.
+	GICF~\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) using only document-level sentiment labels training dataset.
 	Paragraph-Vec~\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
-	LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} is a LSTM models with word embeddings layer initialized by PARAGRAM-SL999, word vectors trained on a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}) % which was trained using a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb}).
-	In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word vectors which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
 	\item[Block E] contains models which combine Convolution Neural Networks and Recurrent Neural Networks.
-	CNN GRU and CNN LSTM~\cite{cnn-rnn} have been described in detail in Sec.\ref{cnn-rnn}.
-	In our experiments with CNN GRU and CNN LSTM, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
 \end{description}
 \subsection{Discussion}
-In Block G, Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using Glove Common Crawl even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
+The fact that CNN-Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} and CNN-multichannel\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
 
-Compared to Glove Amazon method, originally,  Paragraph-Vec~\cite{ParagraphVec} cannot be fine-tuning in a supervised manner.
-We also used PARAGRAM-SL999 for initializing the word embeddings layer of Constituency Tree-LSTM,
-the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of Glove Common Crawl.
+Due to using similar architects, CNN-LSTM was comparable with CNN-GRU-word2vec and CNN-LSTM-word2vec~\cite{cnn-rnn}.
+The max pooling layer in CNN-LSTM-word2vec might help it to better generalize compares to our CNN-LSTM.
 
-These results support our hypothesis that by training word embeddings on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
+Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using standard Glove even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
+Additionally, Glove Amazon also improved CNN-Tree-LSTM.
+We can conclude that Amazon Glove captured some useful features that does not exist or hardly be extracted in standard Glove.
+This result support our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
 
-The fact that CNN Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
-Due to using similar architects, CNN LSTM was comparable with CNN GRU and CNN LSTM~\cite{cnn-rnn}. \label{unproved:cnn-treelstm-overfit}
-CNN Tree-LSTM performed worst than CNN LSTM, the reason might because of over-fitting.
-We will prove this hypothesis by looking at the plots of error rate on training and validation set of these two models.
-
-\label{proved:Amazon-adv-Common}
-We have seen that Glove Amazon improved Tree-LSTM in Sec.\ref{fact:glove-amazon-improve-tree}.
-In these experiments (Block I), Glove Amazon also improved CNN Tree-LSTM.
-We can conclude that Amazon Glove captured some good\footnote{good for the task of sentiment analysis of movie reviews} features that does not exist or hardly be extracted in Glove Common Crawl.
-
-According to Table.\ref{table:paramtable}, the number of parameters of 2 Channel CNN Tree-LSTM (722,153) is much larger than that of CNN Tree-LSTM (482,153), which makes it more likely for 2 Channel CNN Tree-LSTM to over-fit the training data.
-However, in fact, 2 Channel CNN Tree-LSTM was able to archive much higher accuracy than both CNN Tree-LSTM (Glove Amazon) and CNN Tree-LSTM (Glove Common Crawl).\label{proved:Common-syn-Amazon}
-The result proves that there are some features only appearing in Glove Common Crawl or when combining both Glove Amazon and Glove Common Crawl.
+On the other hand, the number of parameters of 2-channel CNN-Tree-LSTM (722,153) is much larger than that of CNN-Tree-LSTM (482,153), which makes it more likely for 2-channel CNN-Tree-LSTM to over-fit the training data.
+However, 2-channel CNN-Tree-LSTM was able to archive much higher accuracy than both CNN-Tree-LSTM (Glove Amazon) and CNN-Tree-LSTM (standard Glove).
+For the case of 2-channel CNN-LSTM versus CNN-LSTM an analogous observation can be made.
+Thees results proves that there are some useful features only appearing in standard Glove or when combining both Glove Amazon and standard Glove.
 Otherwise, there would not be any improvement.
+The combination of Glove Amazon and standard Glove help 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM to outperform both CNN-GRU-word2vec and CNN-LSTM-word2vec.
+
+We also used PARAGRAM-SL999 for initializing the word embedding layer of Constituency Tree-LSTM,
+the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
+
+CNN-Tree-LSTM performed worst than CNN-LSTM, the reason might because of over-fitting.
+But 2-channel CNN-Tree-LSTM was able to outperform 2-channel CNN-Tree-LSTM .

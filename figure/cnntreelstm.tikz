@@ -84,7 +84,7 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8.5) {
 
 \draw (v-1-4.north west) -- (c5-2-1.west); % inner left
 \draw (v3-1-1.north east) -- (c5-2-1.east); % inner right
-\draw (v-1-2.north west) -- (c5-1-1.west); % outer left
+\draw (v-1-3.north west) -- (c5-1-1.west); % outer left
 \draw (v4-1-1.north east) -- (c5-1-1.east); % outer right
 
 
