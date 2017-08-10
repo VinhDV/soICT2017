@@ -1,8 +1,8 @@
 \section{Challenges}
-\subsection{Convolution and Pooling}
+\subsection{Convolution and Pooling}\label{sec:cnn-weak}
 Although max pooling layer largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback.
 By down-sampling a feature map, although the resulted vector still contain information about the existence of a feature, it is likely that the information about position of the feature is ignored, especially for the case of max-over-time pooling.
-\subsection{Recursive Neural Network}
+\subsection{Recursive Neural Network}\label{sec:recursive-nn-weak}
 Tree-LSTMs also have some drawbacks, these drawbacks including:
 \begin{itemize}
 	\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
@@ -11,7 +11,7 @@ Tree-LSTMs also have some drawbacks, these drawbacks including:
 	The simple leaf-module of Tree-LSTMs might be its weakness when dealing with the problem of words ambiguity.
 	This weakness becomes even more severe when the sentence is wrongly parsed. 
 \end{itemize}
-\subsection{Word Embeddings}
+\subsection{Word Embeddings}\label{sec:word-weak}
 There are many words (e.g. ``B-rated'', ``Batman'', ``Nolan'', ``cartoonlike'') which rarely appears in regular documents but more often in movie reviews.
 These words might not appear or not have good vector representations in the pre-trained Glove Common Crawl.
 

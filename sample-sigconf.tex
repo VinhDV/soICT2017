@@ -128,16 +128,12 @@
 
 
 \begin{abstract}
-The purpose of this thesis is to increase the classification accuracy on the task of sentence-level Sentiment Analysis.
-For this purpose, three approaches were explored.
-In the first approach, we tried to improve Recursive Neural Networks by parameterizing their composition functions with respect to local syntactic information at each node in the parse tree.
-For our second approach, we recognized that one major obstacle of this task is the lack of context and knowledge in the small training set.
-To tackle this problem, we utilized Glove method to do Transfer Learning on a large amount of document-level labeled sentiment data.
-In the third approach, we combined Convolution Neural Networks with Recursive Neural Networks, which result in new sophisticated networks architect.
-To mitigate the risk posed by training large networks on small training dataset, we experimented with several unsupervised pre-training methods which also types of Transfer Learning.
-
-We evaluated our models on the public Stanford Sentiment Treebank dataset with binary setting.
-We were able to outperform the state-of-the-art model by a good margin in terms average accuracy of 5 runs.
+This present work addressed the problem of sentence-level sentiment analysis.
+In recent years, Convolution and Recursive Neural Networks have been proved to be effective network architects for sentence-level sentiment analysis.
+Nevertheless, each of them have their own potential drawbacks.
+For alleviating their weaknesses, we combined Convolution and Recursive Neural Networks into a new network architect.
+In addition, we employed transfer learning from a large document-level labeled sentiment dataset to improve word embedding in our models.
+The resulted models are able to reach comparable performance to both state-of-the-art systems on the binary and fine-grained setting of Stanford Sentiment Treebank with 90.28\% and 53.03\% accuracy, respectively. 
 
 \end{abstract}
 
@@ -147,37 +143,25 @@ We were able to outperform the state-of-the-art model by a good margin in terms 
 % Please copy and paste the code instead of the example below. 
 %
 \begin{CCSXML}
-<ccs2012>
- <concept>
-  <concept_id>10010520.10010553.10010562</concept_id>
-  <concept_desc>Computer systems organization~Embedded systems</concept_desc>
-  <concept_significance>500</concept_significance>
- </concept>
- <concept>
-  <concept_id>10010520.10010575.10010755</concept_id>
-  <concept_desc>Computer systems organization~Redundancy</concept_desc>
-  <concept_significance>300</concept_significance>
- </concept>
- <concept>
-  <concept_id>10010520.10010553.10010554</concept_id>
-  <concept_desc>Computer systems organization~Robotics</concept_desc>
-  <concept_significance>100</concept_significance>
- </concept>
- <concept>
-  <concept_id>10003033.10003083.10003095</concept_id>
-  <concept_desc>Networks~Network reliability</concept_desc>
-  <concept_significance>100</concept_significance>
- </concept>
-</ccs2012>  
+	<ccs2012>
+	<concept>
+	<concept_id>10002951.10003317.10003347.10003353</concept_id>
+	<concept_desc>Information systems~Sentiment analysis</concept_desc>
+	<concept_significance>500</concept_significance>
+	</concept>
+	<concept>
+	<concept_id>10010147.10010257.10010258.10010262.10010277</concept_id>
+	<concept_desc>Computing methodologies~Transfer learning</concept_desc>
+	<concept_significance>300</concept_significance>
+	</concept>
+	</ccs2012>
 \end{CCSXML}
 
-\ccsdesc[500]{Computer systems organization~Embedded systems}
-\ccsdesc[300]{Computer systems organization~Redundancy}
-\ccsdesc{Computer systems organization~Robotics}
-\ccsdesc[100]{Networks~Network reliability}
+\ccsdesc[500]{Information systems~Sentiment analysis}
+\ccsdesc[300]{Computing methodologies~Transfer learning}
 
 
-\keywords{ACM proceedings, \LaTeX, text tagging}
+\keywords{Sentence-level Sentiment Analysis, Convolution Neural Network, Recursive Neural Network, Transfer Learning}
 
 
 \maketitle

@@ -4,7 +4,7 @@ A word embedding is a function mapping from words to their continuous vector rep
 The purpose of this method is to encode relevant syntactic and semantic features of words as relationships among their representation vectors.
 Usually, word embeddings are trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.   
 Pre-learned word presentations have been applied widely and become the ``secret sauce'' for the success of recent NLP systems~\cite{Luong_betterword}.
-\subsubsection{Matrix presentation of sequences of words}
+\subsubsection{Matrix Representation of Sequences of Words}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses an independent word embedding, any sentence~\(s\) of length~\(n\) can be represented as a matrix.
 For indexing, the first word in a sentence is word-\(0\)th.
 In case the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
@@ -20,7 +20,7 @@ Any sequence of words in the sentence which start at word-\(i\)th and end at wor
 X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 \end{align}
 In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
-\subsection{Convolution and Pooling}
+\subsection{Convolution and Pooling}\label{sec:cnn}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
 Convolution Neural Networks are commonly constructed by staking up multiple convolution, pooling and fully connected layers.
 \subsubsection{Convolution Layer}\label{conv-layer}
@@ -71,7 +71,7 @@ in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the ne
 write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); 
 forgot gate \(f_t\) decides which information while be preserved on memory cell \(c_t\); 
 and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
-\subsection{Recursive Neural Network}
+\subsection{Recursive Neural Network}\label{sec:recursive-nn}
 In most cases, to understand a sentence, we must understand the phrases composing it, in turn, to understand a phrase, we must understand the phrases and words composing the phrase.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
