@@ -1,10 +1,10 @@
 \section{Conclusion}
 In the present work we introduced a combination of Constituency Tree-LSTM and Convolution Neural Network for sentence-level sentiment analysis. 
-We demonstrated that CNN-Tree-LSTM is able to outperform both Constituency Tree-LSTM and Convolution Neural Network on Standford Sentiment Treebank.
+Using Standford Sentiment Treebank, we demonstrated that CNN-Tree-LSTM is able to outperform both Constituency Tree-LSTM and Convolution Neural Network by a good margin.
 
 In attempt to improve vector presentations of words, we trained Glove vectors on the gigantic Amazon Reviews dataset, the resulted word embedding was name Glove Amazon.
 By replacing the standard Glove vectors with Glove Amazon, Constituency Tree-LSTM, CNN-Tree-LSTM and CNN-LSTM were able to gained large improvements when evaluated on Stanford Sentiment Treebank.
-We also demonstrated the a combination of Glove Amazon and standard Glove is better then each of the word embeddings.
+We also demonstrated that a combination of Glove Amazon and standard Glove is better then each of the word embeddings.
 
 Given the success of Glove Amazon, we will pre-train Multichannel CNN-LSTM as a language model on Amazon Reviews dataset.
 

@@ -2,7 +2,7 @@
 For composing fixed size presentation vectors of a sentence given a set of variable-length feature maps, one intuitive solution would be to apply Recurrent Neural Networks which have been done by Wang et al.~\cite{cnn-rnn}.
 Another solution would be to utilize Recursive Neural Networks.
 
-Different from the leaf module of Constituency Tree-LSTM, CNNs~\cite{KimCNN,DCNN,2-layer-cnn} fisrst convolution layer have hundred of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
+Different from the leaf module of Constituency Tree-LSTM, CNNs'~\cite{KimCNN,DCNN,2-layer-cnn} first convolution layer have hundreds of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
 Filters with large context window might help CNNs to mitigate the problem of words ambiguity and to capture phrase-level feature.
 We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it have no respect for the positions of features. 
 
@@ -33,6 +33,6 @@ This mean the size of any input vector for the Constituency Tree-LSTM is equal t
 We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
 Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
 
-We utilized Glove method to do transfer learning.
+We utilized Glove~\cite{glove} method to do transfer learning.
 We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) to express their opinions on movies or books.
-This might help our models archiving better generalisation when training on small sentence-level sentiment dataset like Stanford Sentiment Treebank~\cite{socher2013recursive}.
+This might help our models archiving better generalization when training on small sentence-level sentiment dataset like Stanford Sentiment Treebank~\cite{socher2013recursive}.

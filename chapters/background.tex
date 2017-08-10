@@ -4,7 +4,7 @@ A word embedding is a function mapping from words to their continuous vector rep
 The purpose of this method is to encode relevant syntactic and semantic features of words as relationships among their representation vectors.
 Usually, word embeddings are trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.   
 Pre-learned word presentations have been applied widely and become the ``secret sauce'' for the success of recent NLP systems~\cite{Luong_betterword}.
-\paragraph{Matrix presentation of sequences of words}
+\subsubsection{Matrix presentation of sequences of words}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses an independent word embedding, any sentence~\(s\) of length~\(n\) can be represented as a matrix.
 For indexing, the first word in a sentence is word-\(0\)th.
 In case the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
@@ -22,7 +22,7 @@ X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
 \subsection{Convolution and Pooling}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
-Convolution Neural Networks usually constructed by staking up multiple convolution, pooling and fully connected layers.
+Convolution Neural Networks are commonly constructed by staking up multiple convolution, pooling and fully connected layers.
 \subsubsection{Convolution Layer}\label{conv-layer}
 Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}

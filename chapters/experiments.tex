@@ -9,7 +9,7 @@ There are total 215,154 labeled phrases in the whole dataset.
 For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training example. 
 \paragraph{Fine-grained setting} Any sentiment label belongs to one in 5 classes: "Positive", "Somewhat Positive", "Neutral", "Somewhat Negative" and "Negative".
 \paragraph{Binary setting} All "Neutral" sentences are removed.
-For the remaining sentences, "Somewhat Positive" is merged into "Positive", similarly, "Somewhat Negative" applied on "Somewhat Negative" is merged into "Negative".
+For the remaining sentences, "Somewhat Positive" is merged into "Positive", similarly, "Somewhat Negative" is merged into "Negative".
 Due to all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
 \subsubsection{Amazon Reviews}\label{sec:amazon}
 Amazon Reviews~\cite{amazon-reviews} is a gigantic review dataset
@@ -20,7 +20,7 @@ The dataset is partitioned into 24 categories (e.g. ``Books'', ``Electronics'', 
 \subsubsection{Glove Amazon}
 Steps for preprocessing Amazon dataset for training word vectors using Glove\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}}:
 \begin{enumerate}
-	\item For retraining Glove vectors, we only used some partitions of Amazon Reviews dataset which includes:  ``Amazon Movies and TV'' (7,850,072 reviews)~\cite{mcauley2013hidden}, ``Books'' (22,507,155 reviews) and the new ``Movies and TV'' (4,607,047 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+	\item For retraining Glove vectors, we only used some partitions of Amazon Reviews dataset which includes:  ``Amazon Movies and TV'' (7,850,072 reviews)~\cite{mcauley2013hidden} and ``Books'' (22,507,155 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
 	\item All the reviews were grouped by product-ID ( "asin" keyword in the JSON schema of the dataset).
 	\item In each product-ID group, the reviews were sorted increasingly by their ratings ("overall" keyword in the JSON schema of the dataset).
 	\item All the reviews were dumped into a plain text file.
@@ -78,10 +78,6 @@ We index all our experimented models along with their number of parameters in Ta
 \subsubsection{Hyper-parameters and Training}
 Our models was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$ and batch size of 25.
 Word vectors are updated with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$.
-
-We tried a variety of convolution filters combination.
-For the case all the filters having only a single kernel size, we performed grid search on $\{100, 200, 300\}$ number of kernels of size $\{3, 5\}$.
-If a convolution layer has two different kernel sizes, we tried with the number of kernels of $\{100, 200\}$ for each kernel size in $\{3, 5\}$.
 We regularized the convolution layers with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
 
 We found that 100 filters of size 3 and 100 filters of size 5 yield better results compared to single filters size or the number of filters larger than 200. 
@@ -182,4 +178,4 @@ We also used PARAGRAM-SL999 for initializing the word embedding layer of Constit
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
 
 CNN-Tree-LSTM performed worst than CNN-LSTM, the reason might because of over-fitting.
-But 2-channel CNN-Tree-LSTM was able to outperform 2-channel CNN-Tree-LSTM .
+In contrast, 2-channel CNN-Tree-LSTM was able to outperform 2-channel CNN-LSTM .
