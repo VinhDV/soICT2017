@@ -26,7 +26,7 @@ Sentiment analysis offers a way to collect and process public opinion automatica
 In this paper, we explored two ideas: ``Combining Convolution and Recursive Neural Networks'' (the main idea) and ``Trainsfer Learning From Large Review Dataset'' (the support idea).
 \begin{description}
 	\item[Combining Convolution and Recursive Neural Networks] Convolution (Section~\ref{sec:cnn}) and Recursive Neural Networks (Section~\ref{sec:recursive-nn}) have been proved to be effective network architects for sentence-level sentiment analysis.
-	Nevertheless, each of them have their own potential drawbacks (Section~\ref{sec:cnn-weak},~\ref{sec:recursive-nn-weak}).
+	Nevertheless, each of them has its own potential drawbacks (Section~\ref{sec:cnn-weak},~\ref{sec:recursive-nn-weak}).
 	For alleviating their weaknesses, we combined Convolution and Recursive Neural Networks into a new network architect (Section~\ref{sec:cnn-treelstm}) which is able to outperform both Convolution and Recursive Neural Networks (Section~\ref{sec:result}) on Stanford Sentiment Treebank (Section~\ref{sec:sst}).
 	\item[Trainsfer Learning From Large Review Dataset] One obstacle for solving sentence-level sentiment analysis is the lack of labeled data which potentially cause many drawbacks with one of them being over-fitting word embedding (Section~\ref{sec:word-weak}).
 	Since most opinions are expressed in form of  documents (e.i. multiple sentences), sentence-level labeled dataset required more work to produce.
