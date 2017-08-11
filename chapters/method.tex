@@ -19,7 +19,7 @@ Our model has three modules: word embeddings, convolution layer and Constituency
 \subsubsection{Convolution Layer}
 We reuse the definition of convolution layer which is described in Sec.~\ref{conv-layer}.
 For working with Constituency Tree-LSTM, after going though the convolution layer, the parse tree structure of sentence \(s\) must be applicable on the output of the convolution layer. 
-For archiving this purpose, we constrained all the feature maps produced by the convolution layer to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
+For this purpose, we constrained all the feature maps produced by the convolution layer to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 Additionally, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
 

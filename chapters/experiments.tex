@@ -5,12 +5,12 @@ Standford Sentiment Treebank dataset~\cite{socher2013recursive} was used to eval
 In total, Standford Sentiment Treebank contains 11,855 sentences.
 The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences respectively.
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a sentiment label.
-There are total 215,154 labeled phrases in the whole dataset.
-For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training example. 
-\paragraph{Fine-grained setting} Any sentiment label belongs to one in 5 classes: "Positive", "Somewhat Positive", "Neutral", "Somewhat Negative" and "Negative".
-\paragraph{Binary setting} All "Neutral" sentences are removed.
-For the remaining sentences, "Somewhat Positive" is merged into "Positive", similarly, "Somewhat Negative" is merged into "Negative".
-Due to all "Neutral" sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
+There are total of 215,154 labeled phrases in the whole dataset.
+For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training sample. 
+\paragraph{Fine-grained setting} Any sentiment label belongs to one of 5 classes: ``Positive'', ``Somewhat Positive'', ``Neutral'', ``Somewhat Negative'' and ``Negative''.
+\paragraph{Binary setting} All ``Neutral'' sentences are removed.
+For the remaining sentences, ``Somewhat Positive'' is merged into ``Positive'', similarly, ``Somewhat Negative'' is merged into ``Negative''.
+Due to all ``Neutral'' sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
 \subsubsection{Amazon Reviews}\label{sec:amazon}
 Amazon Reviews~\cite{amazon-reviews} is a gigantic review dataset
 which contains 142.8 million reviews from Amazon spanning May 1996 - July 2014\footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}.
@@ -18,7 +18,7 @@ Each review contains product review (rating, text, helpfulness vote) and metadat
 The dataset is partitioned into 24 categories (e.g. ``Books'', ``Electronics'', ``Office Products'', ``Movies and TV'').
 \subsection{Setups}
 \subsubsection{Glove Amazon}\label{sec:glove-amazon}
-Steps for preprocessing Amazon dataset for training word vectors using Glove\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}}:
+We have five steps to preprocess Amazon dataset for training word vectors using Glove\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}}:
 \begin{enumerate}
 	\item For retraining Glove vectors, we only used some partitions of Amazon Reviews dataset which includes:  ``Amazon Movies and TV'' (7,850,072 reviews)~\cite{mcauley2013hidden} and ``Books'' (22,507,155 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
 	\item All the reviews were grouped by product-ID ( "asin" keyword in the JSON schema of the dataset).
@@ -38,17 +38,17 @@ We named this new word embedding Glove Amazon.
 We did experiment with Glove Amazon and different variations of our model.
 \begin{description}
 	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove Amazon is used to replace the standard Glove vector for initializing word embedding layer of Constituency Tree-LSTM.
-	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM~\cite{treelstm} are kept unchanged.
+	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM~\cite{treeLSTM} are kept unchanged.
 	\item[CNN-Tree-LSTM] Our basic model which has only one input channel. 
 	This input channel is initialized using the standard Glove vectors.
 	\item[CNN-Tree-LSTM (Glove Amazon)] CNN-Tree-LSTM but its input channel is initialized using Glove Amazon.
-	\item [2-channel CNN-Tree-LSTM] A model with two input channels, one is initialized using the standard Glove vectors while Glove Amazon is used for the other.
+	\item [2-channel CNN-Tree-LSTM] A model with two input channels, one is initialized using the standard Glove while Glove Amazon is used for the other.
 	\item[CNN-LSTM] Similar to CNN-Tree-LSTM but the Constituency Tree-LSTM module is replaced by a LSTM unit.
-	This model have only one input channel which is initialized using the standard Glove vectors.
+	This model has only one input channel which is initialized using the standard Glove vectors.
 	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM but its input channel is initialized using Glove Amazon.
 	\item [2-channel CNN-LSTM] CNN-LSTM but having two input channels, one is initialized with the standard Glove vectors and the other is initialized with Glove Amazon.
 \end{description}
-We also re-run several related models and methods for evaluating their performances based on 5 runs.
+We also re-run several related models and methods for evaluating their performances (5 runs for each model).
 \begin{description}
 	\item[LSTM (PARAGRAM-SL999)~\cite{wieting2015towards}] A LSTM model with its word embedding layer initialized by PARAGRAM-SL999 which is a word embedding trained on a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb})
 	In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word vectors which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
@@ -137,7 +137,7 @@ Our models were trained for 60 epochs.
 	\end{tabular}
 \end{table*}
 Experiment results are summaries in Table \ref{table:experimentresult}.
-Table \ref{table:experimentresult} is divided into two parts.
+Table \ref{table:experimentresult} contains two parts.
 The first part is from Block A to E, which contains all baselines model.
 The second part is Block F, which contains all models which were proposed and evaluated by us.
 \begin{description}
@@ -170,7 +170,7 @@ This result support our hypothesis that by training word embedding on review doc
 On the other hand, the number of parameters of 2-channel CNN-Tree-LSTM (722,153) is much larger than that of CNN-Tree-LSTM (482,153), which makes it more likely for 2-channel CNN-Tree-LSTM to over-fit the training data.
 However, 2-channel CNN-Tree-LSTM was able to archive much higher accuracy than both CNN-Tree-LSTM (Glove Amazon) and CNN-Tree-LSTM (standard Glove).
 For the case of 2-channel CNN-LSTM versus CNN-LSTM an analogous observation can be made.
-Thees results proves that there are some useful features only appearing in standard Glove or when combining both Glove Amazon and standard Glove.
+These results proves that there are some useful features that only appearing in the standard Glove or when combining both Glove Amazon and standard Glove.
 Otherwise, there would not be any improvement.
 The combination of Glove Amazon and standard Glove help 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM to outperform both CNN-GRU-word2vec and CNN-LSTM-word2vec.
 

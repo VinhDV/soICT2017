@@ -12,8 +12,8 @@ Where:
 	\item $t_{l}$: time l (time extraction and standardization)
 	\item $s_{ijkl}$: opinion of holder k about aspect j of entity i at time l (aspect sentiment classification)
 \end{itemize}
-Sentence-level sentiment analysis is to determine whether a sentence expressed positive or negative. 
-A sentence is assumed only contain opinion toward one entity (e.g. a single movie) ~\cite{liu2012sentiment}.
+Sentence-level sentiment analysis is to determine whether a sentence expresses positive or negative sentiment. 
+This level of analysis assumes that every sentence only contain one opinion toward an entity (e.g. a single movie)~\cite{liu2012sentiment}.
 
 Customers' opinions are the controllers behind every companies' good decisions.
 They shape companies' marketing strategies, policies, and designs of products.
@@ -29,11 +29,11 @@ In this paper, we explored two ideas: ``Combining Convolution and Recursive Neur
 	Nevertheless, each of them has its own potential drawbacks (Section~\ref{sec:cnn-weak},~\ref{sec:recursive-nn-weak}).
 	For alleviating their weaknesses, we combined Convolution and Recursive Neural Networks into a new network architect (Section~\ref{sec:cnn-treelstm}) which is able to outperform both Convolution and Recursive Neural Networks (Section~\ref{sec:result}) on Stanford Sentiment Treebank (Section~\ref{sec:sst}).
 	\item[Trainsfer Learning From Large Review Dataset] One obstacle for solving sentence-level sentiment analysis is the lack of labeled data which potentially cause many drawbacks with one of them being over-fitting word embedding (Section~\ref{sec:word-weak}).
-	Since most opinions are expressed in form of  documents (e.i. multiple sentences), sentence-level labeled dataset required more work to produce.
+	Since most opinions are expressed in form of  documents (i.e. multiple sentences), sentence-level labeled dataset required more work to produce.
 	Until now, the largest dataset for sentence-level sentiment analysis is Standford Sentiment Treebank which only contains 11,855 sentences.
 	This number is insignificant compared to Amazon Review dataset (Section~\ref{sec:amazon}) which has 83.68 million reviews.
-	We utilized Amazon Review dataset to train a new work embedding (Section~\ref{sec:glove-amazon}) which was named Glove Amazon.
-	By replacing the standard Glove vectors\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon, many models are able to gained large improvements when evaluated on Stanford Sentiment Treebank.
+	We utilized Amazon Review dataset to train a new word embedding (Section~\ref{sec:glove-amazon}) which was named ``Glove Amazon''.
+	By replacing the standard Glove\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon, many models are able to gained large improvements when evaluated on Stanford Sentiment Treebank.
 	We also demonstrated that a combination of Glove Amazon and standard Glove is better then each of the word embeddings (Section~\ref{sec:result}).
 \end{description}
 

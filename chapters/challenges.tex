@@ -1,9 +1,9 @@
 \section{Challenges}
 \subsection{Convolution and Pooling}\label{sec:cnn-weak}
 Although max pooling layer largely simplified the network (which is good for preventing over-fit), this solution have a clear drawback.
-By down-sampling a feature map, although the resulted vector still contain information about the existence of a feature, it is likely that the information about position of the feature is ignored, especially for the case of max-over-time pooling.
+By down-sampling a feature map, although the resulted vector still contains information about the existence of a feature, it is likely that the information about the position of the feature is ignored, especially for the case of max-over-time pooling.
 \subsection{Recursive Neural Network}\label{sec:recursive-nn-weak}
-Tree-LSTMs also have some drawbacks, these drawbacks including:
+Tree-LSTMs also have some drawbacks, including:
 \begin{itemize}
 	\item Sentences can be wrongly parsed, especially when comments are expressed in informal language.
 	The performance of the system depends on the parser being used.
@@ -19,4 +19,4 @@ Additionally, the ways people use words in movie reviews might be different from
 For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.
 
 Noticeably, many experiments~\cite{treeLSTM}~\cite{KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
-Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and not related words which only appear in test set.
+Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and non-related words which only appear in test set.
