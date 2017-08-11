@@ -1,65 +1,76 @@
+\usetikzlibrary{matrix}
+\usetikzlibrary{patterns}
+\tikzset{
+	sq1/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black},
+	sq1p/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black, pattern=north west lines},
+	circ/.style={circle, minimum width=0.4cm, minimum height=0.4cm, text centered, draw=black},
+	arrow/.style={thick,->},
+	sqvec/.style={matrix,matrix of nodes,nodes in empty cells},
+}
+\tikzstyle{cir} = [circle, minimum width=0.7cm, minimum height=0.7cm, text centered, draw=black ]
+
 \begin{tikzpicture}
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c1) at (0.5,8.5) {
- \\
- \\ 
+every odd row/.style = { nodes={fill=black!100}}] (c1) at (0.5,7) {
+	\\
+	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c2) at (1.5,8.5) {
- \\
- \\ 
+every odd row/.style = { nodes={fill=black!100}}] (c2) at (1.5,7) {
+	\\
+	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c3) at (2.5,8.5) {
- \\
- \\ 
+every odd row/.style = { nodes={fill=black!100}}] (c3) at (2.5,7) {
+	\\
+	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c4) at (3.5,8.5) {
- \\
- \\ 
+every odd row/.style = { nodes={fill=black!100}}] (c4) at (3.5,7) {
+	\\
+	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8.5) {
- \\
- \\ 
+every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,7) {
+	\\
+	\\ 
 };  
 
 
 \node [sqvec,column sep=-\pgflinewidth,nodes={sq1}] (v) at (2.5,4) {
-&&&&\\
-&&&&\\
-&&&&\\
+	&&&&\\
+	&&&&\\
+	&&&&\\
 };   
 
 \node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v1) at (-0.5,4) {
-\\
-\\
-\\
+	\\
+	\\
+	\\
 };   
 \node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v2) at (-1.5,4) {
-\\
-\\
-\\
+	\\
+	\\
+	\\
 };   
 \node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v3) at (5.5,4) {
-\\
-\\
-\\
+	\\
+	\\
+	\\
 };   
 \node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v4) at (6.5,4) {
-\\
-\\
-\\
+	\\
+	\\
+	\\
 };   
 
 \draw (v1-1-1.north west) -- (c1-2-1.west); % inner left
@@ -88,10 +99,10 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8.5) {
 \draw (v4-1-1.north east) -- (c5-1-1.east); % outer right
 
 
-\node [cir] (v8) at (2,12) {};
-\node [cir] (v7) at (1,11) {};
-\node [cir] (v6) at (3.5,11) {};
-\node [cir] (v5) at (3,10) {};
+\node [cir] (v8) at (2,10) {};
+\node [cir] (v7) at (1,9.5) {};
+\node [cir] (v6) at (3.5,9.5) {};
+\node [cir] (v5) at (3,8.5) {};
 \draw  (c3) edge (v5);
 \draw  (c4) edge (v5);
 \draw  (v5) edge (v6);
@@ -110,4 +121,7 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8.5) {
 \node at (4.5,2) {$x_5$};
 \node at (5.5,2) {pad};
 \node at (6.5,2) {pad};
+
+\node at (-1,7) {Convolution};
+\node at (-1,9.5) {Tree-LSTM};
 \end{tikzpicture}
