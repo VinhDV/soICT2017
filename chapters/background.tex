@@ -57,12 +57,12 @@ To mitigate the problem of vanishing gradient, Long Short Term Memory unit (LSTM
 \subsubsection{Long Short Term Memory unit}\label{sec:lstm}
 Long Short Term Memory unit can be expressed as the following recursive formula~\cite{treeLSTM}:
 \begin{align}
-w_t &= \sigma(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}) \label{eq:lstm-input-gate}&\\
-f_t &= \sigma(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}) \label{eq:lstm-forget-gate}&\\
-o_t &= \sigma(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}) \label{eq:lstm-output-gate}&\\
-u_t &= tanh(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}) \label{eq:lstm-update-gate}&\\
-c_t &= r_t \otimes u_t + f_t \otimes c_{t-1} \label{eq:longterm-mem}&\\
-h_t &= o_t \otimes tanh(c_t) \label{eq:temperal-mem}&
+w_t &= \sigma\left(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}\right) \label{eq:lstm-input-gate}&\\
+f_t &= \sigma\left(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}\right) \label{eq:lstm-forget-gate}&\\
+o_t &= \sigma\left(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}\right) \label{eq:lstm-output-gate}&\\
+u_t &= tanh\left(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}\right) \label{eq:lstm-update-gate}&\\
+c_t &= r_t \odot u_t + f_t \odot c_{t-1} \label{eq:longterm-mem}&\\
+h_t &= o_t \odot tanh(c_t) \label{eq:temperal-mem}&
 \end{align}
 Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively and \(c_t\) is called memory cell.
 Intuitively, we can interpret how the network works as follow: 
