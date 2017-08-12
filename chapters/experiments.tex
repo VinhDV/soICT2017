@@ -90,7 +90,9 @@ Our models were trained for 60 epochs.
 		The models which have both data of mean(std) and max are models which have been evaluated by us.
 		For these models, we report mean, standard deviation and max of 5 runs.
 		If a model has data of only mean(std) or only max, the data is taken from its originated research paper.
-		\textit{(*): Result reported by the original paper.}}
+		\textit{(*): Result reported by the original paper.}
+		\textit{(**): Mean of 100 runs, std was not reported}
+	}
 	\label{table:experimentresult}
 	\begin{tabular}{|c|l|ll|ll|}
 		\hline
@@ -110,12 +112,14 @@ Our models were trained for 60 epochs.
 		& 2-layer LSTM~\cite{treeLSTM} & 86.30 (0.60) & - & 46.00 (1.30) & -\\
 		& 2-layer Bidirectional LSTM~\cite{treeLSTM} & 87.20 (1.00) & - & 48.50 (1.00) & -\\
 		& DMN~\cite{attention-gru} & - & 88.60 & - & 52.10 \\
+		& Byte mLSTM~\cite{mlstm} & \underline{\underline{91.80}}** & - & - & 52.90 \\
 		\hline
 		\multirow{5}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40 & - & 45.70 \\
 		& DRNN~\cite{IrsoyDRNN} & - & 86.60 & - & 49.80  \\
 		& TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 & - & 48.90\\
 		& Dependency Tree-LSTM~\cite{treeLSTM}  & 85.70 (0.40)  & - & 48.40 (0.4) & - \\
 		& Constituency Tree-LSTM~\cite{treeLSTM} & 88.00 (0.30)    &  - & 51.0 (0.5) & - \\
+		& Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} & - & 90.20 & - & \underline{\underline{53.60}} \\
 		\hline
 		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 & - & - \\
 		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 & - & 48.70 \\
@@ -147,10 +151,13 @@ The second part is Block F, which contains all models which were proposed and ev
 	\item[Block B] contains recurrent neural network models and their variations.
 	All the models in this block process sentences sequentially.
 	DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
+	Byte mLSTM~\cite{mlstm} is the state-of-the-art system on binary setting of Stanford Sentiment Treebank.
 	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured models).
 	RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank).
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
+	Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} is an ensemble of 30 Constituency Tree-LSTMs.
+	This is the state-of-the-art system on fine-grained setting of Stanford Sentiment Treebank.
 	\item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
 	GICF~\cite{group-instance} is an attempt to learn to classify sentiments of sentences (in Stanford Sentiment Treebank) using only document-level sentiment labels training dataset.
 	Paragraph-Vec~\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
@@ -178,4 +185,8 @@ We also used PARAGRAM-SL999 for initializing the word embedding layer of Constit
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
 
 CNN-Tree-LSTM performed worst than CNN-LSTM, the reason might because of over-fitting.
-In contrast, 2-channel CNN-Tree-LSTM was able to outperform 2-channel CNN-LSTM .
+In contrast, 2-channel CNN-Tree-LSTM was able to outperform 2-channel CNN-LSTM.
+
+Compared to state-of-the-art systems, our models underperform Byte mLSTM~\cite{mlstm} on binary setting and Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} on fine-grained setting.
+Nonetheless, they are able to outperform Byte mLSTM on fine-grained setting and Constituency Tree-LSTM Ensemble on binary setting.
+
