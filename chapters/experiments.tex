@@ -3,14 +3,14 @@
 \subsubsection{Stanford Sentiment Treebank} \label{sec:sst}
 Standford Sentiment Treebank dataset~\cite{socher2013recursive} was used to evaluate our model.
 In total, Standford Sentiment Treebank contains 11,855 sentences.
-The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences respectively.
+The dataset was split into training, validation and test set which contains 8544; 1101 and 2210 sentences respectively.
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with  a sentiment label.
 There are total of 215,154 labeled phrases in the whole dataset.
 For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training sample. 
 \paragraph{Fine-grained setting} Any sentiment label belongs to one of 5 classes: ``Positive'', ``Somewhat Positive'', ``Neutral'', ``Somewhat Negative'' and ``Negative''.
 \paragraph{Binary setting} All ``Neutral'' sentences are removed.
 For the remaining sentences, ``Somewhat Positive'' is merged into ``Positive'', similarly, ``Somewhat Negative'' is merged into ``Negative''.
-Due to all ``Neutral'' sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
+As all ``Neutral'' sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
 \subsubsection{Amazon Reviews}\label{sec:amazon}
 Amazon Reviews~\cite{amazon-reviews} is a gigantic review dataset
 which contains 142.8 million reviews from Amazon spanning May 1996 - July 2014\footnote{\url{http://jmcauley.ucsd.edu/data/amazon/}}.
@@ -53,8 +53,8 @@ We also re-run several related models and methods for evaluating their performan
 	\item[LSTM (PARAGRAM-SL999)~\cite{wieting2015towards}] A LSTM model with its word embedding layer initialized by PARAGRAM-SL999 which is a word embedding trained on a large paraphrase dataset (PPDB~\cite{ganitkevitch2013ppdb})
 	In our experiments with LSTM (PARAGRAM-SL999), we used the implementation and pre-trained word vectors which are publicly available on the author website\footnote{\url{http://ttic.uchicago.edu/~wieting/}}.
 	\item [CNN-LSTM-word2vec~\cite{cnn-rnn}] This model is similar to our CNN-LSTM but a max pooling layer is added after the convolution layer.  
-	The pooling layer help to reduce the size of the feature maps by a half.
-	Another different compared to our model is that the word embedding layer of this model is initialized using the pre-trained word2vec vectors\footnote{\url{https://code.google.com/archive/p/word2vec/}}.
+	The pooling layer helps to reduce the size of the feature maps by a half.
+	Another difference compared to our model is that the word embedding layer of this model is initialized using the pre-trained word2vec vectors\footnote{\url{https://code.google.com/archive/p/word2vec/}}.
 	\item [CNN-GRU-word2vec~\cite{cnn-rnn}] Similar to CNN-LSTM-word2vec, but in this model, GRU unit~\cite{gru} is used instead of LSTM unit.
 	In our experiments with CNN-GRU-word2vec and CNN-LSTM-word2vec, we used the implementation publicly published by the authors\footnote{\url{https://github.com/ultimate010/crnn}}.
 \end{description}
@@ -172,12 +172,12 @@ The max pooling layer in CNN-LSTM-word2vec might help it to better generalize co
 Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using standard Glove even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
 Additionally, Glove Amazon also improved CNN-Tree-LSTM.
 We can conclude that Amazon Glove captured some useful features that does not exist or hardly be extracted in standard Glove.
-This result support our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way people use words (or different word relationships) when they express their opinions on movies or books.
+This result support our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (or different word relationships) when they express their opinions on movies or books.
 
 On the other hand, the number of parameters of 2-channel CNN-Tree-LSTM (722,153) is much larger than that of CNN-Tree-LSTM (482,153), which makes it more likely for 2-channel CNN-Tree-LSTM to over-fit the training data.
 However, 2-channel CNN-Tree-LSTM was able to archive much higher accuracy than both CNN-Tree-LSTM (Glove Amazon) and CNN-Tree-LSTM (standard Glove).
 For the case of 2-channel CNN-LSTM versus CNN-LSTM an analogous observation can be made.
-These results proves that there are some useful features that only appearing in the standard Glove or when combining both Glove Amazon and standard Glove.
+These results prove that there are some useful features that only appear in the standard Glove or when combining both Glove Amazon and standard Glove.
 Otherwise, there would not be any improvement.
 The combination of Glove Amazon and standard Glove help 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM to outperform both CNN-GRU-word2vec and CNN-LSTM-word2vec.
 

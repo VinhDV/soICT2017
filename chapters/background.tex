@@ -14,12 +14,12 @@ The vector presentation of word-\(i\)th through the set of input channels \(Z\) 
 \begin{align}
  x_i &= w^{(e_0)}_i \ominus w^{(e_1)}_i \ominus  \ldots \ominus w^{(e_m)}_i&\label{concat-emb}
 \end{align}
-In Eq.\eqref{concat-emb}, \(\ominus\) is concatenation operator which result in the vector \(x_i \in \mathbb{R}^{d}\) with \(d = \sum_{e \in Z} d_e\).
-Any sequence of words in the sentence which start at word-\(i\)th and end at word-\(j\)th can be presented as the following matrix:
+In Eq.\eqref{concat-emb}, \(\ominus\) is concatenation operator which results in the vector \(x_i \in \mathbb{R}^{d}\) with \(d = \sum_{e \in Z} d_e\).
+Any sequence of words in the sentence which starts at word-\(i\)th and ends at word-\(j\)th can be presented as the following matrix:
 \begin{align}
 X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 \end{align}
-In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which result in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
+In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which results in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
 \subsection{Convolution and Pooling}\label{sec:cnn}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
 Convolution Neural Networks are commonly constructed by staking up multiple convolution, pooling and fully connected layers.
@@ -35,11 +35,11 @@ If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
 
 By slicing the filter \(v\) through the sentence (i.e. applying the filter \(v\) on different sequences of length \(l\) along the sentence) we can get vector \(c^{(v)} = [c^{(v)}_0, c^{(v)}_1~\cdots]\) which is a feature map of the sentence~\(s\).
 The length of the feature map \(c^{(v)}\) depends on the length of the input sentence.
-Additionally, the length of \(c^{(v)}\) also depends on the way filter \(v\) was slided through the sentence and its window size \(l\)~\cite{conv-arith}.
+Additionally, the length of \(c^{(v)}\) also depends on the way which filter \(v\) was slided through the sentence and its window size \(l\)~\cite{conv-arith}.
 In summary, each filter produces a variable-length feature map of the sentence.
 As a result, when applying a convolution layer on a sentence, we get a set of variable-length feature maps.
 \subsubsection{Max Pooling Layer}
-For dealing with the problem of variable-length feature maps, several types of max pooling layer was employed.
+For dealing with the problem of variable-length feature maps, several types of max pooling layer were employed.
 In general, given a input vector \(i\), a \(k\)-max pooling layer reduces the size of vector \(i\) by extracting the largest \(k\) entries from \(i\).
 In case \(k = 1\) the pooling layer is called max-over-time pooling~\cite{nlp-scratch,KimCNN}.
 Apart from being treated as a hyper-parameter, \(k\) can also be parameterized with respect to the length of the input sentence, in which case, the pooling layer is called dynamic k-max pooling~\cite{DCNN}.
@@ -69,12 +69,12 @@ Intuitively, we can interpret how the network works as follow:
 in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network; 
 \(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\); 
 write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); 
-forgot gate \(f_t\) decides which information while be preserved on memory cell \(c_t\); 
+forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\); 
 and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
 \subsection{Recursive Neural Network}\label{sec:recursive-nn}
 In most cases, to understand a sentence, we must understand the phrases composing it, in turn, to understand a phrase, we must understand the phrases and words composing the phrase.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
-Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
+Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying its composition function at each node of the parse tree in a bottom-up manner.
 For demonstration, parse tree of the phrase ``is a fluffy cat'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 \begin{figure}[] 
 	\centering
