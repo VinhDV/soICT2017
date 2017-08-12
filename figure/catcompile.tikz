@@ -1,0 +1,47 @@
+  \begin{tikzpicture}
+      
+\node [sqvec2] (v1) at (4,0) {
+\node[cirsmall] {}; &\node[cirsmall] {}; &\node[cirsmall] {}; \\
+};      
+\node [sqvec2] (v1_2) at (2.5,0) {
+\node[cirsmall] {}; &\node[cirsmall] {}; &\node[cirsmall] {}; \\
+};      
+
+\node [sqvec2] (v3) at (5.5,0) {
+\node[cirsmall] {}; &\node[cirsmall] {}; &\node[cirsmall] {}; \\
+};      
+\node [sqvec2] (v4) at (4,2) {
+\node[cirsmall] {}; &\node[cirsmall] {}; &\node[cirsmall] {}; \\
+};      
+\node [sqvec2] (v6) at (1,2) {
+\node[cirsmall] {}; &\node[cirsmall] {}; &\node[cirsmall] {}; \\
+};      
+      
+\node [sqvec2] (v7) at (2.5,3.5) {
+\node[cirsmall] {}; &\node[cirsmall] {}; &\node[cirsmall] {}; \\
+};      
+      
+\node [sq] (v2) at (4,1) {g};
+\node [sq] (v5) at (2.5,2.5) {g};
+
+
+\node at (1,1.5) {is};
+\node at (4,-0.5) {fluffy};
+\node at (5.5,-0.5) {cat};
+\node at (5,1.5) {a fluffy cat};
+\node at (4,3) {is a fluffy cat};
+
+
+\draw [arrow] (v1) edge (v2);
+\draw [arrow] (v3) edge (v2);
+\draw [arrow] (v2) edge (v4);
+\draw [arrow] (v4) edge (v5);
+\draw [arrow] (v6) edge (v5);
+\draw [arrow] (v5) edge (v7);
+%\draw [arrow] (v8) edge (v9);
+%\draw [arrow] (v7) edge (v9);
+%\draw [arrow] (v9) edge (v10);
+
+\node at (2.5,-0.5) {a};
+\draw [arrow] (v1_2) edge (v2);
+\end{tikzpicture}

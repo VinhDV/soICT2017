@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+
+\node [sq] (v2) at (-2,4) {is a fluffy cat/VP};
+\node [sq] (v1) at (-3.5,3) {is/VBZ};
+\node [sq] (v4) at (-0.5,3) {a fluffy cat/NP};
+\node [sq] (v3) at (-1.5,2) {a/DT};
+\node [sq] (v5) at (0.5,2) {fluffy/JJ};
+\node [sq] (v5) at (2.5,2) {cat/NN};
+\draw  (v1) edge (v2);
+\draw  (v3) edge (v4);
+\draw  (v5) edge (v4);
+\draw  (v4) edge (v2);
+\end{tikzpicture}
