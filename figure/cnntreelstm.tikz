@@ -12,35 +12,35 @@
 \begin{tikzpicture}
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c1) at (0.5,7) {
+every odd row/.style = { nodes={fill=black!100}}] (c1) at (0.5,8) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c2) at (1.5,7) {
+every odd row/.style = { nodes={fill=black!100}}] (c2) at (1.5,8) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c3) at (2.5,7) {
+every odd row/.style = { nodes={fill=black!100}}] (c3) at (2.5,8) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c4) at (3.5,7) {
+every odd row/.style = { nodes={fill=black!100}}] (c4) at (3.5,8) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,7) {
+every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8) {
 	\\
 	\\ 
 };  
@@ -99,10 +99,10 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,7) {
 \draw (v4-1-1.north east) -- (c5-1-1.east); % outer right
 
 
-\node [cir] (v8) at (2,10) {};
-\node [cir] (v7) at (1,9.5) {};
-\node [cir] (v6) at (3.5,9.5) {};
-\node [cir] (v5) at (3,8.5) {};
+\node [cir] (v8) at (2,10.5) {};
+\node [cir] (v7) at (1,10) {};
+\node [cir] (v6) at (3.5,10) {};
+\node [cir] (v5) at (3,9) {};
 \draw  (c3) edge (v5);
 \draw  (c4) edge (v5);
 \draw  (v5) edge (v6);
@@ -122,6 +122,6 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,7) {
 \node at (5.5,2) {pad};
 \node at (6.5,2) {pad};
 
-\node at (-1,7) {Convolution};
-\node at (-1,9.5) {Tree-LSTM};
+\node at (-1,8) {Convolution};
+\node at (-1,10) {Tree-LSTM};
 \end{tikzpicture}
