@@ -78,13 +78,15 @@ Given a sentence and its parse tree, a Recursive Neural Network composes the vec
 For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 \begin{figure}[] 
 	\centering
-	\includegraphics[scale=0.4]{figure/example-parse}
+	%\includegraphics[scale=0.4]{figure/example-parse}
+	\input{figure/cattree.tikz}
 	\caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.}
 	\label{fig:example-parse}
 \end{figure}
 \begin{figure}[]
 	\centering
-	\includegraphics[scale=0.3]{figure/example-compose}
+	% \includegraphics[scale=0.3]{figure/example-compose}
+	\input{figure/catcompile.tikz}
 	\caption[Applying Recursive Neural Network on the phrase ``is very interesting'']{Applying Recursive Neural Network on the Constituency parse tree of the phrase ``is very interesting''.
 		The composition function of this network is denoted as \textbf{g}.}
 	\label{fig:example-compose}
