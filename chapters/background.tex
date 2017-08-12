@@ -75,19 +75,19 @@ and \(o_t\) decides which information will be read from the memory cell \(c_t\),
 In most cases, to understand a sentence, we must understand the phrases composing it, in turn, to understand a phrase, we must understand the phrases and words composing the phrase.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying it composition function at each node of the parse tree in a bottom-up manner.
-For demonstration, parse tree of the phrase ``is very interesting'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
+For demonstration, parse tree of the phrase ``is a fluffy cat'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 \begin{figure}[] 
 	\centering
 	%\includegraphics[scale=0.4]{figure/example-parse}
 	\input{figure/cattree.tikz}
-	\caption[Constituency parse tree for the phrase ``is very interesting'']{Constituency parse tree for the phrase ``is very interesting''.}
+	\caption[Constituency parse tree for the phrase ``is a fluffy cat'']{Constituency parse tree for the phrase ``is a fluffy cat''.}
 	\label{fig:example-parse}
 \end{figure}
 \begin{figure}[]
 	\centering
 	% \includegraphics[scale=0.3]{figure/example-compose}
 	\input{figure/catcompile.tikz}
-	\caption[Applying Recursive Neural Network on the phrase ``is very interesting'']{Applying Recursive Neural Network on the Constituency parse tree of the phrase ``is very interesting''.
+	\caption[Applying Recursive Neural Network on the phrase ``is a fluffy cat'']{Applying Recursive Neural Network on the Constituency parse tree of the phrase ``is a fluffy cat''.
 		The composition function of this network is denoted as \textbf{g}.}
 	\label{fig:example-compose}
 \end{figure}
@@ -117,7 +117,7 @@ u &= \tanh{\left( U_l^{(u)} h_{l} + U_r^{(u)} h_{r} + b^{(u)}\right)} &\\
 c &= i \odot u + f_{l} \odot c_{l} + f_{r} \odot c_{r} & \\
 h &= o \odot \tanh{\left(c\right)} &
 \end{align}
-In this module, for any \(j \in \{i, l, r, o, u\}\) and \(x \in \{\l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
+In this module, for any \(j \in \{i, l, r, o, u\}\) and \(x \in \{l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
 \paragraph{Output module}
 Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
 Given \({h_j}\) is the \({h}\) output of node \({j}\), the prediction at node \({j}\) can be computed by the output module as follow:
