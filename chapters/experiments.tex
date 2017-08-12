@@ -66,7 +66,7 @@ We index all our experimented models along with their number of parameters in Ta
 	\label{table:paramtable}
 	\begin{tabular}{|l|l|l|}
 		\hline
-		Model & \(r\) & \(\left\vert{\theta}\right\vert\) \\ \hline
+		Model & \(r\) & \multicolumn{1}{|c|}{\(\left\vert{\theta}\right\vert\)}\\ \hline
 		CNN-LSTM                 & 168         & 489,347          \\
 		CNN-Tree-LSTM            & 150         & 482,153          \\
 		2-channel CNN-LSTM       & 168         & 729,347          \\
@@ -107,14 +107,14 @@ Our models were trained for 60 epochs.
 		& DCNN~\cite{DCNN} & - & 86.80 & - & 48.50 \\
 		& MVCNN~\cite{2-layer-cnn} & - & 89.40 & - & 49.60 \\
 		\hline
-		\multirow{5}{*}{B} & LSTM~\cite{treeLSTM}   & 84.9 (0.6) & - & 46.40 (1.1)& - \\
+		\multirow{6}{*}{B} & LSTM~\cite{treeLSTM}   & 84.9 (0.6) & - & 46.40 (1.1)& - \\
 		& BiLSTM~\cite{treeLSTM}  & 87.50 (0.5) & - & 49.1 (1.0) & -  \\
 		& 2-layer LSTM~\cite{treeLSTM} & 86.30 (0.60) & - & 46.00 (1.30) & -\\
 		& 2-layer Bidirectional LSTM~\cite{treeLSTM} & 87.20 (1.00) & - & 48.50 (1.00) & -\\
 		& DMN~\cite{attention-gru} & - & 88.60 & - & 52.10 \\
 		& Byte mLSTM~\cite{mlstm} & \underline{\underline{91.80}}** & - & - & 52.90 \\
 		\hline
-		\multirow{5}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40 & - & 45.70 \\
+		\multirow{6}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40 & - & 45.70 \\
 		& DRNN~\cite{IrsoyDRNN} & - & 86.60 & - & 49.80  \\
 		& TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 & - & 48.90\\
 		& Dependency Tree-LSTM~\cite{treeLSTM}  & 85.70 (0.40)  & - & 48.40 (0.4) & - \\
