@@ -112,31 +112,31 @@ Our models were trained for 60 epochs.
 		& 2-layer LSTM~\cite{treeLSTM} & 86.30 (0.60) & - & 46.00 (1.30) & -\\
 		& 2-layer Bidirectional LSTM~\cite{treeLSTM} & 87.20 (1.00) & - & 48.50 (1.00) & -\\
 		& DMN~\cite{attention-gru} & - & 88.60 & - & 52.10 \\
-		& Byte mLSTM~\cite{mlstm} & \underline{\underline{91.80}}** & - & - & 52.90 \\
+		& Byte mLSTM~\cite{mlstm} & \textbf{91.80}** & - & - & 52.90 \\
 		\hline
 		\multirow{6}{*}{C} & RNTN~\cite{socher2013recursive}  & - & 85.40 & - & 45.70 \\
 		& DRNN~\cite{IrsoyDRNN} & - & 86.60 & - & 49.80  \\
 		& TE-RNTN~\cite{tag-embedding-rnn} & - & 87.70 & - & 48.90\\
 		& Dependency Tree-LSTM~\cite{treeLSTM}  & 85.70 (0.40)  & - & 48.40 (0.4) & - \\
 		& Constituency Tree-LSTM~\cite{treeLSTM} & 88.00 (0.30)    &  - & 51.0 (0.5) & - \\
-		& Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} & - & 90.20 & - & \underline{\underline{53.60}} \\
+		& Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} & - & 90.20 & - & \textbf{53.60} \\
 		\hline
 		\multirow{3}{*}{D} & GICF~\cite{group-instance} & - & 85.70 & - & - \\
 		& Paragraph-Vec~\cite{ParagraphVec} & - & 87.80 & - & 48.70 \\
-		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)* & 00.00 (00.00)  & 00.00 (00.00)*
+		& LSTM (PARAGRAM-SL999)~\cite{wieting2015towards} & 87.98 (0.46) & 88.50 (89.20)* & -  & -
 		\\
 		\hline
-		\multirow{2}{*}{E}  & CNN-GRU-word2vec~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)* & 00.00 (00.00) & 00.00 (00.00)*   \\
-		& CNN-LSTM-word2vec~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)* & 52.03 (0.77) & 52.56 (51.50)* \Bstrut    \\
+		\multirow{2}{*}{E}  & CNN-GRU-word2vec~\cite{cnn-rnn}                    & 89.13 (0.29)  &  89.61 (89.95)* & - & 50.68 \\
+		& CNN-LSTM-word2vec~\cite{cnn-rnn}                    & 89.43 (0.28)  & 89.72 (89.56)* & - & 51.50 \Bstrut    \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
 		\multirow{6}{*}{F} & Constituency Tree-LSTM ~\cite{treeLSTM} (Glove Amazon) & 88.85 (0.44) & 89.35 & 50.53 (0.98) & 51.31 \Tstrut \\
 		 & CNN-LSTM                                 & 89.10 (0.39)  & 89.40 & 00.00 (0.00) & 00.00 \\
 		  & CNN-LSTM (Glove Amazon) & \textbf{89.81 (0.28)} & \textbf{90.28}  & 00.00 (00.00) & 00.00 \\
-		& 2-channel CNN-LSTM                        & 89.54    (0.22) & 89.79 & 00.00 (00.00) & 00.00 \\
+		& 2-channel CNN-LSTM                        & 89.54    (0.22) & 89.79 & \textbf{53.02 (1.24)} & \textbf{54.47} \\
 		 & CNN-Tree-LSTM                            & 88.82 (0.13) & 88.92 & 51.35 (1.45) & 52.94 \\
 		& CNN-Tree-LSTM (Glove Amazon)             & 88.96 (0.24) & 89.18 & 51.51 (0.99) & 52.80 \\
-		& 2-channel CNN-Tree-LSTM  & 89.70 (0.36) & 90.12  & \textbf{52.46 (0.55)} & \textbf{53.03} \Bstrut  \\
+		& 2-channel CNN-Tree-LSTM  & 89.70 (0.36) & 90.12  & 52.46 (0.55) & 53.03 \Bstrut  \\
 		\hline
 	\end{tabular}
 \end{table*}
