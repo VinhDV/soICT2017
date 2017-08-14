@@ -5,9 +5,10 @@
 \node [sq] (v4) at (-0.5,3) {a fluffy cat/NP};
 \node [sq] (v3) at (-1.5,2) {a/DT};
 \node [sq] (v5) at (0.5,2) {fluffy/JJ};
-\node [sq] (v5) at (2.5,2) {cat/NN};
+\node [sq] (v6) at (2.5,2) {cat/NN};
 \draw  (v1) edge (v2);
 \draw  (v3) edge (v4);
 \draw  (v5) edge (v4);
 \draw  (v4) edge (v2);
+\draw  (v6) edge (v4);
 \end{tikzpicture}
