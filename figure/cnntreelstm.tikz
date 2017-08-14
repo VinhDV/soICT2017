@@ -2,6 +2,7 @@
 \usetikzlibrary{patterns}
 \tikzset{
 	sq1/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black},
+	sq1m/.style={rectangle, minimum width=0.8cm, minimum height=0.4cm, text centered, draw=black},
 	sq1p/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black, pattern=north west lines},
 	circ/.style={circle, minimum width=0.4cm, minimum height=0.4cm, text centered, draw=black},
 	arrow/.style={thick,->},
@@ -99,18 +100,20 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8) {
 \draw (v4-1-1.north east) -- (c5-1-1.east); % outer right
 
 
-\node [cir] (v8) at (2,10.5) {};
-\node [cir] (v7) at (1,10) {};
-\node [cir] (v6) at (3.5,10) {};
-\node [cir] (v5) at (3,9) {};
-\draw  (c3) edge (v5);
-\draw  (c4) edge (v5);
+\node [sq1m] (v8) at (2,10.5) {};
+\node [sq1m] (v7) at (1,10) {};
+\node [sq1m] (v6) at (3.5,10) {};
+\node [sq1m] (v5) at (3,9) {};
+% \draw  (c3) edge (v5);
+% \draw  (c4) edge (v5);
 \draw  (v5) edge (v6);
-\draw  (c5) edge (v6);
-\draw  (c1) edge (v7);
+% \draw  (c5) edge (v6);
+% \draw  (c1) edge (v7);
 \draw  (v7) edge (v8);
-\draw  (c2) edge (v7);
+% \draw  (c2) edge (v7);
 \draw  (v6) edge (v8);
+
+
 
 \node at (-1.5,2) {pad};
 \node at (-0.5,2) {pad};
@@ -124,4 +127,11 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8) {
 
 \node at (-1,8) {Convolution};
 \node at (-1,10) {Tree-LSTM};
+
+% connect lstm to circle
+\draw  (v7) edge (c1-1-1.north);
+\draw  (v7) edge (c2-1-1.north);
+\draw  (v5) edge (c3-1-1.north);
+\draw  (v5) edge (c4-1-1.north);
+\draw  (v6) edge (c5-1-1.north);
 \end{tikzpicture}
