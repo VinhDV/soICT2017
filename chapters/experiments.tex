@@ -163,12 +163,27 @@ The second part is Block F, which contains all models which were proposed and ev
 	Paragraph-Vec~\cite{ParagraphVec} is a method that learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
 	\item[Block E] contains models which combine Convolution Neural Networks and Recurrent Neural Networks.
 \end{description}
-\subsection{Discussion}
-The fact that CNN-Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} and CNN-multichannel\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
-
+\subsection{Observation and Discussion}
+\begin{itemize}
+	\item CNN-Tree-LSTM is able to outperforms Constituency Tree-LSTM~\cite{treeLSTM}, CNN-multichannel\cite{KimCNN}.
+	This result supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
+	\item CNN-LSTM outperforms LSTM~\cite{treeLSTM} and CNN-multichannel\cite{KimCNN} as well as other models in Block A. 
+	This result supports our hypothesis on the drawback of using k-max-pooling layer in Block A's models.
+	\item Due to using similar architects, CNN-LSTM was comparable with CNN-GRU-word2vec and CNN-LSTM-word2vec~\cite{cnn-rnn}.
+	The max pooling layer in CNN-LSTM-word2vec might help it to better generalize compares to our CNN-LSTM.
+	\item In all our experiments, Glove Amazon is better than the standard Glove.
+	We think that this is because Glove Amazon captured some useful features that does not exist or hardly be extracted in the standard Glove.
+	This result support our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (or different word relationships) when they express their opinions on movies or books.
+	We also used PARAGRAM-SL999 for initializing the word embedding layer of Constituency Tree-LSTM,
+	the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
+	\item 
+\end{itemize}
+\subsubsection{Combination of Convolution and Recursive Neural Networks}
+The fact that CNN-Tree-LSTM is able to outperforms Constituency Tree-LSTM~\cite{treeLSTM}, CNN-multichannel\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
+Similarly, CNN-LSTM outperforms LSTM~\cite{treeLSTM} and CNN-multichannel\cite{KimCNN} by a good margin. 
 Due to using similar architects, CNN-LSTM was comparable with CNN-GRU-word2vec and CNN-LSTM-word2vec~\cite{cnn-rnn}.
 The max pooling layer in CNN-LSTM-word2vec might help it to better generalize compares to our CNN-LSTM.
-
+\subsubsection{Glove Amazon Versus Standard Glove}
 Constituency Tree-LSTM using Glove Amazon largely outperformed Constituency Tree-LSTM using standard Glove even though it was trained on significantly larger dataset (840B tokens) compared to our preprocessed Amazon Reviews (4.7B tokens).
 Additionally, Glove Amazon also improved CNN-Tree-LSTM.
 We can conclude that Amazon Glove captured some useful features that does not exist or hardly be extracted in standard Glove.
@@ -183,10 +198,9 @@ The combination of Glove Amazon and standard Glove help 2-channel CNN-LSTM and 2
 
 We also used PARAGRAM-SL999 for initializing the word embedding layer of Constituency Tree-LSTM,
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
-
+\subsubsection{Tree-structured Versus Sequential Models}
 CNN-Tree-LSTM performed worst than CNN-LSTM, the reason might because of over-fitting.
 In contrast, 2-channel CNN-Tree-LSTM was able to outperform 2-channel CNN-LSTM.
 
 Compared to state-of-the-art systems, our models underperform Byte mLSTM~\cite{mlstm} and Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} on binary and fine-grained setting, respectively.
 Nonetheless, they are able to outperform Byte mLSTM on fine-grained setting and Constituency Tree-LSTM Ensemble on binary setting.
-

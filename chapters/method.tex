@@ -3,8 +3,8 @@ For composing fixed size presentation vectors of a sentence given a set of varia
 Another solution would be to utilize Recursive Neural Networks.
 
 Different from the leaf module of Constituency Tree-LSTM, CNNs'~\cite{KimCNN,DCNN,2-layer-cnn} first convolution layer have hundreds of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
-Filters with large context window might help CNNs to mitigate the problem of words ambiguity and to capture phrase-level feature.
-We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it have no respect for the positions of features. 
+Filters with large context window might help CNNs to mitigate the problem of words ambiguity and to capture phrase-level features.
+We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it have little regard for the positions of features. 
 
 We combined Convolution Neural Networks with Constituency Tree-LSTM.
 We hypothesized that the convolution layer will help Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.

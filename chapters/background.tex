@@ -75,6 +75,7 @@ and \(o_t\) decides which information will be read from the memory cell \(c_t\),
 In most cases, to understand a sentence, we must understand the phrases composing it, in turn, to understand a phrase, we must understand the phrases and words composing the phrase.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying its composition function at each node of the parse tree in a bottom-up manner.
+Note that, Recurrent is a special case of Recursive Neural Network where the parse tree is a linear chain.
 For demonstration, parse tree of the phrase ``is a fluffy cat'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
 \begin{figure}[] 
 	\centering
