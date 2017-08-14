@@ -169,13 +169,13 @@ The fact that CNN-Tree-LSTM is able to outperforms Constituency Tree-LSTM~\cite{
 Similarly, CNN-LSTM outperforms LSTM~\cite{treeLSTM} and CNN-multichannel\cite{KimCNN} as well as the other Convolution Neural Networks in Block A. 
 This result supports our hypothesis on the drawback of using k-max-pooling layer in Block A's models.
 \subsubsection{Glove Amazon Versus Standard Glove}
-In all our experiments using binary setting, Glove Amazon is better than the standard Glove.
+On binary setting, Glove Amazon helps single input-channel models to archive higher accuracy compared to the standard Glove.
 We think that this is because Glove Amazon captured some useful features that does not exist or hardly be extracted in the standard Glove.
-This result support our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (i.e. different word relationships) when they express their opinions on movies or books.
+This result supports our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (i.e. different word relationships) when they express their opinions on movies or books.
 
 For the results on fine-grained setting, the standard Glove is better than Glove Amazon in the cases of Constituency Tree-LSTM and CNN-LSTM.
 Additionally, a combination of Glove Amazon and the standard Glove helps improve the accuracy of both 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM on fine-grained setting as well as 2-channel CNN-Tree-LSTM on binary setting.
-Possibly, there are some useful features that only appear in the standard Glove or when combining both Glove Amazon and the standard Glove.
+Possibly, there are some useful features which only appear in the standard Glove or the combination of both Glove Amazon and the standard Glove.
 
 We also used PARAGRAM-SL999 for initializing the word embedding layer of Constituency Tree-LSTM,
 the results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
@@ -186,9 +186,9 @@ In contrary, with fine-grained setting, CNN-Tree-LSTM
 outperforms CNN-LSTM but 2-channel CNN-Tree-LSTM underperforms 2-channel CNN-LSTM.
 \subsection{Further Observations}
 \begin{itemize}
-	\item Due to using similar architects, CNN-LSTM's performance is comparable with CNN-GRU-word2vec and CNN-LSTM-word2vec~\cite{cnn-rnn}.
+	\item Due to having similar architects, CNN-LSTM's performance is comparable with CNN-GRU-word2vec and CNN-LSTM-word2vec~\cite{cnn-rnn}.
 	The max pooling layer in CNN-LSTM-word2vec might help it to better generalize compares to our CNN-LSTM.
-	\item On binary setting, CNN-LSTM (Glove Amazon) archives the highest accuracy among our models, even higher than 2-channel CNN-LSTM.  
+	\item On binary setting, CNN-LSTM (Glove Amazon) archives the highest accuracy among our models including the 2-channel CNN-LSTM which also has Glove Amazon as one of its word embedding.  
 	\item Our models underperform Byte mLSTM~\cite{mlstm} on binary setting.
-	Nonetheless, 2-channel CNN-LSTM are able to archive state-of-the-art performance on fine-grained setting.
+	Nonetheless, 2-channel CNN-LSTM is able to archive state-of-the-art performance on fine-grained setting.
 \end{itemize}
