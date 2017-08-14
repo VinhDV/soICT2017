@@ -64,6 +64,7 @@ u_t &= tanh\left(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}\right) \label{eq:lstm-upd
 c_t &= r_t \odot u_t + f_t \odot c_{t-1} \label{eq:longterm-mem}&\\
 h_t &= o_t \odot tanh(c_t) \label{eq:temperal-mem}&
 \end{align}
+The operation \(\odot\) denotes the element-wise vector product.
 Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively and \(c_t\) is called memory cell.
 Intuitively, we can interpret how the network works as follow: 
 in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network; 
