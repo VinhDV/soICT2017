@@ -2,7 +2,7 @@
 \subsection{Word Embeddings}
 A word embedding is a function mapping from words to their continuous vector representations.
 The purpose of this method is to encode relevant syntactic and semantic features of words as relationships among their representation vectors.
-Usually, word embeddings are trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.   
+Usually, word embeddings are trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.
 Pre-learned word presentations have been applied widely and become the ``secret sauce'' for the success of recent NLP systems~\cite{Luong_betterword}.
 \subsubsection{Matrix Representation of Sequences of Words}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses an independent word embedding, any sentence~\(s\) of length~\(n\) can be represented as a matrix.
@@ -28,7 +28,7 @@ Given that \(F\) is the set of all filters of the convolution layer, for any fil
 \begin{align}
 c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
 \end{align}
-In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.  
+In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.
 \(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
 For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
@@ -66,11 +66,11 @@ h_t &= o_t \odot tanh(c_t) \label{eq:temperal-mem}&
 \end{align}
 The operation \(\odot\) denotes the element-wise vector product.
 Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively and \(c_t\) is called memory cell.
-Intuitively, we can interpret how the network works as follow: 
-in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network; 
-\(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\); 
-write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\); 
-forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\); 
+Intuitively, we can interpret how the network works as follow:
+in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network;
+\(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\);
+write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\);
+forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\);
 and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
 \subsection{Recursive Neural Network}\label{sec:recursive-nn}
 In most cases, to understand a sentence, we must understand the phrases composing it, in turn, to understand a phrase, we must understand the phrases and words composing the phrase.
@@ -78,7 +78,7 @@ Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying its composition function at each node of the parse tree in a bottom-up manner.
 Note that, Recurrent is a special case of Recursive Neural Network where the parse tree is a linear chain.
 For demonstration, parse tree of the phrase ``is a fluffy cat'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}.
-\begin{figure}[] 
+\begin{figure}[]
 	\centering
 	%\includegraphics[scale=0.4]{figure/example-parse}
 	\input{figure/cattree.tikz}
@@ -96,10 +96,10 @@ For demonstration, parse tree of the phrase ``is a fluffy cat'' and its composin
 
 One of the most successful Recursive Neural Networks are Tree-LSTMs~\cite{treeLSTM}.
 The core idea behind the design of Tree-LSTMs are to generalize the LSTM for tree-structured inputs.
-Tree-LSTMs were able to archive state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
+Tree-LSTMs were able to achieve state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
 \subsubsection{Constituency Tree-LSTM}\label{treelstm}
 Let \(d\) be the size of the input vectors, \(r
-\) be the size of the memory cell and \(z\) be the number of sentiment classes. 
+\) be the size of the memory cell and \(z\) be the number of sentiment classes.
 \paragraph{Leaf module}
 Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module can be expressed as follow:
 \begin{align}
@@ -132,10 +132,10 @@ In this module, \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \math
 Given any sentence, its parse tree and a word embedding, each word in the sentence is mapped to a representation vector.
 For any non-leaf node, composer module is applied recursively and for any leaf node, the leaf module is applied on the vector representation of the corresponding word.
 Finally, we can apply the output module on any node in the parse tree.
-Recursive Neural Networks have several advantages over Recurrent Neural Networks: 
+Recursive Neural Networks have several advantages over Recurrent Neural Networks:
 \begin{itemize}
 	\item In case the input sequence belongs to a recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
-	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}. 
+	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}.
 	\item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
 	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
 \end{itemize}
