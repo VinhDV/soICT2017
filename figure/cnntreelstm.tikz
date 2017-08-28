@@ -1,10 +1,10 @@
 \usetikzlibrary{matrix}
 \usetikzlibrary{patterns}
 \tikzset{
-	sq1/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black},
-	sq1m/.style={rectangle, minimum width=0.8cm, minimum height=0.4cm, text centered, draw=black},
-	sq1p/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black, pattern=north west lines},
-	circ/.style={circle, minimum width=0.4cm, minimum height=0.4cm, text centered, draw=black},
+	sq1/.style={rectangle, minimum width=0.5cm, minimum height=0.5cm, text centered, draw=black},
+	sq1m/.style={rectangle, minimum width=0.7cm, minimum height=0.3cm, text centered, draw=black},
+	sq1p/.style={rectangle, minimum width=0.5cm, minimum height=0.5cm, text centered, draw=black, pattern=north west lines},
+	circ/.style={circle, minimum width=0.3cm, minimum height=0.3cm, text centered, draw=black},
 	arrow/.style={thick,->},
 	sqvec/.style={matrix,matrix of nodes,nodes in empty cells},
 }
@@ -13,62 +13,62 @@
 \begin{tikzpicture}
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c1) at (0.5,8) {
+every odd row/.style = { nodes={fill=black!100}}] (c1) at (1.5,8.5) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c2) at (1.5,8) {
+every odd row/.style = { nodes={fill=black!100}}] (c2) at (2,8.5) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c3) at (2.5,8) {
+every odd row/.style = { nodes={fill=black!100}}] (c3) at (2.5,8.5) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c4) at (3.5,8) {
+every odd row/.style = { nodes={fill=black!100}}] (c4) at (3,8.5) {
 	\\
 	\\ 
 };  
 
 \node [sqvec,nodes={circ},      
 every even row/.style = { nodes={fill=red!60}},
-every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8) {
+every odd row/.style = { nodes={fill=black!100}}] (c5) at (3.5,8.5) {
 	\\
 	\\ 
 };  
 
 
-\node [sqvec,column sep=-\pgflinewidth,nodes={sq1}] (v) at (2.5,4) {
+\node [sqvec,column sep=-\pgflinewidth,nodes={sq1}] (v) at (2.5,5.5) {
 	&&&&\\
 	&&&&\\
 	&&&&\\
 };   
 
-\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v1) at (-0.5,4) {
+\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v1) at (1,5.5) {
 	\\
 	\\
 	\\
 };   
-\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v2) at (-1.5,4) {
+\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v2) at (0.5,5.5) {
 	\\
 	\\
 	\\
 };   
-\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v3) at (5.5,4) {
+\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v3) at (4,5.5) {
 	\\
 	\\
 	\\
 };   
-\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v4) at (6.5,4) {
+\node [sqvec,column sep=-\pgflinewidth,nodes={sq1p}] (v4) at (4.5,5.5) {
 	\\
 	\\
 	\\
@@ -101,9 +101,9 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8) {
 
 
 \node [sq1m] (v8) at (2,10.5) {};
-\node [sq1m] (v7) at (1,10) {};
-\node [sq1m] (v6) at (3.5,10) {};
-\node [sq1m] (v5) at (3,9) {};
+\node [sq1m] (v7) at (1.5,10) {};
+\node [sq1m] (v6) at (3,10) {};
+\node [sq1m] (v5) at (2.5,9.5) {};
 % \draw  (c3) edge (v5);
 % \draw  (c4) edge (v5);
 \draw  (v5) edge (v6);
@@ -115,17 +115,18 @@ every odd row/.style = { nodes={fill=black!100}}] (c5) at (4.5,8) {
 
 
 
-\node at (-1.5,2) {pad};
-\node at (-0.5,2) {pad};
-\node at (0.5,2) {$x_1$};
-\node at (1.5,2) {$x_2$};
-\node at (2.5,2) {$x_3$};
-\node at (3.5,2) {$x_4$};
-\node at (4.5,2) {$x_5$};
-\node at (5.5,2) {pad};
-\node at (6.5,2) {pad};
+\node at (0.5,4.5) {pad};
+% \node at (1,4) {pad};
+\node at (1.5,4.5) {$x_1$};
+\node at (2,4.5) {$x_2$};
+\node at (2.5,4.5) {$x_3$};
+\node at (3,4.5) {$x_4$};
+\node at (3.5,4.5) {$x_5$};
+\node at (4.5,4.5) {pad};
+% \node at (4.5,4) {pad};
 
-\node at (-1,8) {Convolution};
+\node at (-1,8.5) {Convolution};
+\node at (-1,5.5) {Word vectors};
 \node at (-1,10) {Tree-LSTM};
 
 % connect lstm to circle
