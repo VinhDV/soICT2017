@@ -1,10 +1,10 @@
 \section{Conclusion}
-In this paper, we investigated the combinations of Recursive Neural Network and Convolution Neural Network for sentence-level sentiment analysis.
+In this paper, we introduced a combinations of Recursive Neural Network and Convolution Neural Network for sentence-level sentiment analysis.
 We did experiments with both tree-structured and sequential Recursive Neural Networks.
-Using Standford Sentiment Treebank, we demonstrated that the combinations are able to outperform most Convolution and Recursive Neural Networks.
+Using Standford Sentiment Treebank, we demonstrated that the combinations are able to outperform most pure Convolution and Recursive Neural Networks.
+
 Additionally, in attempt to improve vector presentations of words, we trained Glove vectors on the gigantic Amazon Reviews dataset (Glove Amazon).
-We have demonstrated that on binary setting, Glove Amazon helps single input-channel models to achieve higher accuracy compared to the standard Glove.
-On fine-grained setting, we also showed that a combination of Glove Amazon and standard Glove is better than each of the word embeddings.
+We have demonstrated Glove Amazon is good for models on binary setting but can be harmful for them in fine-grained setting.
 
 Given the success of Glove Amazon, we will pre-train Multichannel CNN-LSTM as a language model on Amazon Reviews dataset.
 
