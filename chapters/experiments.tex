@@ -162,7 +162,6 @@ Additionally, the combination of CNN and LSTM or TreeLSTM outperform most Convol
 These results support our hypothesis that max pooling layer can be harmful for CNN by ignoring the position of features.
 \subsubsection{Glove Amazon versus Standard Glove}
 On binary setting, Glove Amazon helps single input-channel models to achieve higher accuracy compared to the standard Glove.
-This result supports our hypothesis that by training word embedding on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (i.e. different word relationships) when they express their opinions on movies or books.
 However, on fine-grained setting, Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
 In short, Glove Amazon is good for models on binary setting but can be harmful for them in fine-grained setting.
 Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur. 
@@ -170,12 +169,13 @@ Therefore, the Glove Amazon word vectors is more dependent on the sentiment expr
 We think this is the reason why Glove Amazon beneficial for models to discriminate between positive and negative sentiments in binary setting and at the same time, thwarts the models to discriminate between neutral from the other classes in fine-grained setting. 
 
 A combination of Glove Amazon and the standard Glove improves the accuracy of both 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM on fine-grained setting as well as 2-channel CNN-Tree-LSTM on binary setting.
-Possibly, some useful features only appear in the standard Glove or the combination of both Glove Amazon and the standard Glove.
+Yet, the improvements of CNN-Tree-LSTM are more significant compared to CNN-LSTM.
 
 We also used PARAGRAM-SL999 for initializing the word embedding layer of Constituency Tree-LSTM.
 The results (of 8 runs with mean 87.175\% and standard deviation 0.69) were not as good as those of standard Glove.
 \subsubsection{Tree-structured Versus Sequential Models}
-The results are mixed.
 With single input channel, CNN-LSTM outperforms CNN-Tree-LSTM in most cases except the case of using Glove Amazon on fine-grained setting.
-With two input channels using both Glove Amazon and the standard Glove, 2-channel CNN-Tree-LSTM outperforms 2-channel CNN-LSTM on both binary and fine-grained setting.
+
+With two input channels using both Glove Amazon and the standard Glove, CNN-Tree-LSTM gains a large improvement and outperforms 2-channel CNN-LSTM on both binary and fine-grained setting.
+On average, 2-channel CNN-Tree-LSTM achieves the highest accuracy among all our models on both settings.
 
