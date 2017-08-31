@@ -31,7 +31,7 @@ The only difference is that for any word-\(i\)th in the sentence, the vector rep
 This mean the size of any input vector for the Constituency Tree-LSTM is equal to the number of filters \(m\).
 \subsection{Model Enhancement}
 We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
-Although, there are some attempts to do transfer learning~\cite{group-instance}~\cite{re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when being evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
+Although, there are some attempts to do transfer learning~\cite{group-instance, re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when being evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
 
 We utilized Glove~\cite{glove} method to do transfer learning.
 We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (or different word relationships) to express their opinions on movies or books.

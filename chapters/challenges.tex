@@ -18,5 +18,5 @@ These words might not appear or not have good vector representations in the pre-
 Additionally, the ways people use words in movie reviews might be different from their usage in general documents.
 For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl but if we have to predict the sentiment of a movie comment which has one of these words, they should be distinctive.
 
-Noticeably, many experiments~\cite{treeLSTM}~\cite{KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
+Noticeably, many experiments~\cite{treeLSTM, KimCNN} have shown that modifying word embeddings during the training process help improving performance of Deep Learning systems.
 Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and non-related words which only appear in test set.
