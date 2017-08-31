@@ -1,9 +1,9 @@
 
 \pgfplotstableread[row sep=\\,col sep=&]{
     interval & CNN LSTM & CNN TreeLSTM & TreeLSTM \\
-    GloveCommonCrawl  & 51.92  &  51.35  & 51\\
+    StandardGlove  & 51.92  &  51.35  & 51\\
     GloveAmazon   & 50.84 & 51.51 & 50.53\\
-    Combine  & 51.7  & 52.46 &   \\
+    Combination  & 51.7  & 52.46 &   \\
     }\mydata
 
 \begin{tikzpicture}[scale=1]
@@ -11,15 +11,15 @@
             ybar,
 			bar width=0.6cm,
 			width=0.5\textwidth,
-			height=0.5\textwidth,
+			height=0.37\textwidth,
 			legend style={at={(0.5,-0.1)},
 				anchor=north,legend columns=-1},
-            symbolic x coords={GloveCommonCrawl, GloveAmazon, Combine},
+            symbolic x coords={StandardGlove, GloveAmazon, Combination},
             xtick=data,
             nodes near coords,
             enlarge x limits={0.2},
             nodes near coords align={vertical},
-            ymin=49,ymax=53,
+            ymin=50.3,ymax=52.7,
             ylabel={},
         ]
         \addplot table[x=interval,y=CNN LSTM]{\mydata};

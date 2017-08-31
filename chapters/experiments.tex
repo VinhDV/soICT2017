@@ -37,8 +37,6 @@ We named this new word embedding Glove Amazon.
 \subsubsection{Experiment Descriptions}
 We did experiment with Glove Amazon and different variations of our model.
 \begin{description}
-	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove~Amazon is used to replace the standard Glove vector for initializing word embedding layer of Constituency Tree-LSTM.
-	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM~\cite{treeLSTM} are kept unchanged.
 	\item[CNN-Tree-LSTM] Our basic model which has only one input channel.
 	This input channel is initialized using the standard Glove vectors.
 	\item[CNN-Tree-LSTM (Glove Amazon)] CNN-Tree-LSTM with word vectors initialized from Glove Amazon.
@@ -47,6 +45,9 @@ We did experiment with Glove Amazon and different variations of our model.
 	This model has only one input channel initialized from the standard Glove vectors.
 	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM with word vectors initialized from Glove Amazon.
 	\item [2-channel CNN-LSTM] A CNN-LSTM model with two input channels at CNN layers. The CNN layers is similar to CNN layer in 2-channel CNN-Tree-LSTM model.
+	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove Amazon~is used to replace the standard Glove vector for initializing~word embedding layer of Constituency Tree-LSTM.
+	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM~\cite{treeLSTM} are kept unchanged.
+	The case of Tree-LSTM using both Glove Amazon, standard Glove were not experimented on because we have found no reliable way to extend the original Tree-LSTM for multichannel input.
 \end{description}
 
 Since the cost functions of neural networks are non-convex and algorithms used to train neural networks are only able to find local optimum, different runs of one models can converge in different local optimums depend on the initialized parameters of the models.  
@@ -86,6 +87,7 @@ Our models were trained for 60 epochs.
 		The accuracies of models in blocks A to E are taken from their original papers.
 		We highlight the best results among our models and underline the state-of-the-art model fine-grained setting.
 		\textit{(*): Mean and standard deviation of 5 runs.}
+		\textit{(**): Mean of 100 runs, std was not reported.}
 	}
 	\label{table:experimentresult}
 	\begin{tabular}{|c|l|ll|ll|}
@@ -104,13 +106,14 @@ Our models were trained for 60 epochs.
 		& 2-layer LSTM~\cite{treeLSTM} & \multicolumn{2}{c|}{86.3 (0.6)*} & \multicolumn{2}{c|}{46.0 (1.3)*} \\
 		& 2-layer Bidirectional LSTM~\cite{treeLSTM} & \multicolumn{2}{c|}{87.2 (1.0)*} & \multicolumn{2}{c|}{48.5 (1.0)*} \\
 		& DMN~\cite{attention-gru} & \multicolumn{2}{c|}{88.6 } & \multicolumn{2}{c|}{52.1} \\
+		& Byte mLSTM~\cite{mlstm} & \multicolumn{2}{c|}{\underline{91.80}**} & \multicolumn{2}{c|}{52.90**} \\
 		\hline
 		\multirow{6}{*}{C} & RNTN~\cite{socher2013recursive}  & \multicolumn{2}{c|}{85.4} & \multicolumn{2}{c|}{45.7} \\
 		& DRNN~\cite{IrsoyDRNN} & \multicolumn{2}{c|}{86.6} & \multicolumn{2}{c|}{49.8}  \\
 		& TE-RNTN~\cite{tag-embedding-rnn} & \multicolumn{2}{c|}{87.7} & \multicolumn{2}{c|}{48.9} \\
 		& Dependency Tree-LSTM~\cite{treeLSTM}  & \multicolumn{2}{c|}{85.7 (0.4)*} & \multicolumn{2}{c|}{48.4 (0.4)*}  \\
 		& Constituency Tree-LSTM~\cite{treeLSTM} &  \multicolumn{2}{c|}{88.0 (0.3)*}  & \multicolumn{2}{c|}{51.0 (0.5)*} \\
-		% & Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} & \multicolumn{2}{c|}{90.2} & \multicolumn{2}{c|}{\underline{53.6}} \\
+		& Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} & \multicolumn{2}{c|}{90.2} & \multicolumn{2}{c|}{\underline{53.6}} \\
 		\hline
 		\multirow{3}{*}{D} & GICF~\cite{group-instance} & \multicolumn{2}{c|}{85.7}  &  \multicolumn{2}{c|}{-} \\
 		& Paragraph-Vec~\cite{ParagraphVec} & \multicolumn{2}{c|}{87.8} & \multicolumn{2}{c|}{48.7} \\
@@ -144,12 +147,13 @@ The second part is Block F, which contains all models which were proposed and ev
 	\item[Block B] contains recurrent neural network models and their variations.
 	All the models in this Block B process sentences sequentially.
 	DMN~\cite{attention-gru} is a sophisticated model used GRU with attention mechanism and episodic memory.
+	Byte mLSTM~\cite{mlstm} is the state-of-the-art system on binary setting.
 	\item[Block C] contains models which belong to the family of Recursive Neural Networks (tree-structured models).
 	RNTN~\cite{socher2013recursive} is the first recursive neural network to successfully apply on sentence-level sentiment analysis (Stanford Sentiment Treebank).
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
-	% Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} is an ensemble of 30 Constituency Tree-LSTMs.
-	% The models is state-of-the-art system on fine-grained setting of Stanford Sentiment Treebank.
+	Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} is an ensemble of 30 Constituency Tree-LSTMs.
+	The models is state-of-the-art system on fine-grained setting of Stanford Sentiment Treebank.
 	\item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
 	GICF~\cite{group-instance} learns to classify sentiments of sentences (in Stanford Sentiment Treebank) using only document-level sentiment labels training dataset.
 	Paragraph-Vec~\cite{ParagraphVec} learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
@@ -160,9 +164,21 @@ The second part is Block F, which contains all models which were proposed and ev
 The fact that CNN-Tree-LSTM is able to outperforms Constituency Tree-LSTM~\cite{treeLSTM} and CNN-multichannel\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
 Additionally, the combination of CNN and LSTM or TreeLSTM outperform most Convolution Network Networks in Block A.
 These results support our hypothesis that max pooling layer can be harmful for CNN by ignoring the position of features.
-\subsubsection{Glove Amazon versus Standard Glove}
-On binary setting, Glove Amazon helps single input-channel models to achieve higher accuracy compared to the standard Glove.
-However, on fine-grained setting, Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
+\subsubsection{Glove Amazon versus standard Glove}
+\begin{figure} []
+	\centering
+	\input{figure/plot3.tikz}
+	\caption[qwerty]{Mean accuracy of 5 runs on binary setting of Tree-LSTM, CNN-LSTM and CNN-Tree-LSTM using different word embeddings}
+	\label{graph:binary}
+\end{figure}
+On binary setting (Figure~\ref{graph:binary}), Glove Amazon helps single input-channel models to achieve higher accuracy compared to the standard Glove.
+\begin{figure} []
+	\centering
+	\input{figure/plot4.tikz}
+	\caption[qwerty]{Mean accuracy of 5 runs on fine-grained setting of Tree-LSTM, CNN-LSTM and CNN-Tree-LSTM using different word embeddings}
+	\label{graph:fine-grained}
+\end{figure}
+However, on fine-grained setting (Figure~\ref{graph:fine-grained}), Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
 In short, Glove Amazon is good for models on binary setting but can be harmful for them in fine-grained setting.
 Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur. 
 Therefore, the Glove Amazon word vectors is more dependent on the sentiment expressed in the words compared to the word vectors in the standard Glove which capture more general meaning of words.
