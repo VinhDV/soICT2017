@@ -40,7 +40,7 @@ We did experiment with Glove Amazon and different variations of our model.
 	\item[CNN-Tree-LSTM] Our basic model which has only one input channel.
 	This input channel is initialized using the standard Glove vectors.
 	\item[CNN-Tree-LSTM (Glove Amazon)] CNN-Tree-LSTM with word vectors initialized from Glove Amazon.
-	\item [2-channel CNN-Tree-LSTM] Model's CNN layerer have two input channels from two different word embedding matrices, which are initialized from Glove Common Craw and Glove Amazon, respectively.
+	\item [2-channel CNN-Tree-LSTM] CNN-Tree-LSTM with two input channels from two different word embedding matrices, which are initialized from Glove Common Craw and Glove Amazon, respectively.
 	\item[CNN-LSTM] Similar to CNN-Tree-LSTM. However, we replaced Constituency Tree-LSTM module by a LSTM unit.
 	This model has only one input channel initialized from the standard Glove vectors.
 	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM with word vectors initialized from Glove Amazon.
@@ -153,7 +153,7 @@ The second part is Block F, which contains all models which were proposed and ev
 	DRNN~\cite{IrsoyDRNN} is a multilayered extension of RNTN.
 	TE-RNTN is also an extension of RNTN which utilize the local syntactic information at each node of a sentence's parse tree.
 	Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} is an ensemble of 30 Constituency Tree-LSTMs.
-	The models is state-of-the-art system on fine-grained setting of Stanford Sentiment Treebank.
+	This model is the state-of-the-art system on fine-grained setting of Stanford Sentiment Treebank.
 	\item[Block D] contains transfer learning methods, which utilized a large amount of data other than Stanford Sentiment Treebank.
 	GICF~\cite{group-instance} learns to classify sentiments of sentences (in Stanford Sentiment Treebank) using only document-level sentiment labels training dataset.
 	Paragraph-Vec~\cite{ParagraphVec} learns to encode any sequence of words into a vector with the purpose of maximizing the likelihood of words which appear in that sequence given the encoding vector.
@@ -182,7 +182,7 @@ However, on fine-grained setting (Figure~\ref{graph:fine-grained}), Glove Amazon
 In short, Glove Amazon is good for models on binary setting but can be harmful for them in fine-grained setting.
 Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur. 
 Therefore, the Glove Amazon word vectors is more dependent on the sentiment expressed in the words compared to the word vectors in the standard Glove which capture more general meaning of words.
-We think this is the reason why Glove Amazon beneficial for models to discriminate between positive and negative sentiments in binary setting and at the same time, thwarts the models to discriminate between neutral from the other classes in fine-grained setting. 
+We think this is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful for detecting neutral in fine-grained setting. 
 
 A combination of Glove Amazon and the standard Glove improves the accuracy of both 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM on fine-grained setting as well as 2-channel CNN-Tree-LSTM on binary setting.
 Yet, the improvements of CNN-Tree-LSTM are more significant compared to CNN-LSTM.
