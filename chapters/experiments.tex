@@ -45,7 +45,7 @@ We did experiment with Glove Amazon and different variations of our model.
 	This model has only one input channel initialized from the standard Glove vectors.
 	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM with word vectors initialized from Glove Amazon.
 	\item [2-channel CNN-LSTM] A CNN-LSTM model with two input channels at CNN layers. The CNN layers is similar to CNN layer in 2-channel CNN-Tree-LSTM model.
-	\item[Constituency Tree-LSTM (Glove Amazon)] In this model, Glove Amazon~is used to replace the standard Glove vector for initializing~word embedding layer of Constituency Tree-LSTM.
+	\item[Constituency Tree-LSTM (Glove Amazon)]Glove Amazon~is used to replace the standard Glove vector for initializing~word embedding layer of Constituency Tree-LSTM.
 	Apart from that, the whole training process and hyper-parameters of Constituency Tree-LSTM~\cite{treeLSTM} are kept unchanged.
 	The case of Tree-LSTM using both Glove Amazon, standard Glove were not experimented on because we have found no reliable way to extend the original Tree-LSTM for multichannel input.
 \end{description}
@@ -182,7 +182,7 @@ However, on fine-grained setting (Figure~\ref{graph:fine-grained}), Glove Amazon
 In short, Glove Amazon is good for models on binary setting but can be harmful to them in fine-grained setting.
 Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur. 
 Therefore, the Glove Amazon word vectors is more dependent on the sentiment expressed in the words compared to the word vectors in the standard Glove which capture more general meaning of words.
-We think this is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in fine-grained setting. 
+This possibly be the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in fine-grained setting. 
 
 A combination of Glove Amazon and the standard Glove improves the accuracy of both 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM on fine-grained setting as well as 2-channel CNN-Tree-LSTM on binary setting.
 Yet, the improvements of CNN-Tree-LSTM are more significant compared to CNN-LSTM.
