@@ -7,7 +7,7 @@ Filters with large context window might help CNNs to mitigate the problem of wor
 We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it have little regard for the positions of features. 
 
 We combined Convolution Neural Networks with Constituency Tree-LSTM.
-We hypothesized that the convolution layer will help Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
+We hypothesized that the convolution layer help Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
 Additionally, using Constituency Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max pooling layers.
 \subsection{Model}
 Our model has three modules: word embeddings, convolution layer and Constituency Tree-LSTM.
@@ -17,7 +17,7 @@ Our model has three modules: word embeddings, convolution layer and Constituency
 	\caption[qwerty]{CNN-Tree-LSTM}
 \end{figure}
 \subsubsection{Convolution Layer}
-We reuse the definition of convolution layer which is described in Sec.~\ref{conv-layer}.
+Convolution layer is described in Sec.~\ref{conv-layer}.
 For working with Constituency Tree-LSTM, after going through the convolution layer, the parse tree structure of sentence \(s\) must be applicable on the output of the convolution layer. 
 For this purpose, we constrained all the feature maps produced by the convolution layer to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
 Additionally, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
@@ -35,4 +35,4 @@ Although, there are some attempts to do transfer learning~\cite{group-instance}~
 
 We utilized Glove~\cite{glove} method to do transfer learning.
 We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (or different word relationships) to express their opinions on movies or books.
-This might help our models archiving better generalization when training on small sentence-level sentiment dataset like Stanford Sentiment Treebank~\cite{socher2013recursive}.
+This might help our models archiving better generalization when training on small sentence-level sentiment dataset (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive}).

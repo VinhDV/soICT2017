@@ -3,7 +3,6 @@ In recent years, thanks to the dramatic growth of social media, customers' opini
 With this amount of data, it is inefficient to read and analyze or even collect them manually. 
 Sentiment analysis offers a way to collect and process public opinion automatically.
 In a nutshell, sentiment analysis is to determine whether the opinion about a specific product, event, organization is positive or negative. 
-It is also known as opinion mining due to the sentiment was derived from opinions of the speaker.
 
 Formally, given document $d$, The main objective of sentiment analysis is to extract the following quintuple~\cite{liu2012sentiment}:
 \[ ( e_{i}, a_{ij}, s_{ijkl}, h_{k}, t_{l} ) \]
@@ -35,7 +34,7 @@ In this paper, we explored two ideas: ``Combining Convolution and Recursive Neur
 \paragraph{Combining Convolution and Recursive Neural Networks}Convolution (Section~\ref{sec:cnn}) and Recursive Neural Networks (Section~\ref{sec:recursive-nn}) have been proved to be effective network architects for sentence-level sentiment analysis.
 	Nevertheless, each of them has its own potential drawbacks (Section~\ref{sec:cnn-weak},~\ref{sec:recursive-nn-weak}).
 	For alleviating their weaknesses, we combined Convolution and Recursive Neural Networks into a new network architect (Section~\ref{sec:cnn-treelstm}) which is able to outperform both Convolution and Recursive Neural Networks (Section~\ref{sec:result}) on Stanford Sentiment Treebank (Section~\ref{sec:sst}).
-	This approach is closely related to the paper of Wang et al.~\cite{cnn-rnn} which investigate the combination Convolution and Recurrent Neural Networks.
+	This approach is closely related to the paper of Wang et al.~\cite{cnn-rnn} which investigates the combination Convolution and Recurrent Neural Networks.
 \paragraph{Transfer Learning From Large Review Dataset} One obstacle of solving sentence-level sentiment analysis is the lack of labeled data which potentially causes many drawbacks and one of them is over-fitting word embedding (Section~\ref{sec:word-weak}).
 	Since most opinions are expressed in form of  documents (i.e. multiple sentences), sentence-level labeled dataset required more work to produce.
 	Until now, the largest dataset for sentence-level sentiment analysis is Standford Sentiment Treebank which only contains 11,855 sentences.
