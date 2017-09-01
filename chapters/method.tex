@@ -4,13 +4,13 @@ Another solution would be to utilize Recursive Neural Networks.
 
 Different from the leaf module of Constituency Tree-LSTM, CNNs'~\cite{KimCNN,DCNN,2-layer-cnn} first convolution layer have hundreds of filters, each produces a feature map of the sentence by sliding through it with window sizes 3 to 5 words.
 Filters with large context window might help CNNs to mitigate the problem of words ambiguity and to capture phrase-level features.
-We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it have little regard for the positions of features. 
+We think this is the reason why CNNs can outperform TreeLSTMs~\cite{KimCNN}, even when it has little regard for the positions of features. 
 
 We combined Convolution Neural Networks with Constituency Tree-LSTM.
-We hypothesized that the convolution layer help Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
+We hypothesized that the convolution layer helps Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
 Additionally, using Constituency Tree-LSTM to combine the feature maps produced by the convolution layer might be a better choice compared to using max pooling layers.
 \subsection{Model}
-Our model has three modules: word embeddings, convolution layer and Constituency Tree-LSTM.
+Our model has three modules: word embeddings, convolution layer, and Constituency Tree-LSTM.
 \begin{figure} [H]
 	\centering
 	\input{figure/cnntreelstm.tikz}
@@ -18,20 +18,20 @@ Our model has three modules: word embeddings, convolution layer and Constituency
 \end{figure}
 \subsubsection{Convolution Layer}
 Convolution layer is described in Sec.~\ref{conv-layer}.
-For working with Constituency Tree-LSTM, after going through the convolution layer, the parse tree structure of sentence \(s\) must be applicable on the output of the convolution layer. 
-For this purpose, we constrained all the feature maps produced by the convolution layer to have length equal to that of the sentence \(s\) (which is \(n\) in this case).
+For working with Constituency Tree-LSTM, after going through the convolution layer, the parse tree structure of sentence \(s\) must be applied on the output of the convolution layer. 
+For this purpose, we constrained all the feature maps produced by the convolution layer to have the length equal to that of the sentence \(s\) (which is \(n\) in this case).
 Additionally, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions entail \({\forall u \in F,  c^{(u)} \in \mathbb{R}^n}\)~\cite{conv-arith}.
 
-Suppose the size of set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), of which each row is a feature maps.
+Suppose the size of the set of filters \(F\) is \(m\), all the feature maps produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), of which each row is a feature map.
 After that, the column vectors of \(P\) are treated as input vectors for the Constituency Tree-LSTM.
 \subsubsection{Constituency Tree-LSTM}
 The definition of Constituency Tree-LSTM which is described in Sec.~\ref{treelstm} is reused.
 The only difference is that for any word-\(i\)th in the sentence, the vector representation of it is the \(i\)th-column of the matrix \(P\) produced by the convolution layer.
-This mean the size of any input vector for the Constituency Tree-LSTM is equal to the number of filters \(m\).
+This means the size of any input vector for the Constituency Tree-LSTM is equal to the number of filters \(m\).
 \subsection{Model Enhancement}
-We observed that the available amount of document-level labeled sentiment data (e.g. Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g. Stanford Sentiment Treebank~\cite{socher2013recursive} has 8544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
-Although there are some attempts to do transfer learning~\cite{group-instance, re-embedding} (i.e. training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when being evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
+We observed that the available amount of document-level labeled sentiment data (e.g., Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g., Stanford Sentiment Treebank~\cite{socher2013recursive} which has 8,544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
+Although there are some attempts to do transfer learning~\cite{group-instance, re-embedding} (i.e., training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when being evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
 
 We utilized Glove~\cite{glove} method to do transfer learning.
 We hypothesized that by training Glove on review documents, especially movie or book reviews, we can capture more rare words and also the different way that people use words (or different word relationships) to express their opinions on movies or books.
