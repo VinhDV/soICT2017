@@ -1,5 +1,9 @@
 \documentclass[sigconf]{acmart}
 
+\settopmatter{printacmref=false} % Removes citation information below abstract
+\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+\pagestyle{plain} % removes running headers
+
 \usepackage{booktabs} % For formal tables
 \usepackage{multirow}
 \newcommand\Tstrut{\rule{0pt}{2.6ex}}         % = `top' strut
@@ -71,7 +75,7 @@
 %\setcopyright{none}
 %\setcopyright{acmcopyright}
 %\setcopyright{acmlicensed}
-\setcopyright{rightsretained}
+%\setcopyright{rightsretained}
 %\setcopyright{usgov}
 %\setcopyright{usgovmixed}
 %\setcopyright{cagov}
@@ -100,7 +104,7 @@
 %\orcid{1234-5678-9012}
 %\affiliation{%
 %	\institution{Faculty of Information Technology
-%		University of Sciences }
+%		VNUHCM - University of Sciences }
 %	\streetaddress{Nguyen Van Cu}
 %	\city{Ho Chi Minh} 
 %	\country{Vietnam}}
@@ -109,7 +113,7 @@
 %\author{Thien Thai}
 %\affiliation{%
 %	\institution{Faculty of Information Technology
-%		University of Sciences }
+%		VNUHCM - University of Sciences }
 %	\streetaddress{Nguyen Van Cu}
 %	\city{Ho Chi Minh} 
 %	\country{Vietnam}}
@@ -118,7 +122,7 @@
 %\author{Quoc-Minh Nghiem}
 %\affiliation{%
 %  \institution{Faculty of Information Technology
-%  University of Sciences }
+%  VNUHCM - University of Sciences }
 %  \streetaddress{Nguyen Van Cu}
 %  \city{Ho Chi Minh} 
 %  \country{Vietnam}}
