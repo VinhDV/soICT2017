@@ -75,7 +75,6 @@ We index all our experimented models along with their number of parameters in Ta
 Our models was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$ and batch size of 25.
 Word vectors are updated with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$.
 We regularized the convolution layers with input dropout rate of 0.5 and output dropout rate of 0.2 in addition to dropout of rate 0.5 at output layer.
-
 We found that 100 filters of size 3 and 100 filters of size 5 yield better results compared to single filters size or the number of filters larger than 200.
 Additionally, training with Adagrad's learning rate of 0.01 and word vectors' learning rate 0.1 give the best result.
 Our models were trained for 60 epochs.
