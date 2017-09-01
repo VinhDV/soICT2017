@@ -2,7 +2,7 @@
 \subsection{Word Embeddings}
 A word embedding is a function mapping from words to their continuous vector representations.
 The purpose of this method is to encode relevant syntactic and semantic features of words as relationships among their representation vectors.
-Usually, word embeddings are trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.
+Word embeddings are usually trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.
 Pre-learned word representations have been applied widely and become the ``secret sauce'' for the success of recent NLP systems~\cite{Luong_betterword}.
 \subsubsection{Matrix Representation of Sequences of Words}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses an independent word embedding, any sentence~\(s\) of length~\(n\) can be represented as a matrix.
@@ -22,7 +22,7 @@ X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 In Eq.\eqref{concat}, \(\oplus\) is concatenation operator which results in the matrix \(X_{i:j} \in \mathbb{R}^{d \times (j-i+1)}\).
 \subsection{Convolution and Pooling}\label{sec:cnn}
 Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
-Convolution Neural Networks are commonly constructed by staking up multiple convolution, pooling and fully connected layers.
+Convolution Neural Networks are commonly constructed by stacking up multiple convolution, pooling and fully connected layers.
 \subsubsection{Convolution Layer}\label{conv-layer}
 Given that \(F\) is the set of all filters of the convolution layer, for any filter \(v \in F\) which has window size \(l\) and set of parameters \(\theta^{(v)} = \{ W^{(v)}, b^{(v)} | W^{(v)} \in \mathbb{R}^{d \times l}, b^{(v)} \in \mathbb{R}\}\), filter \({v}\) is applied on any sequence of word-\(i\)th to word-\((i+l-1)\)th through the following equation:
 \begin{align}
@@ -45,7 +45,7 @@ In case \(k = 1\) the pooling layer is called max-over-time pooling~\cite{nlp-sc
 Apart from being treated as a hyper-parameter, \(k\) can also be parameterized with respect to the length of the input sentence, in which case, the pooling layer is called dynamic k-max pooling~\cite{DCNN}.
 \subsection{Recurrent Neural Network}
 By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection~\cite{rnn-def}.
-Recurrent Neural Networks have been proven to be effective network architects when applying on the type of problems whose output is determined by a variable-length input sequence~\cite{speech-lstm,SutskeverVL14,mikolov-nlm}.
+Recurrent Neural Networks have been proven to be effective network architects when applied on the type of problems whose output is determined by a variable-length input sequence~\cite{speech-lstm,SutskeverVL14,mikolov-nlm}.
 \subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
 Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula~\cite{treeLSTM}:
 \begin{align}
@@ -73,7 +73,7 @@ write gate \(w_t\) decides which information from \(u_t\) will be written into t
 forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\);
 and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
 \subsection{Recursive Neural Network}\label{sec:recursive-nn}
-In most cases, to understand a sentence, we must understand the phrases composing it, in turn, to understand a phrase, we must understand the phrases and words composing the phrase.
+In most cases, to understand a sentence, we must understand the phrases composing it, and to understand a phrase, we must understand the phrases and words composing the phrase.
 Recursive Neural Networks were mainly inspired by this idea~\cite{treeLSTM}.
 Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying its composition function at each node of the parse tree in a bottom-up manner.
 Note that, Recurrent is a special case of Recursive Neural Network where the parse tree is a linear chain.
@@ -135,7 +135,7 @@ Finally, we can apply the output module on any node in the parse tree.
 Recursive Neural Networks have several advantages over Recurrent Neural Networks:
 \begin{itemize}
 	\item In case the input sequence belongs to a recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
-	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decrease fast~\cite{bowman-treevslstm}.
-	\item Tree can breaks down complicated sentences into simpler phrases, which make it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
+	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decreases fast~\cite{bowman-treevslstm}.
+	\item Tree can breaks down complicated sentences into simpler phrases, which makes it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
 	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
 \end{itemize}
