@@ -26,7 +26,7 @@ We have five steps to preprocess Amazon dataset for training word vectors using 
 	\item All the reviews were dumped into a plain text file.
 	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
 \end{enumerate}
-There is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data. 
+There is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data.
 Step 2 and 3 help us to mitigate this problem.
 
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
@@ -50,7 +50,7 @@ We did experiment with Glove Amazon and different variations of our model.
 	The case of Tree-LSTM using both Glove Amazon, standard Glove were not experimented on because we have found no reliable way to extend the original Tree-LSTM for multi-channel input.
 \end{description}
 
-Since the cost functions of neural networks are nonconvex and algorithms used to train neural networks are only able to find local optimum, different runs of one model can converge in various local optimums depend on the initialized parameters of the models.  
+Since the cost functions of neural networks are nonconvex and algorithms used to train neural networks are only able to find local optimum, different runs of one model can converge in various local optimums depend on the initialized parameters of the models.
 Base on the evaluating method used by Tai et al.~\cite{treeLSTM}, we evaluated the above models based on mean, standard deviation of 5 runs.
 In addition, the maximum accuracy among 5 runs is also reported.
 
@@ -170,18 +170,18 @@ These results support our hypothesis that max pooling layer can be harmful to CN
 	\caption[qwerty]{Mean accuracy of 5 runs on binary setting of Tree-LSTM, CNN-LSTM and CNN-Tree-LSTM using different word embeddings}
 	\label{graph:binary}
 \end{figure}
-On binary setting (Figure~\ref{graph:binary}), Glove Amazon helps single input-channel models to achieve higher accuracy compared to the standard Glove.
+On binary setting (Fig. ~\ref{graph:binary}), Glove Amazon helps single input-channel models to achieve higher accuracy compared to the standard Glove.
 \begin{figure} []
 	\centering
 	\input{figure/plot4.tikz}
 	\caption[qwerty]{Mean accuracy of 5 runs on fine-grained setting of Tree-LSTM, CNN-LSTM and CNN-Tree-LSTM using different word embeddings}
 	\label{graph:fine-grained}
 \end{figure}
-However, on fine-grained setting (Figure~\ref{graph:fine-grained}), Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
-In short, Glove Amazon is good for models on binary setting but can be harmful to them in the fine-grained setting.
-Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur. 
+However, on fine-grained setting (Fig. ~\ref{graph:fine-grained}), Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
+In short, Glove Amazon is good for models on binary setting however harmful in the fine-grained setting.
+Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur.
 Therefore, the Glove Amazon word vectors are more dependent on the sentiment expressed in the words compared to the word vectors in the standard Glove which capture more general meaning of words.
-This possibly is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in the fine-grained setting. 
+This possibly is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in the fine-grained setting.
 
 A combination of Glove Amazon and the standard Glove improves the accuracy of both 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM on fine-grained setting as well as 2-channel CNN-Tree-LSTM on the binary setting.
 Yet, the improvements of CNN-Tree-LSTM are more significant compared to CNN-LSTM.
