@@ -1,8 +1,8 @@
 \documentclass[sigconf]{acmart}
 
-\settopmatter{printacmref=false} % Removes citation information below abstract
-\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
-\pagestyle{empty} % removes running headers
+%\settopmatter{printacmref=false} % Removes citation information below abstract
+%\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+%\pagestyle{empty} % removes running headers
 
 \usepackage{booktabs} % For formal tables
 \usepackage{multirow}
@@ -14,7 +14,7 @@
 
 \usepackage{amsfonts}
 \usepackage{amsmath}
-\usepackage{pgfplots} % for plot bar chart 
+\usepackage{pgfplots} % for plot bar chart
 \newcommand{\floor}[1]{\lfloor #1 \rfloor}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 
@@ -39,9 +39,9 @@
 \tikzstyle{arrow} = [thick,->]
 \tikzstyle{sq} = [rectangle, minimum width=0.7cm, minimum height=0.7cm, text centered, draw=black ]
 \tikzstyle{cir} = [circle, minimum width=0.7cm, minimum height=0.7cm, text centered, draw=black ]
-\tikzstyle{sqvec} = [matrix,draw=black,thick] 
+\tikzstyle{sqvec} = [matrix,draw=black,thick]
 \tikzstyle{cirsmall} = [circle, minimum width=0.3cm, minimum height=0.3cm, draw=black ]
-\tikzstyle{sqvec2} = [matrix,draw=black,thick] 
+\tikzstyle{sqvec2} = [matrix,draw=black,thick]
 \tikzset{
 	sq1/.style={rectangle, minimum width=1cm, minimum height=1cm, text centered, draw=black},
 	sq1m/.style={rectangle, minimum width=0.8cm, minimum height=0.4cm, text centered, draw=black},
@@ -52,84 +52,83 @@
 }
 
 \lstdefinestyle{mystyle}{
-	backgroundcolor=\color{backcolour},   
+	backgroundcolor=\color{backcolour},
 	commentstyle=\color{codegreen},
 	keywordstyle=\color{magenta},
 	numberstyle=\tiny\color{codegray},
 	stringstyle=\color{codepurple},
 	basicstyle=\footnotesize,
-	breakatwhitespace=false,         
-	breaklines=true,                 
-	captionpos=b,                    
-	keepspaces=true,                 
-	numbers=left,                    
-	numbersep=5pt,                  
-	showspaces=false,                
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
 	showstringspaces=false,
-	showtabs=false,                  
+	showtabs=false,
 	tabsize=2
 }
 \lstset{style=mystyle}
 
 % Copyright
 %\setcopyright{none}
-%\setcopyright{acmcopyright}
+\setcopyright{acmcopyright}
 %\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
+% \setcopyright{rightsretained}
 %\setcopyright{usgov}
 %\setcopyright{usgovmixed}
 %\setcopyright{cagov}
 %\setcopyright{cagovmixed}
 
 
-%% DOI
-%\acmDOI{10.475/123_4}
-%
-%% ISBN
-%\acmISBN{123-4567-24-567/08/06}
-%
-%%Conference
-%\acmConference[WOODSTOCK'97]{ACM Woodstock conference}{July 1997}{El
-%  Paso, Texas USA} 
-%\acmYear{1997}
-%\copyrightyear{2016}
-%
-%\acmPrice{15.00}
+% DOI
+\acmDOI{10.475/123_4}
+
+% ISBN
+\acmISBN{123-4567-24-567/08/06}
+
+%Conference
+\acmConference[SoICT '17]{Eighth International Symposium on Information and Communication Technology}{December 7--8, 2017}{Nha Trang City, Viet Nam}
+\copyrightyear{2017}
+\acmYear{2017}
+
+\acmPrice{15.00}
 
 
 \begin{document}
-\title{Combining Convolution and Recursive~Neural~Networks for Sentiment~Analysis}
+\title[Combining CNN and RNN for Sentiment~Analysis]{Combining Convolution and Recursive~Neural~Networks for Sentiment~Analysis} % long title and short title
 
-%\author{Vinh D. Van}
-%\orcid{1234-5678-9012}
-%\affiliation{%
-%	\institution{Faculty of Information Technology
-%		VNUHCM - University of Sciences }
-%	\streetaddress{Nguyen Van Cu}
-%	\city{Ho Chi Minh} 
-%	\country{Vietnam}}
-%\email{vdvinh@apcs.vn}
-%
-%\author{Thien Thai}
-%\affiliation{%
-%	\institution{Faculty of Information Technology
-%		VNUHCM - University of Sciences }
-%	\streetaddress{Nguyen Van Cu}
-%	\city{Ho Chi Minh} 
-%	\country{Vietnam}}
-%\email{tthien@apcs.vn}
-%
-%\author{Quoc-Minh Nghiem}
-%\affiliation{%
-%  \institution{Faculty of Information Technology
-%  VNUHCM - University of Sciences }
-%  \streetaddress{Nguyen Van Cu}
-%  \city{Ho Chi Minh} 
-%  \country{Vietnam}}
-%\email{nqminh@fit.hcmus.edu.vn}
-%
-%% The default list of authors is too long for headers}
-%\renewcommand{\shortauthors}{V. Van et al.}
+\author{Vinh D. Van}
+\orcid{1234-5678-9012}
+\affiliation{%
+	\institution{Faculty of Information Technology
+		VNUHCM - University of Sciences }
+	\streetaddress{Nguyen Van Cu}
+	\city{Ho Chi Minh}
+	\country{Vietnam}}
+\email{vdvinh@apcs.vn}
+
+\author{Thien Thai}
+\affiliation{%
+	\institution{Faculty of Information Technology
+		VNUHCM - University of Sciences }
+	\streetaddress{Nguyen Van Cu}
+	\city{Ho Chi Minh}
+	\country{Vietnam}}
+\email{tthien@apcs.vn}
+
+\author{Quoc-Minh Nghiem}
+\affiliation{%
+ \institution{Faculty of Information Technology
+ VNUHCM - University of Sciences }
+ \streetaddress{Nguyen Van Cu}
+ \city{Ho Chi Minh}
+ \country{Vietnam}}
+\email{nqminh@fit.hcmus.edu.vn}
+
+% The default list of authors is too long for headers}
+\renewcommand{\shortauthors}{V. Van et al.}
 
 
 \begin{abstract}
@@ -145,7 +144,7 @@ Beyond that, our models are able to achieve  comparable performance with the sta
 %
 % The code below should be generated by the tool at
 % http://dl.acm.org/ccs.cfm
-% Please copy and paste the code instead of the example below. 
+% Please copy and paste the code instead of the example below.
 %
 \begin{CCSXML}
 	<ccs2012>
@@ -173,6 +172,6 @@ Beyond that, our models are able to achieve  comparable performance with the sta
 \input{samplebody-conf}
 
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-bibliography} 
+\bibliography{sample-bibliography}
 
 \end{document}
