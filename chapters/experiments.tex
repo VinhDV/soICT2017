@@ -139,8 +139,9 @@ Block F contains all models we proposed and evaluated.
 \subsection{Discussion}
 \subsubsection{Combination of Convolution and Recursive Neural Networks}
 The fact that CNN-Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} and CNN-multichannel~\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
-Additionally, the combination of CNN and LSTM or TreeLSTM outperform most Convolution Network Networks in Block A.
-The results support our hypothesis that max pooling layer can be harmful to CNN by ignoring the position of features.
+Additionally, the combination of CNN and LSTM or TreeLSTM outperforms most Convolution Network Networks in Block A. Furthermore, the results support our hypothesis that max pooling layer can be harmful to CNN by ignoring the position of features.
+
+
 \subsubsection{Glove Amazon versus standard Glove}
 \begin{figure} []
 	\centering
@@ -157,7 +158,8 @@ On binary setting (Fig. ~\ref{graph:binary}), Glove Amazon helps single input-ch
 \end{figure}
 However, on fine-grained setting (Fig. ~\ref{graph:fine-grained}), Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
 In short, Glove Amazon is good for models on binary setting however harmful in the fine-grained setting.
-The reason is that our Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur.
+%The reason is that our Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur.
+The reason is that in review dataset that we trained Glove Amazon on, words which are used to express the same sentiment are more likely to co-occur.
 Therefore, the Glove Amazon word vectors are more dependent on the sentiment expressed in the words compared to the word vectors in the standard Glove which capture more general meaning of words.
 % This possibly is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in the fine-grained setting.
 

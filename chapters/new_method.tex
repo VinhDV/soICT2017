@@ -9,7 +9,7 @@ The model has three modules: word embeddings, convolution layer, and Constituenc
 \subsection{Word Embedding Layer}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses a different word embedding.
 For indexing, the first word in a sentence is word-\(0\)th.
-In case the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
+In case the sentence is padded with dummy words, left padded dummy words are indexed by negative integers.
 
 For any word embedding~\(e\), the vector presentation of the word-\(i\)th is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
 The vector presentation of word-\(i\)th through the set of input channels \(Z\) can be expressed as follow:
@@ -17,7 +17,7 @@ The vector presentation of word-\(i\)th through the set of input channels \(Z\) 
  x_i &= w^{(e_0)}_i \ominus w^{(e_1)}_i \ominus  \ldots \ominus w^{(e_m)}_i&\label{concat-emb}
 \end{align}
 In Eq.\eqref{concat-emb}, \(\ominus\) is concatenation operator which results in the vector \(x_i \in \mathbb{R}^{d}\) with \(d = \sum_{e \in Z} d_e\).
-Any sequence of words which starts at word-\(i\)th and ends at word-\(j\)th can be presented as the following matrix:
+Any sequence of words starting from word-\(i\)th to word-\(j\)th is present as the following matrix:
 \begin{align}
 X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 \end{align}
@@ -28,7 +28,7 @@ Given that \(F\) is the set of all filters of the convolution layer, for any fil
 c^{(v)}_j &= f(W^{(v)} \otimes X_{i:i+l-1} + b^{(v)}) &\label{filter}
 \end{align}
 In Eq.\eqref{filter}, operator \(\otimes\) is the Hadamard product~\cite{element-prod}.
-\(b \in \mathbb{R}\) as bias term and \(f\) is an activation function.
+\(b \in \mathbb{R}\) is bias term. \(f\) is an activation function.
 For indexing, \(j = i + x\) with \(x \in \mathbb{N}\) and \(0 \leq x < l\).
 If half-padding policy is employed then \(j = i + \floor{\frac{l}{2}}\).
 
@@ -38,13 +38,13 @@ The length of the feature map \(c^{(v)}\) depends on the length of the input sen
 In our model, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions guarantee that the lengths of all feature maps produced from a sentence are equal to the number of words in that sentence~\cite{conv-arith}.
 
-Suppose the size of the set of filters \(F\) is \(m\), all the feature maps of a sentence of length \(n\) produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\), of which each row is a feature map.
+Suppose the size of the set of filters \(F\) is \(m\), all the feature maps of a sentence of length \(n\) produced by the set of filters is then concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\).
 After that, the \(i\)-th column vector of \(P\) are treated as the vector representation of the \(i\)-th word in the sentence.
 \subsubsection{Constituency Tree-LSTM}\label{treelstm}
 Let \(d\) be the size of the input vectors, \(r
 \) be the size of the memory cell and \(z\) be the number of sentiment classes.
 \paragraph{Leaf module}
-Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module can be expressed as follow:
+Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module is expressed as follow:
 \begin{align}
 o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
 c &= W^{(c)} x + a^{(c)} & \\
