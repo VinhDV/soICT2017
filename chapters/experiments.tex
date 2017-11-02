@@ -1,26 +1,26 @@
 \section{Experiments}
 \subsection{Datasets}
 \subsubsection{Stanford Sentiment Treebank} \label{sec:sst}
-Standford Sentiment Treebank dataset~\cite{socher2013recursive} was used to evaluate our model.
-In total, Standford Sentiment Treebank contains 11,855 sentences.
-The dataset was split into training, validation and test set which contains 8544, 1101 and 2210 sentences, respectively.
+We evaluated our model on Standford Sentiment Treebank dataset~\cite{socher2013recursive}.
+Standford Sentiment Treebank contains total 11,855 sentences.
+We used provided train/dev/test sets which contains 8544, 1101 and 2210 sentences, respectively.
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive}, each phrase which is spanned by any sub-tree of the parse tree is then labeled with a sentiment label.
 There are a total of 215,154 labeled phrases in the whole dataset.
 For training a Recurrent Neural Network on this dataset, any phrase which is spanned by a labeled node is treated as a training sample.
 \paragraph{Fine-grained setting} Any sentiment label belongs to one of 5 classes: ``Positive'', ``Somewhat Positive'', ``Neutral'', ``Somewhat Negative'' and ``Negative''.
 \paragraph{Binary setting} All ``Neutral'' sentences are removed.
 For the remaining sentences, ``Somewhat Positive'' is merged into ``Positive'', similarly, ``Somewhat Negative'' is merged into ``Negative''.
-As all ``Neutral'' sentences have been removed, there are 6920/872/1821 sentences remained in training/validation/test set.
+After all ``Neutral'' sentences are removed, 6920/872/1821 sentences remained in training/dev/test sets.
 \subsection{Setups}
 \subsubsection{Experiment Descriptions}
 We did experiment with Glove Amazon and different variations of our model.
 \begin{description}
 	\item[CNN-Tree-LSTM] Our basic model which has only one input channel.
-	This input channel is initialized using the standard Glove vectors.
+	We initialized word representations with the standard Glove vectors.
 	\item[CNN-Tree-LSTM (Glove Amazon)] CNN-Tree-LSTM with word vectors initialized from Glove Amazon.
 	\item [2-channel CNN-Tree-LSTM] CNN-Tree-LSTM with two input channels from two different word embedding matrices, which are initialized from Glove Common Craw and Glove Amazon, respectively.
 	\item[CNN-LSTM] Similar to CNN-Tree-LSTM. However, we replaced Constituency Tree-LSTM module by an LSTM unit.
-	This model has only one input channel initialized from the standard Glove vectors.
+	CNN-LSTM has only one input channel initialized from the standard Glove vectors.
 	\item [CNN-LSTM (Glove Amazon)] CNN-LSTM with word vectors initialized from Glove Amazon.
 	\item [2-channel CNN-LSTM] A CNN-LSTM model with two input channels at CNN layers. The CNN layers are similar to CNN layers in 2-channel CNN-Tree-LSTM model.
 	\item[Constituency Tree-LSTM (Glove Amazon)]Glove Amazon~is used to replace the standard Glove vector for initializing~word embedding layer of Constituency Tree-LSTM.
@@ -72,7 +72,7 @@ Our models were trained for 60 epochs.
 		\textbf{Block} & \textbf{Model}  & \multicolumn{2}{c|}{\textbf{Binary}} & \multicolumn{2}{c|}{\textbf{Fine-grained}}  \\
 		\Xhline{3\arrayrulewidth}
 		\Xhline{3\arrayrulewidth}
-		
+
 		\multirow{4}{*}{A} & CNN-non-static~\cite{KimCNN} & \multicolumn{2}{c|}{87.2} & \multicolumn{2}{c|}{48.0} \Tstrut \\
 		& CNN-multichannel~\cite{KimCNN} & \multicolumn{2}{c|}{88.1} & \multicolumn{2}{c|}{47.4} \\
 		& DCNN~\cite{DCNN} & \multicolumn{2}{c|}{86.8} & \multicolumn{2}{c|}{48.5} \\
@@ -115,8 +115,8 @@ Our models were trained for 60 epochs.
 \end{table*}
 Experiment results are summaries in Table \ref{table:experimentresult}.
 Table \ref{table:experimentresult} contains two parts.
-The first part is from Block A to E, which contains all baselines model.
-The second part is Block F, which contains all models which were proposed and evaluated by us.
+Block A to E contain all baselines model.
+Block F contains all models we proposed and evaluated.
 \begin{description}
 	\item[Block A] contains convolution neural networks.
 	CNN-non-static and CNN-multichannel~\cite{KimCNN} are single layer CNN.
@@ -138,9 +138,9 @@ The second part is Block F, which contains all models which were proposed and ev
 \end{description}
 \subsection{Discussion}
 \subsubsection{Combination of Convolution and Recursive Neural Networks}
-The fact that CNN-Tree-LSTM is able to outperform Constituency Tree-LSTM~\cite{treeLSTM} and CNN-multichannel~\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
+The fact that CNN-Tree-LSTM outperforms Constituency Tree-LSTM~\cite{treeLSTM} and CNN-multichannel~\cite{KimCNN} supports our hypothesis on the benefits of combining convolution layers with Tree-LSTM.
 Additionally, the combination of CNN and LSTM or TreeLSTM outperform most Convolution Network Networks in Block A.
-These results support our hypothesis that max pooling layer can be harmful to CNN by ignoring the position of features.
+The results support our hypothesis that max pooling layer can be harmful to CNN by ignoring the position of features.
 \subsubsection{Glove Amazon versus standard Glove}
 \begin{figure} []
 	\centering
@@ -157,9 +157,9 @@ On binary setting (Fig. ~\ref{graph:binary}), Glove Amazon helps single input-ch
 \end{figure}
 However, on fine-grained setting (Fig. ~\ref{graph:fine-grained}), Glove Amazon is worse than the standard Glove in most cases except for CNN-Tree-LSTM.
 In short, Glove Amazon is good for models on binary setting however harmful in the fine-grained setting.
-Because Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur.
+The reason is that our Glove Amazon is trained on review dataset, words which are used to express the same sentiment are more likely to co-occur.
 Therefore, the Glove Amazon word vectors are more dependent on the sentiment expressed in the words compared to the word vectors in the standard Glove which capture more general meaning of words.
-This possibly is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in the fine-grained setting.
+% This possibly is the reason why Glove Amazon is beneficial for classifying positive and negative sentiments in binary setting but harmful to detecting neutral in the fine-grained setting.
 
 A combination of Glove Amazon and the standard Glove improves the accuracy of both 2-channel CNN-LSTM and 2-channel CNN-Tree-LSTM on fine-grained setting as well as 2-channel CNN-Tree-LSTM on the binary setting.
 Yet, the improvements of CNN-Tree-LSTM are more significant compared to CNN-LSTM.
@@ -168,4 +168,4 @@ With single input channel, CNN-LSTM outperforms CNN-Tree-LSTM in most cases exce
 With two input channels using both Glove Amazon and the standard Glove, CNN-Tree-LSTM gains a large improvement and outperforms 2-channel CNN-LSTM on both binary and fine-grained setting.
 On average, 2-channel CNN-Tree-LSTM achieves the highest accuracy among all our models in both settings.
 
-Compared to the state-of-the-art systems, CNN-LSTM (Glove Amazon) is able to outperform Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} on the binary setting and 2-channel CNN-Tree-LSTM is comparable with Byte mLSTM~\cite{mlstm} on the fine-grained setting.
+Compared to the state-of-the-art models, CNN-LSTM (Glove Amazon) outperforms Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} on the binary setting and 2-channel CNN-Tree-LSTM is comparable with Byte mLSTM~\cite{mlstm} on the fine-grained setting.

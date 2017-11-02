@@ -1,5 +1,5 @@
 \section{Related Work and Motivation}\label{sec:related}
-In recent years, Sentiment Analysis have enjoy dramatic improvements by applying different variations of CNN, RNN and RecNN. 
+In recent years, Sentiment Analysis have enjoy dramatic improvements by applying different variations of CNN, RNN and RecNN.
 
 Although originally invented for Computer Vision, CNN have been proven to be effective models for document classification.
 Nevertheless, for composing fixed-length representation vector of documents, several types of max pooling layer were employed~\cite{nlp-scratch, KimCNN, DCNN, 2-layer-cnn}.
@@ -7,10 +7,10 @@ Although max pooling layer largely simplified the network (which is good for pre
 By down-sampling a feature map, although the resulted vector still contains information about the existence of a feature, it is likely that the information about the position or order of the feature is lost.
 This can be harmful because the order of words and phrases is important for understanding the sentiments of a sentence.
 
-RNN and RecNN have been especially designed for dealing with variable-length sequential input. 
+RNN and RecNN have been especially designed for dealing with variable-length sequential input.
 They have been successfully applied to a variety of NLP tasks, include: speech recognition~\cite{speech-lstm, MiaoGM15}, sentiment analysis~\cite{treeLSTM, attention-gru}, text summarization~\cite{RushCW15, NallapatiXZ16}, machine translation~\cite{FiratCB16, SutskeverVL14, BritzGLL17}, language modeling~\cite{mikolov-nlm, JozefowiczVSSW16}.
 Wang et al.~\cite{cnn-rnn} have successfully combined CNN with RNN for Sentiment Analysis by utilizing CNN for capturing phrase-level features and RNN for composing these features.
-Their network architect is similar to that of Yoon Kim et al.~\cite{KimCNN}, the main different is the usage of RNN for replacing the max-over-time pooling layer.
+Their network architecture is similar to that of Yoon Kim et al.~\cite{KimCNN}, the main different is the usage of RNN for replacing the max-over-time pooling layer.
 Nevertheless, it was able to significantly outperform the state-of-the-art system at the time~\cite{cnn-rnn}.
 
 In this paper, we adopting the idea of Wang et al.~\cite{cnn-rnn} by combining CNN with RecNN.
@@ -19,8 +19,8 @@ RecNN have several advantages over RNN:
 \begin{itemize}
 	\item In case the input sequence belongs to a recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
 	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decreases fast~\cite{bowman-treevslstm}.
-	\item Tree can breaks down complicated sentences into simpler phrases, which makes it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
-	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+	\item Tree can break down complicated sentences into simpler phrases which are easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
+	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as a tree~\cite{need-tree}.
 \end{itemize}
 
 For our RecNN module, Tree-LSTMs~\cite{treeLSTM} was employed.
@@ -32,6 +32,6 @@ Nevertheless, Tree-LSTMs also have some drawbacks, including:
 	The performance of the system depends on the parser being used.
 	\item At their leaf-module, Tree-LSTMs have only a simple logistic regression layer on top of the vector presentation of a single word at that position.
 	The simple leaf-module of Tree-LSTMs might be its weakness when dealing with the problem of words ambiguity.
-	This weakness becomes even more severe when the sentence is wrongly parsed. 
+	This weakness becomes even more severe when the sentence is wrongly parsed.
 \end{itemize}
 We hypothesized that the convolution layer can helps Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
