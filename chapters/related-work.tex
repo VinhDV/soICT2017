@@ -1,20 +1,29 @@
 \section{Related Work and Motivation}
+In recent years, Sentiment Analysis have enjoy dramatic improvements by applying different variations of Convolution (CNN), Recurrent (RNN) and Recursive Neural Networks (RecNN). 
 
-Convolution Neural Networks (CNNs) have been proven to be effective models for the task of sentence-level sentiment analysis~\cite{KimCNN, DCNN,2-layer-cnn}.
-Convolution Neural Networks are commonly constructed by stacking up multiple convolution, pooling and fully connected layers.
-For dealing with the problem of variable-length input sentences, several types of max pooling layer were employed~\cite{KimCNN, DCNN,2-layer-cnn}.
-In general, given a feature map \(i\), a \(k\)-max pooling layer reduces the size of vector \(i\) by extracting the largest \(k\) entries from \(i\).
-In case \(k = 1\) the pooling layer is called max-over-time pooling~\cite{nlp-scratch,KimCNN}.
-Apart from being treated as a hyper-parameter, \(k\) can also be parameterized with respect to the length of the input sentence, in which case, the pooling layer is called dynamic k-max pooling~\cite{DCNN}.
-
+Although originally invented for Computer Vision, CNN have been proven to be effective models for document classification.
+Nevertheless, for composing fixed-length representation vector of documents, several types of max pooling layer were employed~\cite{nlp-scratch ,KimCNN, DCNN, 2-layer-cnn}.
 Although max pooling layer largely simplified the network (which is good for preventing over-fit), this solution have a clear disadvantage.
-By down-sampling a feature map, although the resulted vector still contains information about the existence of a feature, it is likely that the information about the position or order of the feature is lost, especially for the case of max-over-time pooling.
+By down-sampling a feature map, although the resulted vector still contains information about the existence of a feature, it is likely that the information about the position or order of the feature is lost.
+This can be harmful because the order of words and phrases is important for understanding the sentiments of a sentence.
 
-A neural network architect which can deal with this problem is Recursive Neural Networks.
-Given a sentence and its parse tree, a Recursive Neural Network composes the vector presentation of the sentence by applying its composition function at each node of the parse tree in a bottom-up manner.
-For demonstration, parse tree of the phrase ``is a fluffy cat'' and its composing process using a Recursive Neural Network are illustrated in Fig.\ref{fig:example-parse} and Fig.\ref{fig:example-compose} respectively~\cite{tag-embedding-rnn}
-Different from the max pooling layer in Convolution Neural Network, Recursive Neural Networks are able to compose fixed size representation vector of a sentence without losing the information about the position or order of words and phrases in it.
-One of the most successful Recursive Neural Networks are Tree-LSTMs~\cite{treeLSTM}.
+RNN and RecNN have been especially designed for dealing with variable-length sequential input. 
+They have been largely applied in different NLP tasks, include : speech recognition~\cite{speech-lstm, MiaoGM15}, sentiment analysis~\cite{treeLSTM, attention-gru}, text summarization~\cite{RushCW15, NallapatiXZ16}, machine translation~\cite{FiratCB16, SutskeverVL14, BritzGLL17}, language modeling~\cite{mikolov-nlm, JozefowiczVSSW16}.
+Wang et al.~\cite{cnn-rnn} have successfully combined CNN with RNN for Sentiment Analysis by utilizing CNN for capturing phrase-level features and RNN for composing these features.
+Their network architect is similar to that of Yoon Kim et al.~\cite{KimCNN}, the main different is the usage of RNN for replacing the max-over-time pooling layer.
+Nevertheless, it was able to significantly outperform the state-of-the-art system at the time~\cite{cnn-rnn}.
+
+In this paper, we adopting the idea of Wang et al.~\cite{cnn-rnn} by combining CNN with RecNN.
+The main different is that the RNN module is replaced by a RecNN module.
+RecNN have several advantages over RNN:
+\begin{itemize}
+	\item In case the input sequence belongs to a recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
+	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decreases fast~\cite{bowman-treevslstm}.
+	\item Tree can breaks down complicated sentences into simpler phrases, which makes it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
+	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
+\end{itemize}
+
+For our RecNN module, Tree-LSTMs~\cite{treeLSTM} was employed.
 The core idea behind the design of Tree-LSTMs are to generalize the LSTM for tree-structured inputs.
 Tree-LSTMs were able to achieve state-of-the-art performance on two tasks: predicting the semantic relatedness of two sentences (SemEval 2014, Task 1~\cite{SemeEvalTask1}) and sentiment classification (Stanford Sentiment Treebank~\cite{socher2013recursive}).
 Nevertheless, Tree-LSTMs also have some drawbacks, including:
@@ -25,11 +34,4 @@ Nevertheless, Tree-LSTMs also have some drawbacks, including:
 	The simple leaf-module of Tree-LSTMs might be its weakness when dealing with the problem of words ambiguity.
 	This weakness becomes even more severe when the sentence is wrongly parsed. 
 \end{itemize}
-
-Recursive Neural Networks have several advantages over Recurrent Neural Networks:
-\begin{itemize}
-	\item In case the input sequence belongs to a recursively defined language, given only a small subset of the data with limited length sentences, tree structures model have better ability to generalize comparing to sequential ones.
-	However, when the limited length of sentences in the training data is increased, the advantage of tree over sequential models decreases fast~\cite{bowman-treevslstm}.
-	\item Tree can breaks down complicated sentences into simpler phrases, which makes it easier for generalization~\cite{knowledge-matter}~\cite{need-tree}.
-	\item Some features which are far apart when a sentence is presented as sequence become closer when it is presented as tree~\cite{need-tree}.
-\end{itemize}
+We hypothesized that the convolution layer can helps Constituency Tree-LSTM to mitigate the problem of lacking local context and words ambiguity at leaf nodes.
