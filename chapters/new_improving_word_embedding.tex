@@ -9,7 +9,7 @@ For example, the vector presentations of ``sympathy'' and ``disappointed'', or `
 %Although this method improves models' performance, it can harm generalization by updating only words which appear in the training set and non-related words which only appear in the test set.
 
 Moreover, we observed that the available amount of document-level labeled sentiment data (e.g., Amazon Reviews dataset~\cite{amazon-reviews} has 83.68 million reviews) is gigantic compared to the amount of sentence or phrase-level sentiment data (e.g., Stanford Sentiment Treebank~\cite{socher2013recursive} which has 8,544 sentences in its training set, even it is the biggest sentence-level sentiment analysis dataset).
-Although there are some attempts to do transfer learning~\cite{group-instance, re-embedding} (i.e., training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances are not high when being evaluated on Stanford Sentiment Treebank~\cite{group-instance}.
+Although there are some attempts to do transfer learning~\cite{group-instance, re-embedding} (i.e., training on large document-level sentiment dataset then fine-tuning and/or test on sentence-level sentiment dataset), their performances on Stanford Sentiment Treebank was not impressive~\cite{group-instance}.
 
 \subsubsection{Glove Amazon}\label{sec:glove-amazon}
 Amazon Reviews~\cite{amazon-reviews} is a gigantic review dataset
@@ -23,17 +23,18 @@ We utilized Glove~\cite{glove} method to do transfer learning.
 %
 We have five steps to preprocess Amazon dataset for training word vectors using Glove\footnote{Publicly available on Github \url{https://github.com/stanfordnlp/GloVe}}:
 \begin{enumerate}
-	\item For retraining Glove vectors, we only used some partitions of Amazon Reviews dataset which includes:  ``Amazon Movies and TV'' (7,850,072 reviews)~\cite{mcauley2013hidden} and ``Books'' (22,507,155 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
+	\item We only used some partitions of Amazon Reviews dataset which includes:  ``Amazon Movies and TV'' (7,850,072 reviews)~\cite{mcauley2013hidden} and ``Books'' (22,507,155 reviews)~\cite{McAuleyTSH15}~\cite{HeM16}.
 	\item All the reviews were grouped by product-ID ( "asin" keyword in the JSON schema of the dataset).
 	\item In each product-ID group, the reviews were sorted increasingly by their ratings ("overall" keyword in the JSON schema of the dataset).
 	\item All the reviews were dumped into a plain text file.
 	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
 \end{enumerate}
-There is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data. 
-Step 2 and 3 help us to mitigate this problem.
+% There is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data.
+
+However, words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document due to no definition of end-of-document in Glove model. As a result, training data might be noisy. Hence, we use step 2 and 3 to mitigate the problem.
 
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
-The training process took the plain text file produced by the preprocessing steps as its input.
-In total, the size of the corpus is 4.7 billion tokens.
+The training process took the plain text file from preprocessing steps as input.
+In total, the corpus contains 4.7 billion tokens.
 After the training process, the resulting word embedding has vocabulary size of 1,734,244.
 We named this new word embedding Glove Amazon.

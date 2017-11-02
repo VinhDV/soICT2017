@@ -1,21 +1,21 @@
 \section{Background}
 \subsection{Word Embeddings}
 A word embedding is a function mapping from words to their continuous vector representations.
-The purpose of this method is to encode relevant syntactic and semantic features of words as relationships among their representation vectors.
+The function encodes relevant syntactic and semantic features of words as relationships among their representation vectors.
 Word embeddings are usually trained on large, unlabeled corpus~\cite{glove,word2vec} and then fine-tuned with respect to specific NLP tasks~\cite{treeLSTM,KimCNN}.
 Pre-learned word representations have been applied widely and become the ``secret sauce'' for the success of recent NLP systems~\cite{Luong_betterword}.
 \subsubsection{Matrix Representation of Sequences of Words}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses an independent word embedding, any sentence~\(s\) of length~\(n\) can be represented as a matrix.
 For indexing, the first word in a sentence is word-\(0\)th.
-In case the sentence is padded with dummy words on its left, these padded dummy words are indexed by negative integers.
+In case the sentence is padded with dummy words, left padded dummy words are indexed by negative integers.
 
 For any word embedding~\(e\), the vector presentation of the word-\(i\)th is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
-The vector presentation of word-\(i\)th through the set of input channels \(Z\) can be expressed as follow:
+The vector presentation of word-\(i\)th through the set of input channels \(Z\) is expressed as follow:
 \begin{align}
  x_i &= w^{(e_0)}_i \ominus w^{(e_1)}_i \ominus  \ldots \ominus w^{(e_m)}_i&\label{concat-emb}
 \end{align}
 In Eq.\eqref{concat-emb}, \(\ominus\) is concatenation operator which results in the vector \(x_i \in \mathbb{R}^{d}\) with \(d = \sum_{e \in Z} d_e\).
-Any sequence of words in the sentence which starts at word-\(i\)th and ends at word-\(j\)th can be presented as the following matrix:
+Any sequence of words in the sentence which starts at word-\(i\)th and ends at word-\(j\)th is presented as the following matrix:
 \begin{align}
 X_{i:j} &= x_i \oplus x_{i+1} \oplus \ldots \oplus x_j &\label{concat}
 \end{align}
@@ -45,17 +45,17 @@ In case \(k = 1\) the pooling layer is called max-over-time pooling~\cite{nlp-sc
 Apart from being treated as a hyper-parameter, \(k\) can also be parameterized with respect to the length of the input sentence, in which case, the pooling layer is called dynamic k-max pooling~\cite{DCNN}.
 \subsection{Recurrent Neural Network}
 By definition, Recurrent Neural Networks are any Neural Networks which have at least a recurrent connection~\cite{rnn-def}.
-Recurrent Neural Networks have been proven to be effective network architects when applied on the type of problems whose output is determined by a variable-length input sequence~\cite{speech-lstm,SutskeverVL14,mikolov-nlm}.
+Recurrent Neural Networks have been proven to be effective network architecture when applied on the type of problems whose output is determined by a variable-length input sequence~\cite{speech-lstm,SutskeverVL14,mikolov-nlm}.
 \subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
-Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit can be expressed as the following recursive formula~\cite{treeLSTM}:
+Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit is expressed as the following recursive formula~\cite{treeLSTM}:
 \begin{align}
 h_t &= tanh(Wi_t + Uh_{t-1} + b)&
 \end{align}
 For sentence-level sentiment analysis, \(h_n\) is treated as output of the network.
 In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
-To mitigate the problem of vanishing gradient, Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented.
+Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented to mitigate the problem of vanishing gradient.
 \subsubsection{Long Short Term Memory unit}\label{sec:lstm}
-Long Short Term Memory unit can be expressed as the following recursive formula~\cite{treeLSTM}:
+Long Short Term Memory unit is expressed as the following recursive formula~\cite{treeLSTM}:
 \begin{align}
 w_t &= \sigma\left(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}\right) \label{eq:lstm-input-gate}&\\
 f_t &= \sigma\left(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}\right) \label{eq:lstm-forget-gate}&\\
