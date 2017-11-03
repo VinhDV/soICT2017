@@ -34,10 +34,10 @@ In this paper, we explore two ideas: ``Combining Convolution and Recursive Neura
 Nevertheless, each of them has their own potential drawbacks (Section~\ref{sec:related}).
 For alleviating their weaknesses, we combined CNN and RecNN into a new network architecture (Section~\ref{sec:cnn-treelstm}) which is able to outperform both CNN and RecNN (Section~\ref{sec:result}) on Stanford Sentiment Treebank (Section~\ref{sec:sst}).
 This approach is closely related to the paper of Wang et al.~\cite{cnn-rnn} which investigates the of combination CNN and Recurrent Neural Networks (RNN).
-\paragraph{Transfer Learning From Large Review Dataset} One obstacle of solving sentence-level sentiment analysis is the lack of labeled data which potentially causes many drawbacks, one of which is over-fitting word embedding (Section~\ref{sec:over-fitting-we}).
+\paragraph{Transfer Learning From Large Review Dataset} One obstacle of solving sentence-level sentiment analysis is the lack of labeled data which potentially causes many drawbacks, one of which is over-fitting word embedding (Section~\ref{sec:word-weak}).
 Since most opinions are expressed in form the of  a documents (i.e., multiple sentences), sentence-level labeled dataset required more work to produce.
 Until now, the largest dataset for sentence-level sentiment analysis is Standford Sentiment Treebank which only contains 11,855 sentences.
-The number is insignificant compared to Amazon Review dataset~\cite{amazon-reviews} which has 83.68 million reviews.
+The number is insignificant compared to Amazon Review dataset (Section~\ref{sec:amazon}) which has 83.68 million reviews.
 We utilized Amazon Review dataset to train a new word embedding (Section~\ref{sec:glove-amazon}) named ``Glove Amazon''.
 By replacing the standard Glove\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon, many models can gain considerable improvements when evaluated on Stanford Sentiment Treebank.
 We also demonstrated that a combination of Glove Amazon and standard Glove is better than each of the word embeddings (Section~\ref{sec:result}).
