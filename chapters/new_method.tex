@@ -16,7 +16,7 @@ The first word in a sentence is indexed as word-\(0\)th.
 If the sentence is padded with dummy words, left padded dummy words are indexed by negative integers.
 
 For any word embedding~\(e\), the vector presentation of the word-\(i\)th is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
-The vector presentation of word-\(i\)th through the set of input channels \(Z\) can be expressed as follow:
+The vector presentation of word-\(i\)th through the set of input channels \(Z\) is expressed as follow:
 \begin{align}
  x_i &= w^{(e_0)}_i \ominus w^{(e_1)}_i \ominus  \ldots \ominus w^{(e_m)}_i&\label{concat-emb}
 \end{align}
@@ -44,6 +44,46 @@ These conditions guarantee that the lengths of all feature maps produced from a 
 
 Suppose the size of the set of filters \(F\) is \(m\), all the feature maps of a sentence of length \(n\) produced by the set of filters is concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\).
 The \(i\)-th column vector of \(P\) are treated as the vector representation of the \(i\)-th word in the sentence.
+
+
+\subsection{Recurrent Neural Network}
+\subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
+Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit is expressed as the following recursive formula~\cite{treeLSTM}:
+\begin{align}
+h_t &= tanh(Wi_t + Uh_{t-1} + b)&
+\end{align}
+For sentence-level sentiment analysis, \(h_n\) is treated as output of the network.
+In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but difficult to train, especially on long input sequence, due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
+Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented to mitigate the problem of vanishing gradient.
+\subsubsection{Long Short Term Memory unit}\label{sec:lstm}
+Long Short Term Memory unit ~\cite{originLSTM} is expressed as the following recursive formula:
+\begin{align}
+w_t &= \sigma\left(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}\right) \label{eq:lstm-input-gate}&\\
+f_t &= \sigma\left(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}\right) \label{eq:lstm-forget-gate}&\\
+o_t &= \sigma\left(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}\right) \label{eq:lstm-output-gate}&\\
+u_t &= tanh\left(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}\right) \label{eq:lstm-update-gate}&\\
+c_t &= r_t \odot u_t + f_t \odot c_{t-1} \label{eq:longterm-mem}&\\
+h_t &= o_t \odot tanh(c_t) \label{eq:temperal-mem}&
+\end{align}
+The operation \(\odot\) denotes the element-wise vector product.
+Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively and \(c_t\) is called memory cell.
+% MAY NOT NECCESSARY
+Intuitively, we can interpret how the network works as follow:
+\begin{itemize}
+  \item \(h_{t-1}\) can be viewed as a short-term memory of the network
+  \item \(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\)
+  \item Write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\)
+  \item Forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\)
+  \item \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory \(h_t\).
+\end{itemize}
+
+% in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network;
+% \(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\);
+% write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\);
+% forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\);
+% and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
+
+
 \subsection{Constituency Tree-LSTM}\label{treelstm}
 Let \(d\) be the size of the input vectors, \(r
 \) be the size of the memory cell and \(z\) be the number of sentiment classes.
@@ -82,35 +122,8 @@ With \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
 % Finally, we can apply the output module on any node in the parse tree.
 Given any sentence, its parse tree and set of vectors representation of each word in the sentence, Constituency Tree-LSTM is applied on the sentence as follow:
 \begin{itemize}
-  \item At leaf node, leaf module takes input from vector representation of the corresponding word.
-  \item At non-leaf node, composer module is applied recursively
-  \item In addition, at every node, output module takes input from leaf module or composer module to predict sentiment of sub-tree.
+  \item At leaf node, leaf module takes input from previous layer (convolution layer) output of corresponding word.
+  \item At non-leaf node, composer module is applied recursively.
+  \item In addition, at every node \({j}\), output module takes input from leaf module or composer module to predict sentiment of sub-tree root \({j}\).
 \end{itemize}
 
-\subsection{Recurrent Neural Network}
-\subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
-Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit is expressed as the following recursive formula~\cite{treeLSTM}:
-\begin{align}
-h_t &= tanh(Wi_t + Uh_{t-1} + b)&
-\end{align}
-For sentence-level sentiment analysis, \(h_n\) is treated as output of the network.
-In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but hard to train (especially on long input sequence) due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
-Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented to mitigate the problem of vanishing gradient.
-\subsubsection{Long Short Term Memory unit}\label{sec:lstm}
-Long Short Term Memory unit is expressed as the following recursive formula~\cite{treeLSTM}:
-\begin{align}
-w_t &= \sigma\left(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}\right) \label{eq:lstm-input-gate}&\\
-f_t &= \sigma\left(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}\right) \label{eq:lstm-forget-gate}&\\
-o_t &= \sigma\left(W^{(o)}i_t + U^{(o)}h_{t-1} + b^{(o)}\right) \label{eq:lstm-output-gate}&\\
-u_t &= tanh\left(W^{(u)}i_t + U^{(u)}h_{t-1} + b^{(u)}\right) \label{eq:lstm-update-gate}&\\
-c_t &= r_t \odot u_t + f_t \odot c_{t-1} \label{eq:longterm-mem}&\\
-h_t &= o_t \odot tanh(c_t) \label{eq:temperal-mem}&
-\end{align}
-The operation \(\odot\) denotes the element-wise vector product.
-Traditionally, \(w_t\), \(f_t\) and \(o_t\) are called input/write gate, forget/deallocate gate and output/read gate respectively and \(c_t\) is called memory cell.
-Intuitively, we can interpret how the network works as follow:
-in the above formula, \(h_{t-1}\) can be viewed as a short-term memory of the network;
-\(u_t\) is the information extracted from in current input \(i_t\) and the short-term memory \(h_{t-1}\);
-write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\);
-forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\);
-and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).

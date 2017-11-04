@@ -53,8 +53,8 @@ We index all our experimented models along with their number of parameters in Ta
 	\end{tabular}
 \end{table}
 \subsubsection{Hyper-parameters and Training}
-We trained models on training set and tuned hyper-parameters on development set.
-Our models was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1,~ 0.05,~ 0.01\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$ and batch size of 25.
+We trained models on training set and tuned hyper-parameters on development set of Stanford .
+Our models was trained using AdaGrad~\cite{duchi2011adaptive} with learning rate of $\{0.1, 0.05, 0.01\}$, L2 regularization strength of $\{1e^{-3},~ 1e^{-4}, ~ 1e^{-5} \}$ and batch size of 25.
 Word vectors are updated with learning rate $\alpha$ of $\{0.1,~0.05, ~0.01\}$.
 In convolution layers, treated number of filter and filter size as hyper-parameters.
 We found that 100 filters of size 3 and 100 filters of size 5 yield better results compared to single filters size or the number of filters larger than 200.
@@ -182,14 +182,14 @@ Although the performance of 2-channel CNN-Tree-LSTM is lower then Constituency T
 Since, the main purpose of Looks et al. is to use Constituency Tree-LSTM as an example to demonstrate the concise and batch-wise parallelism of its TensorFlow Fold implementation~\cite{LooksHHN17}.
 
 2-channel CNN-Tree-LSTM is comparable with Byte mLSTM~\cite{mlstm} on the fine-grained setting but underperforms Byte mLSTM in the binary setting.
-Similar to our approach, Radford st al.~\cite{mlstm} did transfer learning from large review dataset (which is also Amazon Reviews dataset) to improve the performance of their models on Stanford Sentiment Treebank. 
+Similar to our approach, Radford st al.~\cite{mlstm} did transfer learning from large review dataset (which is also Amazon Reviews dataset) to improve the performance of their models on Stanford Sentiment Treebank.
 But different from our work, they trained a byte-level multiplicative LSTM~\cite{KrauseLMR16} language model on Amazon Reviews dataset.
 After that, vector representations of all sentences in Stanford Sentiment Treebank are computed using the trained byte-level multiplicative LSTM.
 The vector representations along with their corresponding labels are used to train a logistic regression classifier~\cite{mlstm}.
 
 On Stanford Sentiment Treebank, their method achieved state-of-the-art performance on the binary setting and comparable performance with Constituency Tree-LSTM Ensemble on fine-grained setting.
 Despite that, the performances of their model on other NLP tasks are not impressive, these tasks include: semantic relatedness (SICK~\cite{SemeEvalTask1}), subjectivity/objectivity detection (SUBJ~\cite{cs-CL-0409058}), opinion polarity (MPQA~\cite{Wiebe2005}) and paraphrase detection (Microsoft Paraphrase Corpus~\cite{Dolan:2004:UCL:1220355.1220406}).
-It is likely that these tasks are out-of-domain for their model which only trained on review dataset~\cite{mlstm}. 
- 
-While conducting this research, we have trained CNN-LSTM as language model on Amazon Reviews dataset. 
+It is likely that these tasks are out-of-domain for their model which only trained on review dataset~\cite{mlstm}.
+
+While conducting this research, we have trained CNN-LSTM as language model on Amazon Reviews dataset.
 Nevertheless, we have not gained any success with this method.
