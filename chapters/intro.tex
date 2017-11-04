@@ -31,7 +31,7 @@ In this paper, we explore two ideas: ``Combining Convolution and Recursive Neura
 %    We also demonstrated that a combination of Glove Amazon and standard Glove is better than each of the word embeddings (Section~\ref{sec:result}).
 %\end{description}
 \paragraph{Combining Convolution and Recursive Neural Networks} Convolution (CNN) and Recursive Neural Networks (RecNN) have been proven to be effective network architectures for sentence-level sentiment analysis.
-Nevertheless, each of them has their own potential drawbacks (Section~\ref{sec:related}).
+Nevertheless, each of them has drawbacks (Section~\ref{sec:related}).
 For alleviating their weaknesses, we combined CNN and RecNN into a new network architecture (Section~\ref{sec:cnn-treelstm}) which is able to outperform both CNN and RecNN (Section~\ref{sec:result}) on Stanford Sentiment Treebank (Section~\ref{sec:sst}).
 This approach is closely related to the paper of Wang et al.~\cite{cnn-rnn} which investigates the of combination CNN and Recurrent Neural Networks (RNN).
 \paragraph{Transfer Learning From Large Review Dataset} One obstacle of solving sentence-level sentiment analysis is the lack of labeled data which potentially causes many drawbacks, one of which is over-fitting word embedding (Section~\ref{sec:we-motive}).
@@ -42,5 +42,5 @@ We utilized Amazon Review dataset to train a new word embedding (Section~\ref{se
 By replacing the standard Glove\footnote{Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download) publicly available at \url{https://nlp.stanford.edu/projects/glove/}} with Glove Amazon, many models can gain considerable improvements when evaluated on Stanford Sentiment Treebank.
 We also demonstrated that a combination of Glove Amazon and standard Glove is better than each of the word embeddings (Section~\ref{sec:result}).
 
-Implementations of our models are available at \url{https://github.com/ttpro1995/Tree_CNN_LSTM}
+Implementations of our models are available at \url{https://github.com/ttpro1995/Tree_CNN_LSTM}.
 
