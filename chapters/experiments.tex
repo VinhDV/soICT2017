@@ -5,9 +5,7 @@ Standford Sentiment Treebank contains total 11,855 sentences.
 We used provided train/dev/test sets which contain 8544, 1101 and 2210 sentences, respectively.
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive} into multiple phrases.
 There are a total of 215,154 labeled phrases in the whole dataset. Thus, every sentence in the corpus has a fully labeled parse tree.
-For training a Recurrent Neural Network, any phrase spanned by a labeled node is treated as a training sample. Implementations of our models are available at \url{https://github.com/ttpro1995/Tree_CNN_LSTM}.
-
-
+For training a Recurrent Neural Network, any phrase spanned by a labeled node is treated as a training sample. 
 
 \paragraph{Fine-grained setting} We partitioned sentiment labels into 5 classes: ``Positive'', ``Somewhat Positive'', ``Neutral'', ``Somewhat Negative'' and ``Negative''.
 
@@ -179,16 +177,16 @@ On average, 2-channel CNN-Tree-LSTM achieves the highest accuracy among all our 
 \subsubsection{Comparing to the State-of-the-art Models}
 Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} is the state-of-the-art model on the fine-grained setting.
 Although the performance of 2-channel CNN-Tree-LSTM is lower then Constituency Tree-LSTM Ensemble, Constituency Tree-LSTM Ensemble is not an novel model and is an ensemble of \(30\) Constituency Tree-LSTMs.
-Since, the main purpose of Looks et al. is to use Constituency Tree-LSTM as an example to demonstrate the concise and batch-wise parallelism of its TensorFlow Fold implementation~\cite{LooksHHN17}.
+Since, the main purpose of Looks et al. were to use Constituency Tree-LSTM as an example to demonstrate the concise and batch-wise parallelism of its TensorFlow Fold implementation~\cite{LooksHHN17}.
 
 2-channel CNN-Tree-LSTM is comparable with Byte mLSTM~\cite{mlstm} on the fine-grained setting but underperforms Byte mLSTM in the binary setting.
-Similar to our approach, Radford st al.~\cite{mlstm} did transfer learning from large review dataset (which is also Amazon Reviews dataset) to improve the performance of their models on Stanford Sentiment Treebank.
+Similar to our approach, Radford st al. did transfer learning from large review dataset (which is also Amazon Reviews dataset) to improve the performance of their models on Stanford Sentiment Treebank.
 But different from our work, they trained a byte-level multiplicative LSTM~\cite{KrauseLMR16} language model on Amazon Reviews dataset.
-After that, vector representations of all sentences in Stanford Sentiment Treebank are computed using the trained byte-level multiplicative LSTM.
-The vector representations along with their corresponding labels are used to train a logistic regression classifier~\cite{mlstm}.
+After that, the vector representations of all sentences in Stanford Sentiment Treebank were computed using the trained byte-level multiplicative LSTM.
+These vector representations along with their corresponding labels were used to train a logistic regression classifier~\cite{mlstm}.
 
 On Stanford Sentiment Treebank, their method achieved state-of-the-art performance on the binary setting and comparable performance with Constituency Tree-LSTM Ensemble on fine-grained setting.
-Despite that, the performances of their model on other NLP tasks are not impressive, these tasks include: semantic relatedness (SICK~\cite{SemeEvalTask1}), subjectivity/objectivity detection (SUBJ~\cite{cs-CL-0409058}), opinion polarity (MPQA~\cite{Wiebe2005}) and paraphrase detection (Microsoft Paraphrase Corpus~\cite{Dolan:2004:UCL:1220355.1220406}).
+Despite that, the performances of their model on other NLP tasks were not impressive, these tasks include: semantic relatedness (SICK~\cite{SemeEvalTask1}), subjectivity/objectivity detection (SUBJ~\cite{cs-CL-0409058}), opinion polarity (MPQA~\cite{Wiebe2005}) and paraphrase detection (Microsoft Paraphrase Corpus~\cite{Dolan:2004:UCL:1220355.1220406}).
 It is likely that these tasks are out-of-domain for their model which only trained on review dataset~\cite{mlstm}.
 
 While conducting this research, we have trained CNN-LSTM as language model on Amazon Reviews dataset.

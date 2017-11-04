@@ -5,7 +5,8 @@ These words might not appear or not have good vector representations in the pre-
 Additionally, the ways people use words in movie reviews might be different from their usage in general documents.
 For example, the vector presentations of ``sympathy'' and ``disappointed'', or ``boom'' and ``insult'' are very close to each other in Glove Common Crawl but if we have to predict the sentiment of a movie comment which has one of these words.
 Ideally, they should be distinctive because ``disappointed'' and ``insult'' are likely to express negative sentiment, while ``boom'' and ``sympathy'' are likely to express positive sentiment.
-Although by updating word embedding during the training process we can have better word embedding for specific tasks and domains~\cite{treeLSTM, KimCNN}, it can harm generalization by updating only words which appear in the training set and non-related words which only appear in the test set. 
+One solution is to update word embedding during the training process so that we can have better word embedding for specific tasks and domains~\cite{treeLSTM, KimCNN}.
+Nevertheless, this method can harm generalization by updating only words which appear in the training set, and thus over-fitting occurs. %and non-related words which only appear in the test set. 
 %  
 % 
 %Noticeably, many experiments~\cite{treeLSTM, KimCNN} have shown that modifying word embeddings during the training process help improving the performance of Deep Learning systems. 
@@ -37,8 +38,8 @@ We have five steps to preprocess Amazon dataset for training a new word embeddin
 	\item All the reviews were dumped into a plain text file.
 	\item The text file produced from the previous step was tokenized using Stanford Tokenizer~\cite{tokenizerpart}.
 \end{enumerate}
-% There is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data.
-However, words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document due to no definition of end-of-document in Glove model. As a result, training data might be noisy. Hence, we use step 2 and 3 to mitigate the problem.
+There is no definition of end-of-document in Glove model, which means words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document which leads to noise in training data.
+% However, words which appear in the beginning part of a document will be included in the context of words in the last part of the previous document due to no definition of end-of-document in Glove model. As a result, training data might be noisy. Hence, we use step 2 and 3 to mitigate the problem.
 
 We set $x_{max} = 100$, vector size to 300, windows size to 20 and the minimum number of word occurrences to be included in the vocabulary to 5.
 The training process took the plain text file from preprocessing steps as input.

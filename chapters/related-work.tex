@@ -1,16 +1,17 @@
 \section{Related Work and Motivation}\label{sec:related}
-In recent years, Sentiment Analysis have enjoy dramatic improvements by applying different variations of CNN, RNN and RecNN.
+In recent years, sentiment analysis has enjoy dramatic improvements by applying different variations of CNN, RNN and RecNN.
 
-Although originally invented for Computer Vision, CNN have been proven to be effective models for document classification.
-Nevertheless, for composing fixed-length representation vector of documents, several types of max pooling layer were employed~\cite{nlp-scratch, KimCNN, DCNN, 2-layer-cnn}.
+Although originally invented for Computer Vision, CNNs have been proven to be effective models for document classification.
+Nevertheless, for composing fixed-length representation vector of documents, several types of max pooling layers were employed~\cite{nlp-scratch, KimCNN, DCNN, 2-layer-cnn}.
 Although max pooling layer largely simplified the network (which is good for preventing over-fit), this solution have a clear disadvantage.
 By down-sampling a feature map, although the resulted vector still contains information about the existence of a feature, it is likely that the information about the position or order of the feature is lost.
 This can be harmful because the order of words and phrases is important for understanding the sentiments of a sentence.
 
 RNN and RecNN have been especially designed for dealing with variable-length sequential input.
 They have been successfully applied to a variety of NLP tasks, include: speech recognition~\cite{speech-lstm, MiaoGM15}, sentiment analysis~\cite{treeLSTM, attention-gru}, text summarization~\cite{RushCW15, NallapatiXZ16}, machine translation~\cite{FiratCB16, SutskeverVL14, BritzGLL17}, language modeling~\cite{mikolov-nlm, JozefowiczVSSW16}.
-Wang et al.~\cite{cnn-rnn} have successfully combined CNN with RNN for Sentiment Analysis by utilizing CNN for capturing phrase-level features and RNN for composing these features.
-Their network architecture is similar to that of Yoon Kim et al.~\cite{KimCNN}, the main different is the usage of RNN for replacing the max-over-time pooling layer.
+
+Wang et al.~\cite{cnn-rnn} successfully combined CNN with RNN for Sentiment Analysis by utilizing CNN for capturing phrase-level features and RNN for composing these features.
+Their network architecture was similar to that of Yoon Kim et al.~\cite{KimCNN}, the main different was the usage of RNN for replacing the max-over-time pooling layer.
 Nevertheless, it was able to significantly outperform the state-of-the-art system at the time~\cite{cnn-rnn}.
 
 In this paper, we adopting the idea of Wang et al.~\cite{cnn-rnn} by combining CNN with RecNN.

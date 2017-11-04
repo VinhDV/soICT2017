@@ -41,22 +41,58 @@ The length of the feature map \(c^{(v)}\) depends on the length of the input sen
 
 In our model, all filters in \(F\) are restricted to have odd window sizes and being applied on the sentence according to half padding, unit strides policy~\cite{conv-arith}.
 These conditions guarantee that the lengths of all feature maps produced from a sentence are equal to the number of words in that sentence~\cite{conv-arith}.
-
 Suppose the size of the set of filters \(F\) is \(m\), all the feature maps of a sentence of length \(n\) produced by the set of filters is concatenated into one matrix \(P \in \mathbb{R}^{m \times n}\).
+
 The \(i\)-th column vector of \(P\) are treated as the vector representation of the \(i\)-th word in the sentence.
 
 
-\subsection{Recurrent Neural Network}
-\subsubsection{Vanilla Recurrent unit}\label{sec:vanilla-rnn}
-Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), Vanilla Recurrent unit is expressed as the following recursive formula~\cite{treeLSTM}:
+\subsection{Constituency Tree-LSTM}\label{treelstm}
+Let \(d\) be the size of the input vectors, \(r
+\) be the size of the memory cell and \(z\) be the number of sentiment classes.
+\paragraph{Leaf module}
+Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module is expressed as follow~\cite{treeLSTM}:
 \begin{align}
-h_t &= tanh(Wi_t + Uh_{t-1} + b)&
+o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
+c &= W^{(c)} x + a^{(c)} & \\
+h &= o \odot \tanh{\left(c\right)} &
 \end{align}
-For sentence-level sentiment analysis, \(h_n\) is treated as output of the network.
-In theory, Vanilla Recurrent Neural Network is Turing-Complete~\cite{rnn-turing-complete} but difficult to train, especially on long input sequence, due to the problems of exploding and vanishing gradient~\cite{Bengio1994}.
-Long Short Term Memory unit (LSTM)~\cite{originLSTM} unit was invented to mitigate the problem of vanishing gradient.
-\subsubsection{Long Short Term Memory unit}\label{sec:lstm}
-Long Short Term Memory unit ~\cite{originLSTM} is expressed as the following recursive formula:
+In this module, \(W^{(o)}, W^{(c)} \in \mathbb{R}^{r \times d}\) and \(a^{\left(o\right)}, a^{(c)} \in \mathbb{R}^r\).
+\paragraph{Composer module}
+Given the input vectors \({h_l}\) and \({c_l}\) from the left child node, \({h_r}\) and \({c_r}\) from the right child node, the calculation steps inside the composer module are expressed as follow~\cite{treeLSTM}:
+\begin{align}
+i &= \sigma{ \left(U_l^{(i)} h_{l} + U_r^{(i)} h_{r} + b^{(i)} \right) } &\\
+f_{l} &= \sigma{\left(U_{l}^{(l)} h_{l} + U_{r}^{(l)} h_{r} + b^{(f)}\right)} & \\
+f_{r} &= \sigma{\left(U_{l}^{(r)} h_{l} + U_{r}^{(r)} h_{r} + b^{(f)}\right)} & \\
+o &= \sigma{\left( U_l^{(o)} h_{l} + U_r^{(o)} h_{r} + b^{(o)}\right)} &\\
+u &= \tanh{\left( U_l^{(u)} h_{l} + U_r^{(u)} h_{r} + b^{(u)}\right)} &\\
+c &= i \odot u + f_{l} \odot c_{l} + f_{r} \odot c_{r} & \\
+h &= o \odot \tanh{\left(c\right)} &
+\end{align}
+For any \(j \in \{i, l, r, o, u\}\) and \(x \in \{l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
+
+\paragraph{Output module}
+Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
+Given \({h_j}\) of node \({j}\), the prediction at node \({j}\) is computed by the output module as follow~\cite{treeLSTM}:
+\begin{align}
+\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
+\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
+\end{align}
+With \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
+\paragraph{Composing sentence}
+% Given any sentence, its parse tree and set of vectors representation of each word in the sentence, Constituency Tree-LSTM is applied on the sentence as follow:
+% For any non-leaf node, composer module is applied recursively and for any leaf node, the leaf module is applied on the vector representation of the corresponding word.
+% Finally, we can apply the output module on any node in the parse tree.
+Given any sentence, its parse tree and set of vectors representation of each word in the sentence, Constituency Tree-LSTM is applied on the sentence as follow:
+\begin{itemize}
+  \item At leaf node, leaf module takes input from previous layer (convolution layer) output of corresponding word.
+  \item At non-leaf node, composer module is applied recursively.
+  \item After that, at every node \({j}\), output module takes input from leaf module or composer module to predict sentiment of sub-tree root \({j}\).
+\end{itemize}
+
+Apart from using Constituency Tree-LSTM to combine the set of vectors representation of each word in a sentence produced be the Convolution layer, we also used LSTM to replace Constituency Tree-LSTM in several experiments.
+
+\subsection{LSTM}\label{sec:lstm}
+Denoting input sequence as \(I = \{i_0,\ldots,i_n\}, \forall t, i_t \in \mathbb{R}^n\), LSTM unit~\cite{originLSTM} is expressed as the following recursive formula:
 \begin{align}
 w_t &= \sigma\left(W^{(w)}i_t + U^{(w)}h_{t-1} + b^{(w)}\right) \label{eq:lstm-input-gate}&\\
 f_t &= \sigma\left(W^{(f)}i_t + U^{(f)}h_{t-1} + b^{(f)}\right) \label{eq:lstm-forget-gate}&\\
@@ -82,48 +118,3 @@ Intuitively, we can interpret how the network works as follow:
 % write gate \(w_t\) decides which information from \(u_t\) will be written into the memory cell \(c_t\);
 % forget gate \(f_t\) decides which information will be preserved on memory cell \(c_t\);
 % and \(o_t\) decides which information will be read from the memory cell \(c_t\), which will produce the short-term memory (or output) \(h_t\).
-
-
-\subsection{Constituency Tree-LSTM}\label{treelstm}
-Let \(d\) be the size of the input vectors, \(r
-\) be the size of the memory cell and \(z\) be the number of sentiment classes.
-\paragraph{Leaf module}
-Given any input vector \(x \in \mathbb{R}^d\), the calculation steps inside the leaf module is expressed as follow:
-\begin{align}
-o &= \sigma{\left( W^{(o)} x + a^{\left(o\right)}\right)} & \\
-c &= W^{(c)} x + a^{(c)} & \\
-h &= o \odot \tanh{\left(c\right)} &
-\end{align}
-In this module, \(W^{(o)}, W^{(c)} \in \mathbb{R}^{r \times d}\) and \(a^{\left(o\right)}, a^{(c)} \in \mathbb{R}^r\).
-\paragraph{Composer module}
-Given the input vectors \({h_l}\) and \({c_l}\) from the left child node, \({h_r}\) and \({c_r}\) from the right child node, the calculation steps inside the composer module are expressed as follow:
-\begin{align}
-i &= \sigma{ \left(U_l^{(i)} h_{l} + U_r^{(i)} h_{r} + b^{(i)} \right) } &\\
-f_{l} &= \sigma{\left(U_{l}^{(l)} h_{l} + U_{r}^{(l)} h_{r} + b^{(f)}\right)} & \\
-f_{r} &= \sigma{\left(U_{l}^{(r)} h_{l} + U_{r}^{(r)} h_{r} + b^{(f)}\right)} & \\
-o &= \sigma{\left( U_l^{(o)} h_{l} + U_r^{(o)} h_{r} + b^{(o)}\right)} &\\
-u &= \tanh{\left( U_l^{(u)} h_{l} + U_r^{(u)} h_{r} + b^{(u)}\right)} &\\
-c &= i \odot u + f_{l} \odot c_{l} + f_{r} \odot c_{r} & \\
-h &= o \odot \tanh{\left(c\right)} &
-\end{align}
-For any \(j \in \{i, l, r, o, u\}\) and \(x \in \{l, r\}\), \(U_x^{(j)} \in \mathbb{R}^{r \times r}\) and \( b^{(j)} \in \mathbb{R}^r\).
-
-\paragraph{Output module}
-Denoting sequence of words spanned by a sub-tree rooted at node \({j}\) as \({\{x\}_j}\).
-Given \({h_j}\) of node \({j}\), the prediction at node \({j}\) is computed by the output module as follow:
-\begin{align}
-\hat{p_{\theta}}(y \mid \{x\}_j ) &= softmax( W^{(s)} h_j + b^{(s)}) & \\
-\hat{y_j} &= \underset{y}{\mathrm{argmax}} \; \hat{p_{\theta}}(y \mid \{x\}_j ) &
-\end{align}
-With \(W^{(s)} \in \mathbb{R}^{z \times r}\) and \( b^{(s)} \in \mathbb{R}^z\).
-\paragraph{Composing sentence}
-% Given any sentence, its parse tree and set of vectors representation of each word in the sentence, Constituency Tree-LSTM is applied on the sentence as follow:
-% For any non-leaf node, composer module is applied recursively and for any leaf node, the leaf module is applied on the vector representation of the corresponding word.
-% Finally, we can apply the output module on any node in the parse tree.
-Given any sentence, its parse tree and set of vectors representation of each word in the sentence, Constituency Tree-LSTM is applied on the sentence as follow:
-\begin{itemize}
-  \item At leaf node, leaf module takes input from previous layer (convolution layer) output of corresponding word.
-  \item At non-leaf node, composer module is applied recursively.
-  \item In addition, at every node \({j}\), output module takes input from leaf module or composer module to predict sentiment of sub-tree root \({j}\).
-\end{itemize}
-
