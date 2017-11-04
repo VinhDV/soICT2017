@@ -5,7 +5,8 @@ Standford Sentiment Treebank contains total 11,855 sentences.
 We used provided train/dev/test sets which contain 8544, 1101 and 2210 sentences, respectively.
 In this dataset, every sentence was parsed using Stanford (constituency) parser~\cite{socher2013recursive} into multiple phrases.
 There are a total of 215,154 labeled phrases in the whole dataset. Thus, every sentence in the corpus has a fully labeled parse tree.
-For training a Recurrent Neural Network, any phrase spanned by a labeled node is treated as a training sample.
+For training a Recurrent Neural Network, any phrase spanned by a labeled node is treated as a training sample. Implementations of our models are available at \url{https://github.com/ttpro1995/Tree_CNN_LSTM}.
+
 
 
 \paragraph{Fine-grained setting} We partitioned sentiment labels into 5 classes: ``Positive'', ``Somewhat Positive'', ``Neutral'', ``Somewhat Negative'' and ``Negative''.

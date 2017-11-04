@@ -13,7 +13,7 @@ The model has three modules: word embedding layer, convolution layer, and Consti
 \subsection{Word Embedding Layer}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses a different word embedding.
 The first word in a sentence is indexed as word-\(0\)th.
-In case the sentence is padded with dummy words, left padded dummy words are indexed by negative integers.
+If the sentence is padded with dummy words, left padded dummy words are indexed by negative integers.
 
 For any word embedding~\(e\), the vector presentation of the word-\(i\)th is denoted as~\(w^{(e)}_i \in \mathbb{R}^{d_e}\).
 The vector presentation of word-\(i\)th through the set of input channels \(Z\) can be expressed as follow:
@@ -84,7 +84,7 @@ Given any sentence, its parse tree and set of vectors representation of each wor
 \begin{itemize}
   \item At leaf node, leaf module takes input from vector representation of the corresponding word.
   \item At non-leaf node, composer module is applied recursively
-  \item In addition, at every node: output module takes input from leaf module or composer module to predict sentiment of sub-tree.
+  \item In addition, at every node, output module takes input from leaf module or composer module to predict sentiment of sub-tree.
 \end{itemize}
 
 \subsection{Recurrent Neural Network}
