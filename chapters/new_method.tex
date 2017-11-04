@@ -1,11 +1,15 @@
 \section{Combining Convolution and Recursive Neural Networks}\label{sec:cnn-treelstm}
-Our model architecture is shown in Figure~\ref{fig:cnn-treelstm}.
-The model has three modules: word embeddings, convolution layer, and Constituency Tree-LSTM.
+
+Our model architecture is shown in Fig.~\ref{fig:cnntreelstm}.
+The model has three modules: word embedding layer, convolution layer, and Constituency Tree-LSTM.
+
 \begin{figure} [H]
-	\centering
-	\input{figure/cnntreelstm.tikz}\label{fig:cnn-treelstm}
-	\caption[qwerty]{CNN-Tree-LSTM}
+    \centering
+    \input{figure/cnntreelstm.tikz}
+    \caption[CNN-Tree-LSTM]{CNN-Tree-LSTM}
+    \label{fig:cnntreelstm} % label MUST come after caption
 \end{figure}
+
 \subsection{Word Embedding Layer}
 Suppose that \(Z = \{e_0, e_1, \ldots e_m\}\) is a set input channels with each channel uses a different word embedding.
 For indexing, the first word in a sentence is word-\(0\)th.
