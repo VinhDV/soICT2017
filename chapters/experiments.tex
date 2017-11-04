@@ -1,6 +1,5 @@
 \section{Experiments}
-\subsection{Datasets}
-\subsubsection{Stanford Sentiment Treebank} \label{sec:sst}
+\subsection{Datasets}\label{sec:sst}
 We evaluated our model on Standford Sentiment Treebank dataset~\cite{socher2013recursive}.
 Standford Sentiment Treebank contains total 11,855 sentences.
 We used provided train/dev/test sets which contains 8544, 1101 and 2210 sentences, respectively.
@@ -170,4 +169,9 @@ With single input channel, CNN-LSTM outperforms CNN-Tree-LSTM in most cases exce
 With two input channels using both Glove Amazon and the standard Glove, CNN-Tree-LSTM gains a large improvement and outperforms 2-channel CNN-LSTM on both binary and fine-grained setting.
 On average, 2-channel CNN-Tree-LSTM achieves the highest accuracy among all our models in both settings.
 
-Compared to the state-of-the-art models, CNN-LSTM (Glove Amazon) outperforms Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} on the binary setting and 2-channel CNN-Tree-LSTM is comparable with Byte mLSTM~\cite{mlstm} on the fine-grained setting.
+\subsubsection{Comparing to the State-of-the-art Models}
+Constituency Tree-LSTM Ensemble~\cite{LooksHHN17} is the state-of-the-art model on the fine-grained setting.
+Although the performance of 2-channel CNN-Tree-LSTM is lower then Constituency Tree-LSTM Ensemble, Constituency Tree-LSTM Ensemble is not an novel model and is an ensemble of \(30\) Constituency Tree-LSTMs.
+Since, the main purpose of Looks et al. is to use Constituency Tree-LSTM as an example to demonstrate the concise and batch-wise parallelism of its TensorFlow Fold implementation~\cite{LooksHHN17}.
+
+2-channel CNN-Tree-LSTM is comparable with Byte mLSTM~\cite{mlstm} on the fine-grained setting.

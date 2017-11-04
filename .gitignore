@@ -3,6 +3,7 @@ acmthm.sty
 acmart.pdf
 acmguide.pdf
 sample-*.pdf
+*.pdf
 *.log
 *.aux
 *.cfg
