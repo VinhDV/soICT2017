@@ -1,5 +1,5 @@
 \documentclass[sigconf]{acmart}
-
+\usepackage{balance}
 %\settopmatter{printacmref=false} % Removes citation information below abstract
 %\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
 %\pagestyle{empty} % removes running headers
@@ -84,29 +84,38 @@
 %\setcopyright{cagov}
 %\setcopyright{cagovmixed}
 
+%
+%% DOI
+%\acmDOI{10.475/123_4}
+%
+%% ISBN
+%\acmISBN{123-4567-24-567/08/06}
+%
+%%Conference
+%\acmConference[SoICT '17]{Eighth International Symposium on Information and Communication Technology}{December 7--8, 2017}{Nha Trang City, Viet Nam}
+%\copyrightyear{2017}
+%\acmYear{2017}
+%
+%\acmPrice{15.00}
 
-% DOI
-\acmDOI{10.475/123_4}
 
-% ISBN
-\acmISBN{123-4567-24-567/08/06}
-
-%Conference
-\acmConference[SoICT '17]{Eighth International Symposium on Information and Communication Technology}{December 7--8, 2017}{Nha Trang City, Viet Nam}
-\copyrightyear{2017}
-\acmYear{2017}
-
-\acmPrice{15.00}
-
-
-\copyrightyear{2017}
-\acmYear{2017}
+\copyrightyear{2017} 
+\acmYear{2017} 
 \setcopyright{acmcopyright}
 \acmConference[SoICT '17]{Eighth International Symposium on Information and Communication Technology}{December 7--8, 2017}{Nha Trang City, Viet Nam}
-% \acmBooktitle{SoICT '17: Eighth International Symposium on Information and Communication Technology, December 7--8, 2017, Nha Trang City, Viet Nam}
+\acmBooktitle{SoICT '17: Eighth International Symposium on Information and Communication Technology, December 7--8, 2017, Nha Trang City, Viet Nam}
 \acmPrice{15.00}
 \acmDOI{10.1145/3155133.3155158}
 \acmISBN{978-1-4503-5328-1/17/12}
+
+%\copyrightyear{2017}
+%\acmYear{2017}
+%\setcopyright{acmcopyright}
+%\acmConference[SoICT '17]{Eighth International Symposium on Information and Communication Technology}{December 7--8, 2017}{Nha Trang City, Viet Nam}
+%% \acmBooktitle{SoICT '17: Eighth International Symposium on Information and Communication Technology, December 7--8, 2017, Nha Trang City, Viet Nam}
+%\acmPrice{15.00}
+%\acmDOI{10.1145/3155133.3155158}
+%\acmISBN{978-1-4503-5328-1/17/12}
 
 
 \begin{document}
@@ -116,7 +125,7 @@
 \orcid{1234-5678-9012}
 \affiliation{%
 	\institution{Faculty of Information Technology
-		VNUHCM - University of Sciences }
+		VNUHCM - University of Science}
 	\streetaddress{Nguyen Van Cu}
 	\city{Ho Chi Minh}
 	\country{Vietnam}}
@@ -125,7 +134,7 @@
 \author{Thien Thai}
 \affiliation{%
 	\institution{Faculty of Information Technology
-		VNUHCM - University of Sciences }
+		VNUHCM - University of Science}
 	\streetaddress{Nguyen Van Cu}
 	\city{Ho Chi Minh}
 	\country{Vietnam}}
@@ -134,7 +143,7 @@
 \author{Minh-Quoc Nghiem}
 \affiliation{%
  \institution{Faculty of Information Technology
- VNUHCM - University of Sciences }
+ VNUHCM - University of Science}
  \streetaddress{Nguyen Van Cu}
  \city{Ho Chi Minh}
  \country{Vietnam}}
@@ -185,6 +194,7 @@ Beyond that, our models achieve comparable performance with state-of-the-art sys
 \input{samplebody-conf}
 
 \bibliographystyle{ACM-Reference-Format}
+\balance
 \bibliography{sample-bibliography}
 
 \end{document}
